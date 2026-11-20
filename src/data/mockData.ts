@@ -15,13 +15,13 @@ export const RESTAURANT_INFO = {
 };
 
 export const CATEGORIES: Category[] = [
-  { id: 'all', name: 'All Menu', icon: '✨' },
-  { id: 'bestsellers', name: 'Chef Specials', icon: '🔥' },
-  { id: 'starters', name: 'Small Plates', icon: '🥟' },
-  { id: 'mains', name: 'Main Course', icon: '🍲' },
-  { id: 'noodles-rice', name: 'Rice & Noodles', icon: '🍜' },
-  { id: 'beverages', name: 'Artisan Drinks', icon: '🍹' },
-  { id: 'desserts', name: 'Sweet Endings', icon: '🍮' }
+  { id: 'all', name: 'All Menu', icon: '' },
+  { id: 'bestsellers', name: 'Chef Specials', icon: '' },
+  { id: 'starters', name: 'Small Plates', icon: '' },
+  { id: 'mains', name: 'Main Course', icon: '' },
+  { id: 'noodles-rice', name: 'Rice & Noodles', icon: '' },
+  { id: 'beverages', name: 'Artisan Drinks', icon: '' },
+  { id: 'desserts', name: 'Sweet Endings', icon: '' }
 ];
 
 export const MENU_ITEMS: MenuItem[] = [
