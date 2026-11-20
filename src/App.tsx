@@ -8,6 +8,7 @@ import { BottomCartBar } from './components/BottomCartBar';
 import { CartDrawer } from './components/CartDrawer';
 import { CheckoutModal } from './components/CheckoutModal';
 import { OrderTracker } from './components/OrderTracker';
+import { OrderHistoryModal } from './components/OrderHistoryModal';
 import { AuthModal } from './components/AuthModal';
 import { OnboardingScreen } from './components/OnboardingScreen';
 import { DesktopSidebarCart } from './components/DesktopSidebarCart';
@@ -146,8 +147,13 @@ const MainMenuContent: React.FC<MainMenuContentProps> = ({ isJustRevealed = fals
               </div>
 
               {dietaryFilter !== 'all' && (
-                <span className="text-xs text-stone-800 bg-stone-100 px-2.5 py-1 rounded-full font-semibold border border-stone-200">
-                  Filtered: {dietaryFilter}
+                <span className={`text-xs px-2.5 py-1 rounded-full font-semibold border transition-all duration-300 flex items-center gap-1.5 animate-pop-in ${
+                  dietaryFilter === 'veg'
+                    ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                    : 'bg-red-50 text-red-800 border-red-200'
+                }`}>
+                  <span className={`w-2 h-2 rounded-full ${dietaryFilter === 'veg' ? 'bg-emerald-600' : 'bg-red-600'}`} />
+                  Filtered: {dietaryFilter === 'veg' ? 'Pure Vegetarian' : 'Non-Vegetarian'}
                 </span>
               )}
             </div>
@@ -196,6 +202,7 @@ const MainMenuContent: React.FC<MainMenuContentProps> = ({ isJustRevealed = fals
       <CartDrawer />
       <CheckoutModal />
       <OrderTracker />
+      <OrderHistoryModal />
 
       {/* Minimal Footer */}
       <footer className="mt-12 border-t border-stone-200/80 bg-white py-6 text-center text-xs text-stone-400">

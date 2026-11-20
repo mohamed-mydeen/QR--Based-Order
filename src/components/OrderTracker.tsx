@@ -16,14 +16,18 @@ import { ConfirmationSheet } from './ConfirmationSheet';
 export const OrderTracker: React.FC = () => {
   const {
     activeOrder,
+    viewingOrder,
+    orderHistory,
     isTrackerOpen,
     setIsTrackerOpen,
+    setIsOrderHistoryOpen,
     cancelActiveOrder
   } = useApp();
 
   const [isCancelOrderConfirmOpen, setIsCancelOrderConfirmOpen] = useState(false);
 
-  if (!isTrackerOpen || !activeOrder) return null;
+  const order = viewingOrder || activeOrder;
+  if (!isTrackerOpen || !order) return null;
 
   return (
     <div
@@ -55,19 +59,34 @@ export const OrderTracker: React.FC = () => {
                 </span>
               </div>
               <p className="text-[11px] text-stone-500 font-medium">
-                Order #{activeOrder.id} • Placed at {activeOrder.placedAt}
+                Order #{order.id} • Placed at {order.placedAt}
               </p>
             </div>
           </div>
 
-          <button
-            type="button"
-            onClick={() => setIsTrackerOpen(false)}
-            className="w-7 h-7 rounded-full bg-stone-100 hover:bg-stone-200 flex items-center justify-center text-stone-500 hover:text-stone-900 transition-colors cursor-pointer"
-            title="Close view order"
-          >
-            <X className="w-4 h-4" />
-          </button>
+          <div className="flex items-center gap-1.5">
+            {orderHistory.length > 0 && (
+              <button
+                type="button"
+                onClick={() => {
+                  setIsTrackerOpen(false);
+                  setIsOrderHistoryOpen(true);
+                }}
+                className="px-2.5 py-1 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-semibold transition-colors cursor-pointer"
+                title="View past orders"
+              >
+                History ({orderHistory.length})
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={() => setIsTrackerOpen(false)}
+              className="w-7 h-7 rounded-full bg-stone-100 hover:bg-stone-200 flex items-center justify-center text-stone-500 hover:text-stone-900 transition-colors cursor-pointer"
+              title="Close view order"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
         {/* Scrollable Order Summary & Receipt Content */}
@@ -79,7 +98,7 @@ export const OrderTracker: React.FC = () => {
               <span>Status: <strong className="text-stone-900">Preparing Fresh</strong></span>
             </div>
             <div className="flex items-center gap-1.5 text-stone-700">
-              {activeOrder.paymentMethod === 'upi' ? (
+              {order.paymentMethod === 'upi' ? (
                 <>
                   <CreditCard className="w-3.5 h-3.5 text-emerald-600" />
                   <span className="text-emerald-700 font-semibold">UPI (Paid)</span>
@@ -97,11 +116,11 @@ export const OrderTracker: React.FC = () => {
           <div className="space-y-2">
             <div className="flex items-center justify-between text-xs font-bold text-stone-700 uppercase tracking-wider">
               <span>Items Ordered</span>
-              <span>{activeOrder.items.reduce((sum, item) => sum + item.quantity, 0)} Items</span>
+              <span>{order.items.reduce((sum, item) => sum + item.quantity, 0)} Items</span>
             </div>
 
             <div className="bg-white rounded-2xl border border-stone-200/90 divide-y divide-stone-100 overflow-hidden shadow-2xs">
-              {activeOrder.items.map((item) => (
+              {order.items.map((item) => (
                 <div key={item.cartItemId} className="p-3 sm:p-3.5 flex items-start justify-between gap-3 text-xs sm:text-sm">
                   <div className="flex items-start gap-2.5 min-w-0 flex-1">
                     <span className="w-6 h-6 rounded-md bg-stone-100 border border-stone-200/70 text-stone-900 font-mono font-bold text-xs flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -137,12 +156,12 @@ export const OrderTracker: React.FC = () => {
           </div>
 
           {/* Special Kitchen Request (if entered) */}
-          {activeOrder.specialNotes && (
+          {order.specialNotes && (
             <div className="p-3 rounded-xl bg-amber-50/60 border border-amber-200/60 text-xs text-amber-950 flex items-start gap-2">
               <Utensils className="w-4 h-4 text-amber-700 flex-shrink-0 mt-0.5" />
               <div>
                 <span className="font-bold block">Special Request for Kitchen:</span>
-                <span className="text-stone-700">{activeOrder.specialNotes}</span>
+                <span className="text-stone-700">{order.specialNotes}</span>
               </div>
             </div>
           )}
@@ -152,29 +171,29 @@ export const OrderTracker: React.FC = () => {
             <div className="flex justify-between text-stone-600">
               <span>Subtotal</span>
               <span className="font-mono font-semibold text-stone-800">
-                {RESTAURANT_INFO.currency}{activeOrder.subtotal}
+                {RESTAURANT_INFO.currency}{order.subtotal}
               </span>
             </div>
-            {activeOrder.discount > 0 && (
+            {order.discount > 0 && (
               <div className="flex justify-between text-emerald-700">
                 <span>Discount</span>
                 <span className="font-mono font-semibold">
-                  -{RESTAURANT_INFO.currency}{activeOrder.discount}
+                  -{RESTAURANT_INFO.currency}{order.discount}
                 </span>
               </div>
             )}
             <div className="flex justify-between text-stone-500 text-[11px]">
               <span>Taxes (5%)</span>
-              <span className="font-mono">+{RESTAURANT_INFO.currency}{activeOrder.tax}</span>
+              <span className="font-mono">+{RESTAURANT_INFO.currency}{order.tax}</span>
             </div>
             <div className="flex justify-between text-stone-500 text-[11px]">
               <span>Service Charge (2.5%)</span>
-              <span className="font-mono">+{RESTAURANT_INFO.currency}{activeOrder.serviceCharge}</span>
+              <span className="font-mono">+{RESTAURANT_INFO.currency}{order.serviceCharge}</span>
             </div>
             <div className="border-t border-stone-200 pt-2 flex justify-between font-bold text-stone-950 text-sm">
               <span>Total Paid</span>
               <span className="font-mono text-base font-extrabold text-stone-950">
-                {RESTAURANT_INFO.currency}{activeOrder.total}
+                {RESTAURANT_INFO.currency}{order.total}
               </span>
             </div>
           </div>
@@ -210,7 +229,7 @@ export const OrderTracker: React.FC = () => {
           setIsCancelOrderConfirmOpen(false);
         }}
         title="Cancel this order?"
-        description={`Are you sure you want to cancel Order #${activeOrder.id}? This will inform the kitchen staff to stop preparation.`}
+        description={`Are you sure you want to cancel Order #${order.id}? This will inform the kitchen staff to stop preparation.`}
         confirmLabel="Cancel Order"
         cancelLabel="Keep Order"
         variant="destructive"

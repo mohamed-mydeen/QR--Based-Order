@@ -91,6 +91,14 @@ interface AppContextType {
   setIsTrackerOpen: (open: boolean) => void;
   callWaiter: () => void;
   waiterCalled: boolean;
+
+  // Order History
+  orderHistory: Order[];
+  isOrderHistoryOpen: boolean;
+  setIsOrderHistoryOpen: (open: boolean) => void;
+  viewingOrder: Order | null;
+  setViewingOrder: (order: Order | null) => void;
+  reorderItems: (items: CartItem[]) => void;
   
   // Quick notifications
   toastMessage: string | null;
@@ -473,6 +481,32 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [isTrackerOpen, setIsTrackerOpen] = useState(false);
   const [waiterCalled, setWaiterCalled] = useState(false);
 
+  // 7. Order History Flow
+  const [orderHistory, setOrderHistory] = useState<Order[]>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('selarasa_order_history');
+      if (saved) {
+        try {
+          return JSON.parse(saved);
+        } catch {
+          return [];
+        }
+      }
+    }
+    return [];
+  });
+  const [isOrderHistoryOpen, setIsOrderHistoryOpen] = useState(false);
+  const [viewingOrder, setViewingOrder] = useState<Order | null>(null);
+
+  const reorderItems = (items: CartItem[]) => {
+    items.forEach(ci => {
+      addToCart(ci.menuItem, ci.selectedModifiers, ci.specialInstructions, ci.quantity);
+    });
+    showToast(`Added ${items.length} items to order!`);
+    setIsOrderHistoryOpen(false);
+    setIsCartOpen(true);
+  };
+
   const placeOrder = async (paymentMethod: PaymentMethod, notes?: string): Promise<Order> => {
     const orderId = `SEL-${Math.floor(1000 + Math.random() * 9000)}`;
     const nowTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -535,6 +569,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     setActiveOrder(newOrder);
     localStorage.setItem('selarasa_active_order', JSON.stringify(newOrder));
+    const nextHistory = [newOrder, ...orderHistory.filter(o => o.id !== newOrder.id)];
+    setOrderHistory(nextHistory);
+    localStorage.setItem('selarasa_order_history', JSON.stringify(nextHistory));
+    setViewingOrder(newOrder);
     clearCart();
     setIsCartOpen(false);
     setIsCheckoutOpen(false);
@@ -547,7 +585,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const orderId = activeOrder.id;
     setActiveOrder(null);
     localStorage.removeItem('selarasa_active_order');
+    const nextHistory = orderHistory.filter(o => o.id !== orderId);
+    setOrderHistory(nextHistory);
+    localStorage.setItem('selarasa_order_history', JSON.stringify(nextHistory));
     setIsTrackerOpen(false);
+    setViewingOrder(null);
     showToast(`Order #${orderId} was cancelled.`);
   };
 
@@ -618,6 +660,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         setIsTrackerOpen,
         callWaiter,
         waiterCalled,
+        orderHistory,
+        isOrderHistoryOpen,
+        setIsOrderHistoryOpen,
+        viewingOrder,
+        setViewingOrder,
+        reorderItems,
         toastMessage,
         showToast
       }}
