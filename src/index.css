@@ -1,0 +1,312 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: #1c1917;
+    background-color: #fbfaf8;
+  }
+}
+
+/* Custom subtle scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #e7e5e4;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #d6d3d1;
+}
+
+/* Animations */
+@keyframes pulseSubtle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.85; transform: scale(1.02); }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.2s ease-out forwards;
+}
+
+.animate-pulse-subtle {
+  animation: pulseSubtle 2.5s infinite ease-in-out;
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.4); opacity: 0; }
+  70% { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes drawCheck {
+  0% { stroke-dashoffset: 50; }
+  100% { stroke-dashoffset: 0; }
+}
+
+@keyframes ripple {
+  0% { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+.animate-pop-in {
+  animation: popIn 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.animate-draw-check {
+  stroke-dasharray: 50;
+  stroke-dashoffset: 50;
+  animation: drawCheck 0.4s 0.2s ease-out forwards;
+}
+
+.animate-ripple {
+  animation: ripple 1.2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+@keyframes slideInUpSoft {
+  0% { transform: translateY(12px) scale(0.95); opacity: 0; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.animate-slide-in-soft {
+  animation: slideInUpSoft 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.35); }
+  50% { box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+/* In-Box OTP Animations */
+@keyframes shakeHorizontal {
+  0%, 100% { transform: translateX(0); }
+  15%, 45%, 75% { transform: translateX(-5px); }
+  30%, 60%, 90% { transform: translateX(5px); }
+}
+
+.animate-shake {
+  animation: shakeHorizontal 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes boxSuccessPop {
+  0% { transform: scale(0.96); }
+  50% { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+
+.animate-box-success {
+  animation: boxSuccessPop 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes drawSvgCheck {
+  0% { stroke-dashoffset: 24; }
+  100% { stroke-dashoffset: 0; }
+}
+
+.animate-draw-check-sm {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  animation: drawSvgCheck 0.3s ease-out forwards;
+}
+
+/* Home Page Entrance Transition */
+@keyframes homeExpand {
+  0% {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes headerSlideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bannerExpand {
+  0% {
+    opacity: 0;
+    transform: translateY(14px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes staggeredItemReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-home-expand {
+  animation: homeExpand 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-header-reveal {
+  animation: headerSlideDown 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+
+.animate-banner-reveal {
+  animation: bannerExpand 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+}
+
+.animate-stagger-1 {
+  animation: staggeredItemReveal 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+}
+
+.animate-stagger-2 {
+  animation: staggeredItemReveal 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+}
+
+/* Micro-Interaction Animation System */
+@keyframes cardCascade {
+  0% {
+    opacity: 0;
+    transform: translateY(14px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-card-cascade {
+  animation: cardCascade 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes badgePop {
+  0% { transform: scale(1); }
+  35% { transform: scale(1.35); }
+  70% { transform: scale(0.92); }
+  100% { transform: scale(1); }
+}
+
+.animate-badge-pop {
+  animation: badgePop 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes cartBounce {
+  0% { transform: scale(1); }
+  25% { transform: scale(0.85) rotate(-6deg); }
+  60% { transform: scale(1.15) rotate(4deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+.animate-cart-bounce {
+  animation: cartBounce 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes numberPop {
+  0% { transform: translateY(-4px) scale(0.8); opacity: 0.5; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.animate-number-pop {
+  animation: numberPop 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes drawerSlideIn {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+.animate-drawer-slide {
+  animation: drawerSlideIn 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes emptyFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.animate-empty-float {
+  animation: emptyFloat 3s ease-in-out infinite;
+}
+
+@keyframes skeletonShimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(90deg, #f5f5f4 25%, #e7e5e4 50%, #f5f5f4 75%);
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.5s infinite;
+}
+
+/* Accessibility: Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-home-expand,
+  .animate-header-reveal,
+  .animate-banner-reveal,
+  .animate-stagger-1,
+  .animate-stagger-2,
+  .animate-shake,
+  .animate-box-success,
+  .animate-pop-in,
+  .animate-card-cascade,
+  .animate-badge-pop,
+  .animate-cart-bounce,
+  .animate-number-pop,
+  .animate-drawer-slide,
+  .animate-empty-float,
+  .skeleton-shimmer {
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
+/* Remove number spin buttons and ensure centered text */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
