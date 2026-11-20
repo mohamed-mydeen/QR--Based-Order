@@ -20,7 +20,7 @@ export const BottomCartBar: React.FC = () => {
   }
 
   return (
-    <div className="lg:hidden fixed bottom-4 left-4 right-4 z-40 animate-slide-up">
+    <div className="lg:hidden fixed bottom-4 left-4 right-4 z-50 animate-slide-up">
       <button
         type="button"
         onClick={() => setIsCartOpen(true)}

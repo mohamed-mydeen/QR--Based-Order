@@ -168,16 +168,6 @@ const MainMenuContent: React.FC = () => {
         </div>
       </main>
 
-      {/* Floating Bottom Cart Bar for Mobile View */}
-      <BottomCartBar />
-
-      {/* Global Modals & Drawers */}
-      <FoodCustomizationModal />
-      <CartDrawer />
-      <CheckoutModal />
-      <OrderTracker />
-      <OrderHistoryModal />
-
       {/* Minimal Footer */}
       <footer className="mt-12 border-t border-stone-200/80 bg-white py-6 text-center text-xs text-stone-400">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
@@ -272,7 +262,7 @@ const AppContent: React.FC = () => {
   }
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-[#FAF8F5] animate-page-enter">
+    <div className="relative min-h-screen overflow-x-hidden bg-[#FAF8F5]">
       {/* Route Views: Separate Full Page for Order History vs Main Menu with Smooth Native Handoff */}
       <div
         key={activeView}
@@ -284,6 +274,16 @@ const AppContent: React.FC = () => {
           <MainMenuContent />
         )}
       </div>
+
+      {/* Floating Bottom Cart Bar for Mobile View - Guaranteed Fixed at Screen Bottom */}
+      <BottomCartBar />
+
+      {/* Global Modals & Drawers - Mounted at Root Viewport Level */}
+      <FoodCustomizationModal />
+      <CartDrawer />
+      <CheckoutModal />
+      <OrderTracker />
+      <OrderHistoryModal />
     </div>
   );
 };
