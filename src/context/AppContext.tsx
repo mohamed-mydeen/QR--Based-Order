@@ -34,6 +34,8 @@ interface AppContextType {
 
   // Customer Auth
   user: UserProfile | null;
+  hasSkippedAuth: boolean;
+  skipAuth: () => void;
   isAuthOpen: boolean;
   setIsAuthOpen: (open: boolean) => void;
   pendingOtpPhone: string;
@@ -171,6 +173,21 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   });
 
   const [isAuthOpen, setIsAuthOpen] = useState(false);
+
+  // Guest Browsing: Allows exploring menu before logging in
+  const [hasSkippedAuth, setHasSkippedAuthState] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      return sessionStorage.getItem('selarasa_guest_skipped') === 'true';
+    }
+    return false;
+  });
+
+  const skipAuth = () => {
+    setHasSkippedAuthState(true);
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('selarasa_guest_skipped', 'true');
+    }
+  };
 
   // Restore pending auth flow from localStorage so browser refresh preserves Step 2
   const [pendingAuth, setPendingAuth] = useState<PendingAuthState>(() => {
@@ -330,6 +347,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const logoutUser = () => {
     setUser(null);
+    setHasSkippedAuthState(false);
+    if (typeof window !== 'undefined') {
+      sessionStorage.removeItem('selarasa_guest_skipped');
+    }
     localStorage.removeItem('selarasa_user');
     localStorage.removeItem('selarasa_pending_auth');
     setPendingAuth({
@@ -340,7 +361,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       timerExpiresAt: Date.now()
     });
     setActiveView('menu');
-    setIsAuthOpen(true);
+    setIsAuthOpen(false);
     showToast('Signed out successfully');
   };
 
@@ -687,6 +708,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         isTableModalOpen,
         setIsTableModalOpen,
         user,
+        hasSkippedAuth,
+        skipAuth,
         isAuthOpen,
         setIsAuthOpen,
         otpStep: pendingAuth.otpStep,

@@ -188,6 +188,10 @@ const MainMenuContent: React.FC = () => {
 const AppContent: React.FC = () => {
   const {
     user,
+    hasSkippedAuth,
+    skipAuth,
+    isAuthOpen,
+    setIsAuthOpen,
     activeView,
     isCartOpen,
     isCheckoutOpen,
@@ -224,7 +228,8 @@ const AppContent: React.FC = () => {
       isTrackerOpen ||
       isOrderHistoryOpen ||
       !!activeCustomizingItem ||
-      !user?.isVerified;
+      (!user?.isVerified && !hasSkippedAuth) ||
+      (isAuthOpen && !user?.isVerified);
 
     if (isModalActive) {
       const scrollY = window.scrollY;
@@ -249,14 +254,16 @@ const AppContent: React.FC = () => {
     isTrackerOpen,
     isOrderHistoryOpen,
     activeCustomizingItem,
-    user?.isVerified
+    user?.isVerified,
+    hasSkippedAuth,
+    isAuthOpen
   ]);
 
-  // Mandatory Login Gate: Unauthenticated users are allowed ONLY after login
-  if (!user?.isVerified) {
+  // Welcome Login Gate: Unauthenticated users see login first, with "Skip login for now" option
+  if (!user?.isVerified && !hasSkippedAuth) {
     return (
       <div className="fixed inset-0 h-full h-[100dvh] w-full bg-[#111216] overflow-hidden overscroll-none touch-none">
-        <AuthModal />
+        <AuthModal onSkip={skipAuth} />
       </div>
     );
   }
@@ -284,6 +291,16 @@ const AppContent: React.FC = () => {
       <CheckoutModal />
       <OrderTracker />
       <OrderHistoryModal />
+
+      {/* Order-Required Auth Modal: Mandatory Login Before Kitchen Order Placement */}
+      {isAuthOpen && !user?.isVerified && (
+        <div className="fixed inset-0 z-50 h-full h-[100dvh] w-full bg-[#111216] overflow-hidden overscroll-none touch-none animate-fade-in">
+          <AuthModal
+            onClose={() => setIsAuthOpen(false)}
+            isOrderRequired={true}
+          />
+        </div>
+      )}
     </div>
   );
 };

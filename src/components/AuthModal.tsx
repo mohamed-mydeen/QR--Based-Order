@@ -9,7 +9,8 @@ import {
   CheckCircle2,
   Sparkles,
   AlertCircle,
-  Check
+  Check,
+  X
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { RESTAURANT_INFO } from '../data/mockData';
@@ -17,9 +18,18 @@ import { RESTAURANT_INFO } from '../data/mockData';
 interface AuthModalProps {
   isFadingOut?: boolean;
   onSuccessTransition?: () => void;
+  onSkip?: () => void;
+  onClose?: () => void;
+  isOrderRequired?: boolean;
 }
 
-export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuccessTransition }) => {
+export const AuthModal: React.FC<AuthModalProps> = ({
+  isFadingOut = false,
+  onSuccessTransition,
+  onSkip,
+  onClose,
+  isOrderRequired = false
+}) => {
   const {
     otpStep,
     pendingOtpPhone,
@@ -366,12 +376,18 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
           {/* Welcoming Headline & Subtitle */}
           <div className="relative z-10 space-y-0.5 sm:space-y-1 max-w-xs drop-shadow-md transition-all duration-300">
             <h1 className="text-lg sm:text-xl md:text-3xl font-extrabold text-white tracking-tight drop-shadow-md font-sans leading-tight">
-              {otpStep === 'phone' ? 'Welcome to Selarasa!' : 'Verify Mobile Number'}
+              {isOrderRequired
+                ? (otpStep === 'phone' ? 'Sign in to Place Order' : 'Verify Mobile Number')
+                : (otpStep === 'phone' ? 'Welcome to Selarasa!' : 'Verify Mobile Number')}
             </h1>
             <p className="text-[11px] sm:text-xs md:text-sm text-amber-200/90 font-medium leading-tight drop-shadow">
-              {otpStep === 'phone'
-                ? 'Sign in to browse menu and order dishes.'
-                : 'Enter the 6-digit code to complete verification.'}
+              {isOrderRequired
+                ? (otpStep === 'phone'
+                    ? 'Enter your mobile number to confirm your table order.'
+                    : 'Enter the 6-digit code to send order to kitchen.')
+                : (otpStep === 'phone'
+                    ? 'Sign in to browse menu and order dishes.'
+                    : 'Enter the 6-digit code to complete verification.')}
             </p>
           </div>
         </div>
@@ -418,6 +434,16 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
                 <span className="text-[10px] sm:text-[11px] font-bold tracking-wider uppercase text-stone-400 transition-colors">
                   {otpStep === 'phone' ? 'Step 1: Details' : 'Step 2: Verification'}
                 </span>
+                {onClose && (
+                  <button
+                    type="button"
+                    onClick={onClose}
+                    className="w-7 h-7 rounded-full bg-stone-200/80 hover:bg-stone-300 text-stone-600 hover:text-stone-900 flex items-center justify-center transition-all active:scale-95 cursor-pointer ml-1"
+                    title="Close"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                )}
               </div>
             </div>
 
@@ -443,10 +469,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
                   <div>
                     <div className="mb-4 sm:mb-5">
                       <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-stone-900 tracking-tight">
-                        Let's Get Started
+                        {isOrderRequired ? 'Confirm Your Details' : "Let's Get Started"}
                       </h2>
                       <p className="text-xs sm:text-sm text-stone-500 mt-0.5">
-                        Enter your details to view menu and order dishes.
+                        {isOrderRequired
+                          ? 'Enter your name and phone number to send your order to the kitchen.'
+                          : 'Enter your details to view menu and order dishes.'}
                       </p>
                     </div>
 
@@ -549,6 +577,20 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
                             </div>
                           )}
                         </button>
+
+                        {/* Skip Login for Now (Allows exploring menu before logging in; ordering requires login) */}
+                        {onSkip && (
+                          <div className="pt-3 text-center">
+                            <button
+                              type="button"
+                              onClick={onSkip}
+                              className="text-xs sm:text-sm font-semibold text-stone-500 hover:text-stone-900 transition-colors py-1.5 px-3 rounded-xl hover:bg-stone-200/60 active:scale-95 cursor-pointer inline-flex items-center gap-1.5"
+                            >
+                              <span>Skip login for now</span>
+                              <ArrowRight className="w-3.5 h-3.5 text-stone-400" />
+                            </button>
+                          </div>
+                        )}
                       </div>
                     </form>
                   </div>
