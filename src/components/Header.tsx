@@ -40,9 +40,6 @@ export const Header: React.FC<HeaderProps> = ({ isJustRevealed = false }) => {
                 <h1 className="font-serif font-bold text-lg sm:text-xl text-stone-900 tracking-tight leading-none">
                   {RESTAURANT_INFO.name.split(' ')[0]}
                 </h1>
-                <span className="inline-block text-[10px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-full bg-stone-100 text-stone-600 border border-stone-200/80">
-                  Dine-In
-                </span>
               </div>
               <p className="text-[11px] text-stone-400 font-medium tracking-wide mt-0.5">
                 Artisanal Asian Eatery
