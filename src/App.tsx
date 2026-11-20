@@ -7,7 +7,6 @@ import { FoodCustomizationModal } from './components/FoodCustomizationModal';
 import { BottomCartBar } from './components/BottomCartBar';
 import { CartDrawer } from './components/CartDrawer';
 import { CheckoutModal } from './components/CheckoutModal';
-import { OrderTracker } from './components/OrderTracker';
 import { TableModal } from './components/TableModal';
 import { AuthModal } from './components/AuthModal';
 import { OnboardingScreen } from './components/OnboardingScreen';
@@ -212,7 +211,6 @@ const MainMenuContent: React.FC<MainMenuContentProps> = ({ isJustRevealed = fals
       <FoodCustomizationModal />
       <CartDrawer />
       <CheckoutModal />
-      <OrderTracker />
       <TableModal />
 
       {/* Minimal Footer */}

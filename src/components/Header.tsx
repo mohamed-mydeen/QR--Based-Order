@@ -13,8 +13,6 @@ export const Header: React.FC<HeaderProps> = ({ isJustRevealed = false }) => {
     user,
     startAuthFlow,
     logoutUser,
-    activeOrder,
-    setIsTrackerOpen,
     searchQuery,
     setSearchQuery,
     dietaryFilter,
@@ -54,21 +52,6 @@ export const Header: React.FC<HeaderProps> = ({ isJustRevealed = false }) => {
 
           {/* Right Action Controls: Minimal & Professional */}
           <div className="flex items-center gap-2.5 sm:gap-3">
-            {/* Active Order Live Tracker Badge (Visible only during live orders) */}
-            {activeOrder && (
-              <button
-                onClick={() => setIsTrackerOpen(true)}
-                className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 hover:bg-emerald-100 border border-emerald-200/80 text-emerald-800 text-xs font-semibold transition-all active:scale-95 shadow-2xs cursor-pointer"
-                title="View live order progress"
-              >
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="font-medium hidden xs:inline">Live Order</span>
-                <span className="capitalize text-[10px] bg-emerald-600 text-white px-1.5 py-0.5 rounded font-bold">
-                  {activeOrder.status}
-                </span>
-              </button>
-            )}
-
             {/* Minimalist Profile Avatar (Initial only - No profile name text) */}
             {user?.isVerified ? (
               <button

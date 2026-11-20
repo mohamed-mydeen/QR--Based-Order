@@ -15,9 +15,7 @@ export const DesktopSidebarCart: React.FC = () => {
     setIsCheckoutOpen,
     startAuthFlow,
     user,
-    tableNumber,
-    activeOrder,
-    setIsTrackerOpen
+    tableNumber
   } = useApp();
 
   // Confirmation state for deleting an item
@@ -65,24 +63,6 @@ export const DesktopSidebarCart: React.FC = () => {
               </button>
             )}
           </div>
-
-          {/* Active Order Banner if live order exists */}
-          {activeOrder && (
-            <div
-              onClick={() => setIsTrackerOpen(true)}
-              className="p-3 bg-emerald-50 border-b border-emerald-200/80 flex items-center justify-between cursor-pointer hover:bg-emerald-100/70 transition-colors"
-            >
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-xs font-bold text-emerald-950">
-                  Order #{activeOrder.id} ({activeOrder.status})
-                </span>
-              </div>
-              <span className="text-[11px] text-emerald-700 font-bold underline">
-                Track Live
-              </span>
-            </div>
-          )}
 
           {/* Scrollable Items */}
           <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-[#FAF8F5]">
