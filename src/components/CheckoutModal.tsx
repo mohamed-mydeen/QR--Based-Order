@@ -3,10 +3,7 @@ import {
   X,
   Banknote,
   ArrowRight,
-  CreditCard,
-  ChefHat,
-  ShieldCheck,
-  Clock
+  CreditCard
 } from 'lucide-react';
 import { PaymentMethod } from '../types';
 import { useApp } from '../context/AppContext';
@@ -14,7 +11,7 @@ import { RESTAURANT_INFO } from '../data/mockData';
 import { ConfirmationSheet } from './ConfirmationSheet';
 
 // Authentic Official Brand Icons for UPI & Payment Providers
-const GooglePayIcon: React.FC<{ className?: string }> = ({ className = 'w-5 h-5' }) => (
+const GooglePayIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
   <svg viewBox="0 0 24 24" className={className}>
     <path
       fill="#4285F4"
@@ -35,7 +32,7 @@ const GooglePayIcon: React.FC<{ className?: string }> = ({ className = 'w-5 h-5'
   </svg>
 );
 
-const PhonePeIcon: React.FC<{ className?: string }> = ({ className = 'w-5 h-5' }) => (
+const PhonePeIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
   <svg viewBox="0 0 24 24" className={className} fill="none">
     <rect width="24" height="24" rx="5" fill="#5F259F" />
     <path
@@ -45,7 +42,7 @@ const PhonePeIcon: React.FC<{ className?: string }> = ({ className = 'w-5 h-5' }
   </svg>
 );
 
-const PaytmIcon: React.FC<{ className?: string }> = ({ className = 'w-5 h-5' }) => (
+const PaytmIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
   <svg viewBox="0 0 24 24" className={className} fill="none">
     <rect width="24" height="24" rx="5" fill="#002E6E" />
     <path d="M4 14.5L7.5 7h3L8 14.5H4z" fill="#00BAF2" />
@@ -57,7 +54,7 @@ const PaytmIcon: React.FC<{ className?: string }> = ({ className = 'w-5 h-5' }) 
   </svg>
 );
 
-const UpiIcon: React.FC<{ className?: string }> = ({ className = 'w-5 h-5' }) => (
+const UpiIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
   <svg viewBox="0 0 24 24" className={className} fill="none">
     <rect width="24" height="24" rx="5" fill="#F4F4F5" />
     <path d="M8 6l5.5 6L8 18h3.5L17 12 11.5 6H8z" fill="#097939" />
@@ -69,7 +66,6 @@ export const CheckoutModal: React.FC = () => {
   const {
     isCheckoutOpen,
     setIsCheckoutOpen,
-    cart,
     cartSummary,
     tableNumber,
     user,
@@ -107,217 +103,151 @@ export const CheckoutModal: React.FC = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-stone-950/70 backdrop-blur-xs animate-fade-in">
-      <div className="bg-[#FAF8F5] rounded-t-3xl sm:rounded-3xl max-w-lg w-full max-h-[92vh] sm:max-h-[88vh] flex flex-col shadow-2xl border border-stone-200 animate-slide-up overflow-hidden">
-        {/* Header */}
-        <div className="p-4 sm:p-5 border-b border-stone-200 bg-white flex items-center justify-between">
-          <div>
-            <div className="flex items-center gap-2">
-              <h2 className="text-lg sm:text-xl font-bold font-serif text-stone-900 leading-tight">
-                Review & Place Order
-              </h2>
-              <span className="px-2.5 py-0.5 rounded-full bg-stone-900 text-amber-400 font-mono font-bold text-xs shadow-2xs">
-                {tableNumber}
-              </span>
-            </div>
-            <p className="text-xs text-stone-500 font-medium mt-0.5">
-              Confirm your dining feast to send directly to the kitchen
-            </p>
+    <div
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          handleCloseRequest();
+        }
+      }}
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-stone-950/65 backdrop-blur-xs animate-fade-in"
+    >
+      <div className="bg-white rounded-t-3xl sm:rounded-3xl max-w-md w-full flex flex-col shadow-2xl border border-stone-200/80 animate-slide-up overflow-hidden">
+        {/* Mobile Drag Indicator */}
+        <div className="w-10 h-1 bg-stone-300 rounded-full mx-auto mt-2 sm:hidden flex-shrink-0" />
+
+        {/* Compact Clean Header */}
+        <div className="px-4 py-3.5 sm:px-5 sm:py-4 border-b border-stone-100 bg-white flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <h2 className="text-base sm:text-lg font-serif font-bold text-stone-900 leading-tight">
+              Select Payment Method
+            </h2>
+            <span className="px-2 py-0.5 rounded-full bg-stone-900 text-amber-300 font-mono font-bold text-xs shadow-2xs">
+              {tableNumber}
+            </span>
           </div>
           <button
             type="button"
             onClick={handleCloseRequest}
-            className="w-9 h-9 rounded-full bg-stone-100 hover:bg-stone-200 flex items-center justify-center text-stone-600 transition-colors cursor-pointer"
+            className="w-7 h-7 rounded-full bg-stone-100 hover:bg-stone-200 flex items-center justify-center text-stone-500 hover:text-stone-900 transition-colors cursor-pointer"
             title="Close checkout"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Scrollable Content */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4">
-          {/* Clean Tabular Order Summary with Perfectly Aligned Items */}
-          <div className="bg-white rounded-2xl border border-stone-200/90 p-4 space-y-3 shadow-2xs">
-            <div className="flex items-center justify-between pb-2.5 border-b border-stone-100">
-              <div className="flex items-center gap-2">
-                <ChefHat className="w-4 h-4 text-amber-600" />
-                <h4 className="text-xs font-bold text-stone-900 uppercase tracking-wider">
-                  Order Summary ({cartSummary.count} {cartSummary.count === 1 ? 'item' : 'items'})
-                </h4>
-              </div>
-              <span className="text-xs font-mono font-bold text-stone-900">
-                Total: {RESTAURANT_INFO.currency}{cartSummary.total}
-              </span>
-            </div>
-
-            <div className="max-h-56 overflow-y-auto divide-y divide-stone-100/80 pr-1">
-              {cart.map((ci) => (
-                <div key={ci.cartItemId} className="py-2.5 first:pt-1 last:pb-1 flex items-center justify-between gap-3 text-xs">
-                  {/* Left Column: Fixed-width Quantity Badge + Left-aligned Item Details */}
-                  <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                    <span className="w-6 h-6 rounded-md bg-stone-100 border border-stone-200/70 text-stone-900 font-mono font-bold text-xs flex items-center justify-center flex-shrink-0">
-                      {ci.quantity}×
-                    </span>
-                    <div className="min-w-0 flex-1">
-                      <div className="font-semibold text-stone-900 leading-snug truncate">
-                        {ci.menuItem.name}
-                      </div>
-                      {ci.selectedModifiers && ci.selectedModifiers.length > 0 ? (
-                        <div className="text-[11px] text-stone-500 flex flex-wrap gap-1 mt-0.5">
-                          {ci.selectedModifiers.map((m) => (
-                            <span key={m.optionId} className="inline-block bg-stone-50 border border-stone-200/60 px-1.5 py-0.2 rounded text-[10px] text-stone-600">
-                              {m.optionName}
-                            </span>
-                          ))}
-                        </div>
-                      ) : (
-                        <span className="text-[11px] font-mono text-stone-400">
-                          {RESTAURANT_INFO.currency}{ci.unitPrice} each
-                        </span>
-                      )}
-                    </div>
+        {/* Compact Body Content */}
+        <div className="p-4 sm:p-5 space-y-3.5">
+          {/* Payment Options List (Swiggy style) */}
+          <div className="space-y-2">
+            {/* Option 1: UPI & Online Apps */}
+            <div
+              onClick={() => setPaymentMethod('upi')}
+              className={`p-3 sm:p-3.5 rounded-xl border transition-all cursor-pointer select-none ${
+                paymentMethod === 'upi'
+                  ? 'border-stone-900 bg-stone-50/80 shadow-xs'
+                  : 'border-stone-200 hover:border-stone-300 bg-white'
+              }`}
+            >
+              <div className="flex items-center justify-between gap-2.5">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  {/* Radio Indicator */}
+                  <div className="w-4 h-4 rounded-full border-2 border-stone-900 flex items-center justify-center bg-white flex-shrink-0">
+                    {paymentMethod === 'upi' && (
+                      <div className="w-2 h-2 rounded-full bg-stone-900" />
+                    )}
                   </div>
-
-                  {/* Right Column: Clean Flush-Right Subtotal */}
-                  <span className="font-mono font-bold text-xs sm:text-sm text-stone-900 flex-shrink-0 text-right">
-                    {RESTAURANT_INFO.currency}{ci.totalPrice}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Payment Method Selector */}
-          <div className="space-y-2.5">
-            <label className="block text-xs font-bold text-stone-800 uppercase tracking-wider">
-              Choose Payment Method
-            </label>
-
-            <div className="space-y-2.5">
-              {/* Option 1: UPI & Instant Apps (Google Pay, PhonePe, Paytm) */}
-              <div
-                onClick={() => setPaymentMethod('upi')}
-                className={`p-4 rounded-2xl border transition-all cursor-pointer ${
-                  paymentMethod === 'upi'
-                    ? 'border-stone-900 bg-white shadow-md ring-2 ring-stone-900/10'
-                    : 'border-stone-200 bg-white hover:border-stone-300 text-stone-700'
-                }`}
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <div className="w-5 h-5 rounded-full border-2 border-stone-900 flex items-center justify-center p-0.5">
-                        {paymentMethod === 'upi' && (
-                          <div className="w-full h-full rounded-full bg-stone-900" />
-                        )}
-                      </div>
-                      <span className="font-serif font-bold text-sm sm:text-base text-stone-900">
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <span className="font-semibold text-xs sm:text-sm text-stone-900">
                         UPI & Online Apps
                       </span>
-                      <span className="text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded-full border border-emerald-200">
+                      <span className="text-[9px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 px-1.5 py-0.2 rounded border border-emerald-200/70">
                         Fastest
                       </span>
                     </div>
-                    <p className="text-xs text-stone-500 pl-7 leading-relaxed">
-                      Pay instantly with Google Pay, PhonePe, Paytm or any UPI app.
+                    <p className="text-[11px] text-stone-500 truncate">
+                      Google Pay, PhonePe, Paytm, QR
                     </p>
-                  </div>
-
-                  {/* Real Authentic Payment Logos Tray */}
-                  <div className="flex items-center gap-1.5 bg-stone-50 p-1.5 rounded-xl border border-stone-200/80 shadow-2xs">
-                    <div className="p-1 bg-white rounded-lg border border-stone-200/60 shadow-2xs" title="Google Pay">
-                      <GooglePayIcon className="w-5 h-5" />
-                    </div>
-                    <div className="p-1 bg-white rounded-lg border border-stone-200/60 shadow-2xs" title="PhonePe">
-                      <PhonePeIcon className="w-5 h-5" />
-                    </div>
-                    <div className="p-1 bg-white rounded-lg border border-stone-200/60 shadow-2xs" title="Paytm">
-                      <PaytmIcon className="w-5 h-5" />
-                    </div>
-                    <div className="p-1 bg-white rounded-lg border border-stone-200/60 shadow-2xs" title="UPI">
-                      <UpiIcon className="w-5 h-5" />
-                    </div>
                   </div>
                 </div>
 
-                {paymentMethod === 'upi' && (
-                  <div className="mt-3 pt-3 border-t border-stone-100 flex items-center gap-2 text-xs text-emerald-800 bg-emerald-50/60 p-2.5 rounded-xl animate-fade-in">
-                    <ShieldCheck className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-                    <span>
-                      Online gateway is enabled. Your order will be sent directly to the kitchen display!
-                    </span>
+                {/* Compact Logos */}
+                <div className="flex items-center gap-1 bg-white p-1 rounded-lg border border-stone-200/70 shadow-2xs flex-shrink-0">
+                  <div className="p-0.5" title="Google Pay">
+                    <GooglePayIcon className="w-4 h-4" />
                   </div>
-                )}
+                  <div className="p-0.5" title="PhonePe">
+                    <PhonePeIcon className="w-4 h-4" />
+                  </div>
+                  <div className="p-0.5" title="Paytm">
+                    <PaytmIcon className="w-4 h-4" />
+                  </div>
+                  <div className="p-0.5" title="UPI">
+                    <UpiIcon className="w-4 h-4" />
+                  </div>
+                </div>
               </div>
+            </div>
 
-              {/* Option 2: Pay After Dining (Cash / Card at Table) */}
-              <div
-                onClick={() => setPaymentMethod('cash')}
-                className={`p-4 rounded-2xl border transition-all cursor-pointer ${
-                  paymentMethod === 'cash'
-                    ? 'border-stone-900 bg-white shadow-md ring-2 ring-stone-900/10'
-                    : 'border-stone-200 bg-white hover:border-stone-300 text-stone-700'
-                }`}
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <div className="w-5 h-5 rounded-full border-2 border-stone-900 flex items-center justify-center p-0.5">
-                        {paymentMethod === 'cash' && (
-                          <div className="w-full h-full rounded-full bg-stone-900" />
-                        )}
-                      </div>
-                      <span className="font-serif font-bold text-sm sm:text-base text-stone-900">
-                        Pay After Dining
-                      </span>
-                    </div>
-                    <p className="text-xs text-stone-500 pl-7 leading-relaxed">
-                      Settle your bill via Cash, Card or UPI directly at the table or counter after your meal.
-                    </p>
+            {/* Option 2: Pay After Dining */}
+            <div
+              onClick={() => setPaymentMethod('cash')}
+              className={`p-3 sm:p-3.5 rounded-xl border transition-all cursor-pointer select-none ${
+                paymentMethod === 'cash'
+                  ? 'border-stone-900 bg-stone-50/80 shadow-xs'
+                  : 'border-stone-200 hover:border-stone-300 bg-white'
+              }`}
+            >
+              <div className="flex items-center justify-between gap-2.5">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  {/* Radio Indicator */}
+                  <div className="w-4 h-4 rounded-full border-2 border-stone-900 flex items-center justify-center bg-white flex-shrink-0">
+                    {paymentMethod === 'cash' && (
+                      <div className="w-2 h-2 rounded-full bg-stone-900" />
+                    )}
                   </div>
-
-                  <div className="flex items-center gap-1.5 bg-stone-50 p-1.5 rounded-xl border border-stone-200/80 shadow-2xs">
-                    <div className="p-1.5 bg-white rounded-lg border border-stone-200/60 text-stone-700 shadow-2xs">
-                      <Banknote className="w-4 h-4" />
-                    </div>
-                    <div className="p-1.5 bg-white rounded-lg border border-stone-200/60 text-stone-700 shadow-2xs">
-                      <CreditCard className="w-4 h-4" />
-                    </div>
+                  <div className="min-w-0">
+                    <span className="font-semibold text-xs sm:text-sm text-stone-900 block">
+                      Pay After Dining
+                    </span>
+                    <p className="text-[11px] text-stone-500 truncate">
+                      Cash or Card at table / counter
+                    </p>
                   </div>
                 </div>
 
-                {paymentMethod === 'cash' && (
-                  <div className="mt-3 pt-3 border-t border-stone-100 flex items-center gap-2 text-xs text-stone-600 bg-stone-50 p-2.5 rounded-xl animate-fade-in">
-                    <Clock className="w-4 h-4 text-stone-500 flex-shrink-0" />
-                    <span>
-                      Order is prepared immediately. Bill will be brought to {tableNumber} when you request.
-                    </span>
+                <div className="flex items-center gap-1 bg-white p-1 rounded-lg border border-stone-200/70 text-stone-700 shadow-2xs flex-shrink-0">
+                  <div className="p-0.5" title="Cash">
+                    <Banknote className="w-4 h-4" />
                   </div>
-                )}
+                  <div className="p-0.5" title="Card">
+                    <CreditCard className="w-4 h-4" />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Optional Kitchen / Staff Request */}
-          <div className="space-y-1.5">
-            <label className="block text-xs font-bold text-stone-800 uppercase tracking-wider">
+          {/* Compact Kitchen Request (Optional) */}
+          <div className="space-y-1">
+            <label className="block text-[11px] font-bold text-stone-700 uppercase tracking-wider">
               Special Request for Kitchen (Optional)
             </label>
             <input
               type="text"
               value={specialNotes}
               onChange={(e) => setSpecialNotes(e.target.value)}
-              placeholder="e.g. Serve starters first, less spicy, extra lemon..."
-              className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-stone-200/90 text-xs sm:text-sm text-stone-800 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-amber-500/25 focus:border-amber-500 transition-all shadow-2xs"
+              placeholder="e.g. Serve starters first, less spicy..."
+              className="w-full px-3 py-2 rounded-xl bg-stone-50/70 border border-stone-200 text-xs text-stone-800 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-stone-900/10 focus:border-stone-900 transition-all"
             />
           </div>
         </div>
 
-        {/* Footer Action */}
-        <div className="p-4 sm:p-5 bg-white border-t border-stone-200 flex items-center justify-between gap-4 shadow-lg">
+        {/* Compact Footer Action matching app theme */}
+        <div className="p-3.5 sm:p-4 bg-white border-t border-stone-100 flex items-center justify-between gap-3 shadow-lg">
           <div className="text-left">
-            <span className="text-[11px] text-stone-400 block font-medium">Total to Pay</span>
-            <span className="font-extrabold text-xl sm:text-2xl font-mono text-stone-950">
+            <span className="text-[10px] text-stone-400 uppercase tracking-wider font-semibold block">Total to Pay</span>
+            <span className="font-extrabold text-lg sm:text-xl font-mono text-stone-950">
               {RESTAURANT_INFO.currency}{cartSummary.total}
             </span>
           </div>
@@ -326,7 +256,7 @@ export const CheckoutModal: React.FC = () => {
             type="button"
             onClick={handleConfirmOrder}
             disabled={isSubmitting}
-            className="flex-1 max-w-xs py-4 px-5 rounded-2xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-sm sm:text-base shadow-lg shadow-orange-600/20 flex items-center justify-center gap-2 transition-all active:scale-[0.99] disabled:opacity-75 cursor-pointer"
+            className="py-3 px-5 sm:px-6 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-bold text-xs sm:text-sm shadow-md flex items-center justify-center gap-2 transition-all active:scale-[0.99] disabled:opacity-75 cursor-pointer"
           >
             {isSubmitting ? (
               <div className="flex items-center gap-2">
@@ -334,16 +264,16 @@ export const CheckoutModal: React.FC = () => {
                 <span>Sending to Kitchen...</span>
               </div>
             ) : (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5">
                 <span>Place Order Now</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4 text-amber-300" />
               </div>
             )}
           </button>
         </div>
       </div>
 
-      {/* iOS-Style Discard Checkout Confirmation Dialog */}
+      {/* Discard Checkout Confirmation Dialog */}
       <ConfirmationSheet
         isOpen={isDiscardConfirmOpen}
         onClose={() => setIsDiscardConfirmOpen(false)}
