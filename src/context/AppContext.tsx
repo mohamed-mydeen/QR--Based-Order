@@ -538,7 +538,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     clearCart();
     setIsCartOpen(false);
     setIsCheckoutOpen(false);
-    setIsTrackerOpen(false);
+    setIsTrackerOpen(true);
     return newOrder;
   };
 

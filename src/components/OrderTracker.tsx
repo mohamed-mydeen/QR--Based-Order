@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import {
   X,
+  Receipt,
   CheckCircle2,
   Clock,
-  ChefHat,
-  Flame,
-  UtensilsCrossed,
-  Bell,
-  Receipt,
-  Sparkles
+  ArrowRight,
+  CreditCard,
+  Banknote,
+  Utensils
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { RESTAURANT_INFO } from '../data/mockData';
@@ -19,247 +18,190 @@ export const OrderTracker: React.FC = () => {
     activeOrder,
     isTrackerOpen,
     setIsTrackerOpen,
-    tableNumber,
-    callWaiter,
-    waiterCalled,
     cancelActiveOrder
   } = useApp();
 
-  const [showReceipt, setShowReceipt] = useState(false);
   const [isCancelOrderConfirmOpen, setIsCancelOrderConfirmOpen] = useState(false);
 
   if (!isTrackerOpen || !activeOrder) return null;
 
-  const steps = activeOrder.statusHistory;
-
-  const getStepIcon = (status: string) => {
-    switch (status) {
-      case 'placed':
-        return <Clock className="w-4 h-4" />;
-      case 'confirmed':
-        return <ChefHat className="w-4 h-4" />;
-      case 'cooking':
-        return <Flame className="w-4 h-4" />;
-      case 'ready':
-        return <Sparkles className="w-4 h-4" />;
-      case 'served':
-        return <UtensilsCrossed className="w-4 h-4" />;
-      default:
-        return <CheckCircle2 className="w-4 h-4" />;
-    }
-  };
-
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-stone-900/65 backdrop-blur-xs animate-fade-in">
-      <div className="bg-white rounded-t-3xl sm:rounded-3xl max-w-lg w-full max-h-[92vh] sm:max-h-[88vh] flex flex-col shadow-2xl border border-stone-200 animate-slide-up overflow-hidden">
-        {/* Header */}
-        <div className="p-4 sm:p-5 border-b border-stone-200 flex items-center justify-between bg-stone-50/80">
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping" />
-              <h2 className="text-lg font-bold font-serif text-stone-900">
-                Live Kitchen Tracker
-              </h2>
+    <div
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          setIsTrackerOpen(false);
+        }
+      }}
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-stone-950/65 backdrop-blur-xs animate-fade-in"
+    >
+      <div className="bg-white rounded-t-3xl sm:rounded-3xl max-w-lg w-full max-h-[92vh] sm:max-h-[88vh] flex flex-col shadow-2xl border border-stone-200/80 animate-slide-up overflow-hidden">
+        {/* Mobile Drag Indicator */}
+        <div className="w-10 h-1 bg-stone-300 rounded-full mx-auto mt-2 sm:hidden flex-shrink-0" />
+
+        {/* Compact Clean Header */}
+        <div className="px-4 py-3.5 sm:px-5 sm:py-4 border-b border-stone-100 bg-white flex items-center justify-between flex-shrink-0">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-xl bg-stone-900 text-amber-300 flex items-center justify-center shadow-2xs">
+              <Receipt className="w-4 h-4 text-amber-300" />
             </div>
-            <p className="text-xs text-stone-500">
-              Order #{activeOrder.id} • Assigned to <span className="font-bold text-stone-800">{activeOrder.tableNumber}</span>
-            </p>
+            <div>
+              <div className="flex items-center gap-2">
+                <h2 className="text-base sm:text-lg font-serif font-bold text-stone-900 leading-tight">
+                  Order Details
+                </h2>
+                <span className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 text-[10px] font-bold uppercase tracking-wider border border-emerald-200 flex items-center gap-1">
+                  <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                  Confirmed
+                </span>
+              </div>
+              <p className="text-[11px] text-stone-500 font-medium">
+                Order #{activeOrder.id} • Placed at {activeOrder.placedAt}
+              </p>
+            </div>
           </div>
+
           <button
+            type="button"
             onClick={() => setIsTrackerOpen(false)}
-            className="w-8 h-8 rounded-full bg-stone-200 hover:bg-stone-300 flex items-center justify-center text-stone-600 transition-colors"
+            className="w-7 h-7 rounded-full bg-stone-100 hover:bg-stone-200 flex items-center justify-center text-stone-500 hover:text-stone-900 transition-colors cursor-pointer"
+            title="Close view order"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Scrollable Content */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
-          {/* Estimated Preparation Time Card */}
-          <div className="p-4 rounded-2xl bg-stone-900 text-white flex items-center justify-between shadow-soft">
-            <div className="space-y-1">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400">
-                Estimated Table Arrival
-              </span>
-              <div className="text-2xl font-extrabold font-mono tracking-tight flex items-baseline gap-1.5">
-                <span>12 – 18</span>
-                <span className="text-xs font-sans text-stone-300 font-normal">mins</span>
-              </div>
-              <p className="text-[11px] text-stone-400">
-                Order placed at {activeOrder.placedAt} • Live sync
-              </p>
+        {/* Scrollable Order Summary & Receipt Content */}
+        <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4">
+          {/* Order Info Bar */}
+          <div className="bg-stone-50 rounded-2xl p-3 sm:p-3.5 border border-stone-200/80 flex items-center justify-between text-xs">
+            <div className="flex items-center gap-2 text-stone-700">
+              <Clock className="w-4 h-4 text-stone-500" />
+              <span>Status: <strong className="text-stone-900">Preparing Fresh</strong></span>
             </div>
-
-            <div className="w-12 h-12 rounded-2xl bg-stone-900 text-amber-300 flex items-center justify-center shadow-inner border border-stone-800">
-              <Flame className="w-6 h-6 animate-pulse" />
+            <div className="flex items-center gap-1.5 text-stone-700">
+              {activeOrder.paymentMethod === 'upi' ? (
+                <>
+                  <CreditCard className="w-3.5 h-3.5 text-emerald-600" />
+                  <span className="text-emerald-700 font-semibold">UPI (Paid)</span>
+                </>
+              ) : (
+                <>
+                  <Banknote className="w-3.5 h-3.5 text-amber-600" />
+                  <span className="text-stone-800 font-medium">Pay After Dining</span>
+                </>
+              )}
             </div>
           </div>
 
-          {/* Real-time Status Timeline */}
-          <div>
-            <h3 className="text-xs font-bold text-stone-600 uppercase tracking-wider mb-4">
-              Preparation Progress
-            </h3>
+          {/* Ordered Dishes List */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between text-xs font-bold text-stone-700 uppercase tracking-wider">
+              <span>Items Ordered</span>
+              <span>{activeOrder.items.reduce((sum, item) => sum + item.quantity, 0)} Items</span>
+            </div>
 
-            <div className="relative pl-6 space-y-6 before:content-[''] before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-stone-200">
-              {steps.map((step) => {
-                const isCompleted = step.isCompleted;
-                const isCurrent = step.isCurrent;
-
-                return (
-                  <div key={step.status} className="relative flex items-start gap-3.5">
-                    {/* Step Icon Node */}
-                    <div
-                      className={`absolute -left-6 w-5 h-5 rounded-full flex items-center justify-center text-xs transition-all ${
-                        isCompleted
-                          ? 'bg-emerald-600 text-white ring-4 ring-white'
-                          : isCurrent
-                          ? 'bg-stone-900 text-amber-300 ring-4 ring-amber-100/60 animate-pulse'
-                          : 'bg-stone-200 text-stone-400 ring-4 ring-white'
-                      }`}
-                    >
-                      {isCompleted ? (
-                        <CheckCircle2 className="w-3.5 h-3.5 stroke-[3]" />
-                      ) : (
-                        getStepIcon(step.status)
+            <div className="bg-white rounded-2xl border border-stone-200/90 divide-y divide-stone-100 overflow-hidden shadow-2xs">
+              {activeOrder.items.map((item) => (
+                <div key={item.cartItemId} className="p-3 sm:p-3.5 flex items-start justify-between gap-3 text-xs sm:text-sm">
+                  <div className="flex items-start gap-2.5 min-w-0 flex-1">
+                    <span className="w-6 h-6 rounded-md bg-stone-100 border border-stone-200/70 text-stone-900 font-mono font-bold text-xs flex items-center justify-center flex-shrink-0 mt-0.5">
+                      {item.quantity}×
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <div className="font-semibold text-stone-900 leading-snug">
+                        {item.menuItem.name}
+                      </div>
+                      {item.selectedModifiers && item.selectedModifiers.length > 0 && (
+                        <div className="text-[11px] text-stone-500 flex flex-wrap gap-1 mt-1">
+                          {item.selectedModifiers.map((m) => (
+                            <span key={m.optionId} className="inline-block bg-stone-50 border border-stone-200/60 px-1.5 py-0.5 rounded text-[10px] text-stone-600">
+                              {m.optionName}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                      {item.specialInstructions && (
+                        <p className="text-[11px] text-stone-400 italic mt-0.5">
+                          Note: "{item.specialInstructions}"
+                        </p>
                       )}
                     </div>
-
-                    {/* Step Text */}
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between">
-                        <h4
-                          className={`text-xs sm:text-sm font-bold ${
-                            isCurrent
-                              ? 'text-stone-900'
-                              : isCompleted
-                              ? 'text-stone-900'
-                              : 'text-stone-400'
-                          }`}
-                        >
-                          {step.label}
-                        </h4>
-                        {step.time && (
-                          <span className="text-[10px] font-mono text-stone-400">
-                            {step.time}
-                          </span>
-                        )}
-                      </div>
-                      <p className="text-[11px] text-stone-500 mt-0.5">
-                        {step.description}
-                      </p>
-                    </div>
                   </div>
-                );
-              })}
+
+                  <span className="font-mono font-bold text-xs sm:text-sm text-stone-900 flex-shrink-0">
+                    {RESTAURANT_INFO.currency}{item.totalPrice}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* Quick Table Service Controls */}
-          <div className="p-3.5 rounded-2xl bg-stone-50 border border-stone-200 space-y-2.5">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-stone-800">
-                Need table assistance?
-              </span>
-              <span className="text-[10px] text-stone-500">
-                Staff response ~2 mins
-              </span>
-            </div>
-
-            <div className="flex gap-2">
-              <button
-                onClick={callWaiter}
-                disabled={waiterCalled}
-                className={`flex-1 py-2 px-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all ${
-                  waiterCalled
-                    ? 'bg-amber-100 text-amber-800 border border-amber-300'
-                    : 'bg-white hover:bg-stone-100 text-stone-700 border border-stone-200 shadow-2xs'
-                }`}
-              >
-                <Bell className={`w-3.5 h-3.5 ${waiterCalled ? 'text-amber-600 animate-bounce' : 'text-stone-500'}`} />
-                <span>{waiterCalled ? 'Staff Alerted' : 'Call Server'}</span>
-              </button>
-
-              <button
-                onClick={() => setShowReceipt(!showReceipt)}
-                className="flex-1 py-2 px-3 rounded-xl bg-white hover:bg-stone-100 text-stone-700 border border-stone-200 text-xs font-semibold flex items-center justify-center gap-1.5 shadow-2xs"
-              >
-                <Receipt className="w-3.5 h-3.5 text-stone-500" />
-                <span>{showReceipt ? 'Hide Receipt' : 'View Bill'}</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Collapsible Digital Receipt */}
-          {showReceipt && (
-            <div className="p-4 rounded-2xl border border-stone-200 bg-stone-50/60 text-xs space-y-2 animate-fade-in font-sans">
-              <div className="flex justify-between font-bold text-stone-900 border-b border-stone-200 pb-2">
-                <span>Receipt #{activeOrder.id}</span>
-                <span className="capitalize">{activeOrder.paymentMethod} Payment ({activeOrder.paymentStatus})</span>
-              </div>
-              <div className="space-y-1.5 pt-1">
-                {activeOrder.items.map(item => (
-                  <div key={item.cartItemId} className="flex justify-between">
-                    <span className="text-stone-700 truncate max-w-[220px]">
-                      {item.quantity}x {item.menuItem.name}
-                    </span>
-                    <span className="font-mono text-stone-900">
-                      {RESTAURANT_INFO.currency}{item.totalPrice}
-                    </span>
-                  </div>
-                ))}
-              </div>
-              <div className="border-t border-stone-200 pt-2 space-y-1 text-stone-500 text-[11px]">
-                <div className="flex justify-between">
-                  <span>Subtotal</span>
-                  <span className="font-mono">{RESTAURANT_INFO.currency}{activeOrder.subtotal}</span>
-                </div>
-                {activeOrder.discount > 0 && (
-                  <div className="flex justify-between text-emerald-700">
-                    <span>Discount</span>
-                    <span className="font-mono">-{RESTAURANT_INFO.currency}{activeOrder.discount}</span>
-                  </div>
-                )}
-                <div className="flex justify-between">
-                  <span>Taxes (5%)</span>
-                  <span className="font-mono">+{RESTAURANT_INFO.currency}{activeOrder.tax}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Service (2.5%)</span>
-                  <span className="font-mono">+{RESTAURANT_INFO.currency}{activeOrder.serviceCharge}</span>
-                </div>
-                <div className="flex justify-between font-bold text-stone-900 text-xs border-t border-stone-200 pt-1">
-                  <span>Total Paid / Payable</span>
-                  <span className="font-mono">{RESTAURANT_INFO.currency}{activeOrder.total}</span>
-                </div>
+          {/* Special Kitchen Request (if entered) */}
+          {activeOrder.specialNotes && (
+            <div className="p-3 rounded-xl bg-amber-50/60 border border-amber-200/60 text-xs text-amber-950 flex items-start gap-2">
+              <Utensils className="w-4 h-4 text-amber-700 flex-shrink-0 mt-0.5" />
+              <div>
+                <span className="font-bold block">Special Request for Kitchen:</span>
+                <span className="text-stone-700">{activeOrder.specialNotes}</span>
               </div>
             </div>
           )}
+
+          {/* Bill Receipt Breakdown */}
+          <div className="p-4 rounded-2xl bg-stone-50/70 border border-stone-200/80 text-xs space-y-2">
+            <div className="flex justify-between text-stone-600">
+              <span>Subtotal</span>
+              <span className="font-mono font-semibold text-stone-800">
+                {RESTAURANT_INFO.currency}{activeOrder.subtotal}
+              </span>
+            </div>
+            {activeOrder.discount > 0 && (
+              <div className="flex justify-between text-emerald-700">
+                <span>Discount</span>
+                <span className="font-mono font-semibold">
+                  -{RESTAURANT_INFO.currency}{activeOrder.discount}
+                </span>
+              </div>
+            )}
+            <div className="flex justify-between text-stone-500 text-[11px]">
+              <span>Taxes (5%)</span>
+              <span className="font-mono">+{RESTAURANT_INFO.currency}{activeOrder.tax}</span>
+            </div>
+            <div className="flex justify-between text-stone-500 text-[11px]">
+              <span>Service Charge (2.5%)</span>
+              <span className="font-mono">+{RESTAURANT_INFO.currency}{activeOrder.serviceCharge}</span>
+            </div>
+            <div className="border-t border-stone-200 pt-2 flex justify-between font-bold text-stone-950 text-sm">
+              <span>Total Paid</span>
+              <span className="font-mono text-base font-extrabold text-stone-950">
+                {RESTAURANT_INFO.currency}{activeOrder.total}
+              </span>
+            </div>
+          </div>
         </div>
 
-        {/* Footer */}
-        <div className="p-4 sm:p-5 bg-white border-t border-stone-200 flex items-center justify-between gap-3">
-          {(activeOrder.status === 'placed' || activeOrder.status === 'confirmed') && (
-            <button
-              type="button"
-              onClick={() => setIsCancelOrderConfirmOpen(true)}
-              className="py-3 px-4 rounded-xl border border-rose-200 hover:bg-rose-50 text-rose-700 font-bold text-xs sm:text-sm transition-colors cursor-pointer select-none"
-            >
-              Cancel Order
-            </button>
-          )}
+        {/* Footer Actions */}
+        <div className="p-3.5 sm:p-4 bg-white border-t border-stone-200/80 flex items-center justify-between gap-3 shadow-lg flex-shrink-0">
+          <button
+            type="button"
+            onClick={() => setIsCancelOrderConfirmOpen(true)}
+            className="py-3 px-3.5 rounded-xl border border-stone-200 hover:bg-stone-50 text-stone-600 hover:text-stone-900 font-semibold text-xs transition-colors cursor-pointer"
+          >
+            Cancel Order
+          </button>
 
           <button
             type="button"
             onClick={() => setIsTrackerOpen(false)}
-            className="flex-1 py-3 px-4 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-bold text-xs sm:text-sm text-center transition-colors shadow-2xs cursor-pointer select-none"
+            className="flex-1 py-3 px-5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-bold text-xs sm:text-sm shadow-md flex items-center justify-center gap-2 transition-all active:scale-[0.99] cursor-pointer"
           >
-            Order More Food for {tableNumber}
+            <span>Back to Menu</span>
+            <ArrowRight className="w-3.5 h-3.5 text-amber-300" />
           </button>
         </div>
       </div>
 
-      {/* iOS-Style Cancel Order Confirmation Dialog */}
+      {/* Cancel Order Confirmation Dialog */}
       <ConfirmationSheet
         isOpen={isCancelOrderConfirmOpen}
         onClose={() => setIsCancelOrderConfirmOpen(false)}
@@ -268,7 +210,7 @@ export const OrderTracker: React.FC = () => {
           setIsCancelOrderConfirmOpen(false);
         }}
         title="Cancel this order?"
-        description={`Are you sure you want to cancel Order #${activeOrder.id} for ${tableNumber}? This will inform the kitchen staff to stop preparation.`}
+        description={`Are you sure you want to cancel Order #${activeOrder.id}? This will inform the kitchen staff to stop preparation.`}
         confirmLabel="Cancel Order"
         cancelLabel="Keep Order"
         variant="destructive"
