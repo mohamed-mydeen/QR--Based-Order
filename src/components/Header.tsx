@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, User, LogOut, X, Receipt, Clock } from 'lucide-react';
+import { Search, User, LogOut, X, Clock } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { RESTAURANT_INFO } from '../data/mockData';
 import { ConfirmationSheet } from './ConfirmationSheet';
@@ -17,10 +17,8 @@ export const Header: React.FC<HeaderProps> = ({ isJustRevealed = false }) => {
     setSearchQuery,
     dietaryFilter,
     setDietaryFilter,
-    activeOrder,
-    setIsTrackerOpen,
     orderHistory,
-    setIsOrderHistoryOpen
+    setActiveView
   } = useApp();
 
   const [isSignOutConfirmOpen, setIsSignOutConfirmOpen] = useState(false);
@@ -53,28 +51,15 @@ export const Header: React.FC<HeaderProps> = ({ isJustRevealed = false }) => {
 
           {/* Right Action Controls: Minimal & Professional */}
           <div className="flex items-center gap-2.5 sm:gap-3">
-            {/* View Placed Order Option */}
-            {activeOrder && (
-              <button
-                type="button"
-                onClick={() => setIsTrackerOpen(true)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-stone-900 hover:bg-stone-800 text-amber-300 text-xs font-semibold shadow-xs transition-all active:scale-95 cursor-pointer border border-stone-800 select-none"
-                title="View your placed order details"
-              >
-                <Receipt className="w-3.5 h-3.5 text-amber-300" />
-                <span>View Order</span>
-              </button>
-            )}
-
-            {/* Order History Option */}
+            {/* Order History Page Button */}
             {orderHistory.length > 0 && (
               <button
                 type="button"
-                onClick={() => setIsOrderHistoryOpen(true)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-700 hover:text-stone-900 text-xs font-semibold shadow-xs transition-all active:scale-95 cursor-pointer border border-stone-200/80 select-none"
-                title="View past orders"
+                onClick={() => setActiveView('orders')}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-stone-900 hover:bg-stone-800 text-amber-300 text-xs font-semibold shadow-xs transition-all active:scale-95 cursor-pointer border border-stone-800 select-none"
+                title="View your order history"
               >
-                <Clock className="w-3.5 h-3.5 text-stone-500" />
+                <Clock className="w-3.5 h-3.5 text-amber-300" />
                 <span>Orders ({orderHistory.length})</span>
               </button>
             )}

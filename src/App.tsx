@@ -9,6 +9,7 @@ import { CartDrawer } from './components/CartDrawer';
 import { CheckoutModal } from './components/CheckoutModal';
 import { OrderTracker } from './components/OrderTracker';
 import { OrderHistoryModal } from './components/OrderHistoryModal';
+import { OrderHistoryPage } from './components/OrderHistoryPage';
 import { AuthModal } from './components/AuthModal';
 import { OnboardingScreen } from './components/OnboardingScreen';
 import { DesktopSidebarCart } from './components/DesktopSidebarCart';
@@ -210,7 +211,7 @@ const MainMenuContent: React.FC<MainMenuContentProps> = ({ isJustRevealed = fals
 };
 
 const AppContent: React.FC = () => {
-  const { user, isAuthOpen, setIsAuthOpen } = useApp();
+  const { user, isAuthOpen, setIsAuthOpen, activeView } = useApp();
   const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {
       return localStorage.getItem('selarasa_onboarding_completed') === 'true';
@@ -225,16 +226,20 @@ const AppContent: React.FC = () => {
     return <OnboardingScreen onComplete={() => setHasCompletedOnboarding(true)} />;
   }
 
-  // 2. Both unauthenticated (with overlay) and authenticated states render MainMenuContent
+  // 2. Both unauthenticated (with overlay) and authenticated states render content
   // as the primed foundation in DOM. This eliminates any blank screen flash, DOM reconstruction lag,
   // or layout shifts. When OTP verification succeeds, the AuthModal overlay scales down and fades away,
   // revealing the expanding restaurant home page underneath.
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-[#FAF8F5]">
-      {/* Expanding Restaurant Home Page (Reveals with staggered entrance when transitioning) */}
-      <div className={isTransitioning ? 'animate-home-expand' : ''}>
-        <MainMenuContent isJustRevealed={isTransitioning} />
-      </div>
+      {/* Route Views: Separate Full Page for Order History vs Main Menu */}
+      {activeView === 'orders' ? (
+        <OrderHistoryPage />
+      ) : (
+        <div className={isTransitioning ? 'animate-home-expand' : ''}>
+          <MainMenuContent isJustRevealed={isTransitioning} />
+        </div>
+      )}
 
       {/* Auth Modal Screen / Seamless Transition Overlay */}
       {((!user?.isVerified && isAuthOpen) || isTransitioning) && (

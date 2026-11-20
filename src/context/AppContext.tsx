@@ -92,6 +92,10 @@ interface AppContextType {
   callWaiter: () => void;
   waiterCalled: boolean;
 
+  // Navigation & View Routing
+  activeView: 'menu' | 'orders';
+  setActiveView: (view: 'menu' | 'orders') => void;
+
   // Order History
   orderHistory: Order[];
   isOrderHistoryOpen: boolean;
@@ -481,7 +485,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [isTrackerOpen, setIsTrackerOpen] = useState(false);
   const [waiterCalled, setWaiterCalled] = useState(false);
 
-  // 7. Order History Flow
+  // 7. Order History Flow & View Routing
+  const [activeView, setActiveView] = useState<'menu' | 'orders'>('menu');
   const [orderHistory, setOrderHistory] = useState<Order[]>(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('selarasa_order_history');
@@ -502,8 +507,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     items.forEach(ci => {
       addToCart(ci.menuItem, ci.selectedModifiers, ci.specialInstructions, ci.quantity);
     });
-    showToast(`Added ${items.length} items to order!`);
+    showToast(`Added ${items.length} dishes to cart!`);
     setIsOrderHistoryOpen(false);
+    setActiveView('menu');
     setIsCartOpen(true);
   };
 
@@ -576,7 +582,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     clearCart();
     setIsCartOpen(false);
     setIsCheckoutOpen(false);
-    setIsTrackerOpen(true);
+    setIsTrackerOpen(false);
     return newOrder;
   };
 
@@ -660,6 +666,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         setIsTrackerOpen,
         callWaiter,
         waiterCalled,
+        activeView,
+        setActiveView,
         orderHistory,
         isOrderHistoryOpen,
         setIsOrderHistoryOpen,
