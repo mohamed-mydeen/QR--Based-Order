@@ -416,8 +416,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
                 <span
                   className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold transition-all duration-300 ${
                     otpStep === 'phone'
-                      ? 'bg-[#F59E0B] text-stone-950 shadow-md shadow-amber-500/30 ring-2 ring-amber-500/25 scale-105'
-                      : 'bg-emerald-500 text-white'
+                      ? 'bg-stone-900 text-amber-300 shadow-md ring-2 ring-stone-900/15 scale-105'
+                      : 'bg-emerald-600 text-white'
                   }`}
                 >
                   {otpStep === 'otp' ? <Check className="w-3.5 h-3.5 stroke-[3]" /> : '1'}
@@ -426,7 +426,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
                 {/* Connected Progress Line */}
                 <div className="w-12 sm:w-16 h-1.5 rounded-full bg-stone-200/80 overflow-hidden relative">
                   <div
-                    className={`h-full bg-[#F59E0B] rounded-full transition-all duration-500 ease-out ${
+                    className={`h-full bg-stone-900 rounded-full transition-all duration-500 ease-out ${
                       otpStep === 'otp' ? 'w-full' : 'w-0'
                     }`}
                   />
@@ -435,7 +435,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
                 <span
                   className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold transition-all duration-300 ${
                     otpStep === 'otp'
-                      ? 'bg-[#F59E0B] text-stone-950 shadow-md shadow-amber-500/30 ring-2 ring-amber-500/25 scale-105'
+                      ? 'bg-stone-900 text-amber-300 shadow-md ring-2 ring-stone-900/15 scale-105'
                       : 'bg-stone-200 text-stone-400'
                   }`}
                 >
@@ -499,7 +499,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
                           className={`relative rounded-2xl bg-[#EEF2F6] border transition-all flex items-center px-4 py-3.5 ${
                             validationErrors.name
                               ? 'border-red-400 ring-2 ring-red-400/20'
-                              : 'border-transparent focus-within:border-amber-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-amber-500/20'
+                              : 'border-transparent focus-within:border-stone-900 focus-within:bg-white focus-within:ring-2 focus-within:ring-stone-900/15'
                           }`}
                         >
                           <User className="w-4 h-4 text-stone-400 flex-shrink-0 mr-3" />
@@ -533,7 +533,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
                           className={`relative rounded-2xl bg-[#EEF2F6] border transition-all flex items-center px-4 py-3.5 ${
                             validationErrors.phone
                               ? 'border-red-400 ring-2 ring-red-400/20'
-                              : 'border-transparent focus-within:border-amber-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-amber-500/20'
+                              : 'border-transparent focus-within:border-stone-900 focus-within:bg-white focus-within:ring-2 focus-within:ring-stone-900/15'
                           }`}
                         >
                           <Phone className="w-4 h-4 text-stone-400 flex-shrink-0 mr-2.5" />
@@ -563,22 +563,22 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
                         )}
                       </div>
 
-                      {/* Primary Golden Button */}
+                      {/* Primary Black & Gold Button */}
                       <div className="pt-2 space-y-2">
                         <button
                           type="submit"
                           disabled={isSendingCode}
-                          className="w-full py-4 px-6 rounded-2xl bg-[#F59E0B] hover:bg-[#D97706] text-stone-950 font-bold text-base shadow-lg shadow-amber-500/25 flex items-center justify-center gap-2 active:scale-[0.99] transition-all cursor-pointer relative overflow-hidden group"
+                          className="w-full py-4 px-6 rounded-2xl bg-stone-900 hover:bg-stone-800 text-white font-bold text-base shadow-md flex items-center justify-center gap-2 active:scale-[0.99] transition-all cursor-pointer relative overflow-hidden group border border-stone-800"
                         >
                           {isSendingCode ? (
-                            <div className="flex items-center gap-2 animate-fade-in">
-                              <span className="w-4 h-4 border-2 border-stone-950 border-t-transparent rounded-full animate-spin" />
+                            <div className="flex items-center gap-2 animate-fade-in text-stone-200">
+                              <span className="w-4 h-4 border-2 border-amber-300 border-t-transparent rounded-full animate-spin" />
                               <span>Generating Secure OTP...</span>
                             </div>
                           ) : (
                             <div className="flex items-center gap-2">
                               <span>Continue</span>
-                              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                              <ArrowRight className="w-4 h-4 text-amber-300 group-hover:translate-x-1 transition-transform" />
                             </div>
                           )}
                         </button>
@@ -614,7 +614,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
                       onClick={() => setIsChangePhoneConfirmOpen(true)}
                       className="inline-flex items-center gap-1.5 text-xs font-semibold text-stone-500 hover:text-stone-900 transition-colors mb-3 group cursor-pointer"
                     >
-                      <ArrowLeft className="w-3.5 h-3.5 text-stone-700 group-hover:-translate-x-1 transition-transform text-amber-600" />
+                      <ArrowLeft className="w-3.5 h-3.5 text-stone-700 group-hover:-translate-x-1 transition-transform" />
                       <span>Change Number</span>
                     </button>
 
@@ -633,22 +633,22 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
                     </div>
 
                     {/* Development Mode Notice Banner */}
-                    <div className="rounded-2xl border border-amber-300 bg-amber-50/90 p-3 text-xs text-amber-900 space-y-1 mb-4 select-none">
+                    <div className="rounded-2xl border border-stone-200 bg-stone-100/90 p-3 text-xs text-stone-800 space-y-1 mb-4 select-none">
                       <div className="flex items-center justify-between">
-                        <span className="font-bold text-[11px] uppercase tracking-wider text-amber-950 flex items-center gap-1.5">
-                          <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+                        <span className="font-bold text-[11px] uppercase tracking-wider text-stone-800 flex items-center gap-1.5">
+                          <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
                           Demo OTP:
                         </span>
-                        <span className="font-mono bg-white px-2 py-0.5 rounded border border-amber-300 font-extrabold text-xs text-stone-900 tracking-wider">
+                        <span className="font-mono bg-white px-2 py-0.5 rounded border border-stone-300 font-extrabold text-xs text-stone-950 tracking-wider">
                           {devOtp}
                         </span>
                       </div>
                       <button
                         type="button"
                         onClick={handleAutoFillDevOtp}
-                        className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-900 hover:underline pt-0.5 cursor-pointer"
+                        className="inline-flex items-center gap-1 text-[11px] font-bold text-stone-800 hover:text-stone-950 hover:underline pt-0.5 cursor-pointer"
                       >
-                        <Sparkles className="w-3 h-3 text-amber-600" />
+                        <Sparkles className="w-3 h-3 text-amber-500" />
                         <span>Autofill code ({devOtp})</span>
                       </button>
                     </div>
@@ -676,9 +676,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
                                     : isIncorrectOtp
                                     ? 'border-2 border-red-400 bg-red-50/60 text-red-600 shadow-[0_0_0_3px_rgba(239,68,68,0.12)]'
                                     : isVerifying
-                                    ? 'border-2 border-amber-400 bg-amber-50/30'
+                                    ? 'border-2 border-stone-800 bg-stone-50'
                                     : isFocused
-                                    ? 'border-2 border-[#F59E0B] bg-white shadow-[0_0_0_3.5px_rgba(245,158,11,0.22)] ring-1 ring-[#F59E0B]'
+                                    ? 'border-2 border-stone-900 bg-white shadow-[0_0_0_3.5px_rgba(28,25,23,0.12)] ring-1 ring-stone-900'
                                     : isFilled
                                     ? 'border-2 border-stone-300 bg-stone-50/80 text-stone-900 shadow-2xs font-bold'
                                     : 'border border-stone-200 bg-[#EEF2F6] text-stone-900 shadow-2xs'
@@ -714,7 +714,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
                                 {/* In-Box Content: Loading Spinner or Clearly Visible Digit */}
                                 {isVerifying ? (
                                   <div
-                                    className="w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 border-amber-500/25 border-t-amber-500 animate-spin"
+                                    className="w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 border-stone-300 border-t-amber-400 animate-spin"
                                     style={{
                                       animationDelay: `${idx * 80}ms`
                                     }}
@@ -728,7 +728,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
                                     {digit}
                                   </span>
                                 ) : isFocused ? (
-                                  <span className="w-0.5 h-5 bg-[#F59E0B] rounded-full animate-pulse" />
+                                  <span className="w-0.5 h-5 bg-stone-900 rounded-full animate-pulse" />
                                 ) : null}
                               </div>
                             );
@@ -745,35 +745,35 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
 
                         {/* Resend Confirmation Feedback */}
                         {resendFeedback && (
-                          <div className="flex items-center justify-center gap-1.5 text-xs font-semibold text-amber-800 bg-amber-50 border border-amber-200 px-3.5 py-1.5 rounded-xl mt-2 animate-fade-in text-center">
-                            <Sparkles className="w-3.5 h-3.5 text-amber-600 flex-shrink-0" />
+                          <div className="flex items-center justify-center gap-1.5 text-xs font-semibold text-stone-800 bg-stone-100 border border-stone-200 px-3.5 py-1.5 rounded-xl mt-2 animate-fade-in text-center">
+                            <Sparkles className="w-3.5 h-3.5 text-amber-500 flex-shrink-0" />
                             <span>{resendFeedback}</span>
                           </div>
                         )}
                       </div>
 
-                      {/* Primary Golden Button for Step 2 */}
+                      {/* Primary Black & Gold Button for Step 2 */}
                       <div className="pt-2">
                         <button
                           type="submit"
                           disabled={verificationState !== 'idle'}
-                          className={`w-full py-4 px-6 rounded-2xl font-bold text-base shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                          className={`w-full py-4 px-6 rounded-2xl font-bold text-base shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer border ${
                             verificationState === 'success'
-                              ? 'bg-emerald-600 text-white shadow-emerald-500/25'
+                              ? 'bg-emerald-600 border-emerald-600 text-white shadow-emerald-500/25'
                               : verificationState === 'verifying'
-                              ? 'bg-amber-500 text-stone-950 opacity-90 shadow-amber-500/20'
-                              : 'bg-[#F59E0B] hover:bg-[#D97706] text-stone-950 active:scale-[0.99] shadow-amber-500/25'
+                              ? 'bg-stone-800 border-stone-800 text-stone-300 opacity-90'
+                              : 'bg-stone-900 hover:bg-stone-800 border-stone-800 text-white active:scale-[0.99]'
                           }`}
                         >
                           {verificationState === 'verifying' ? (
                             <div className="flex items-center gap-2">
-                              <span className="w-4 h-4 border-2 border-stone-950 border-t-transparent rounded-full animate-spin" />
+                              <span className="w-4 h-4 border-2 border-amber-300 border-t-transparent rounded-full animate-spin" />
                               <span>Verifying OTP...</span>
                             </div>
                           ) : (
                             <div className="flex items-center gap-2">
-                              <CheckCircle2 className="w-4 h-4" />
                               <span>Verify OTP</span>
+                              <CheckCircle2 className="w-4 h-4 text-amber-300" />
                             </div>
                           )}
                         </button>
@@ -798,9 +798,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
                             type="button"
                             onClick={handleResendOtp}
                             disabled={isResending}
-                            className="text-amber-700 font-bold hover:underline flex items-center gap-1 cursor-pointer"
+                            className="text-stone-800 hover:text-stone-950 font-bold hover:underline flex items-center gap-1 cursor-pointer"
                           >
-                            <RotateCw className={`w-3 h-3 ${isResending ? 'animate-spin' : ''}`} />
+                            <RotateCw className={`w-3 h-3 text-amber-500 ${isResending ? 'animate-spin' : ''}`} />
                             <span>Resend OTP</span>
                           </button>
                         )}
@@ -836,7 +836,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
         cancelLabel="Keep Number"
         variant="warning"
         isCenterDialog={true}
-        icon={<Phone className="w-5 h-5 text-amber-600" />}
+        icon={<Phone className="w-5 h-5 text-amber-400" />}
       />
     </div>
   );

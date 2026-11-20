@@ -315,6 +315,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       devOtp: '',
       timerExpiresAt: Date.now()
     });
+    setActiveView('menu');
+    setIsAuthOpen(true);
     showToast('Signed out successfully');
   };
 
