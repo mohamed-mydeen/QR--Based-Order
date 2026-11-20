@@ -12,7 +12,6 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({ isJustRevealed = false }) => {
   const {
     user,
-    startAuthFlow,
     logoutUser,
     searchQuery,
     setSearchQuery,
@@ -65,8 +64,8 @@ export const Header: React.FC<HeaderProps> = ({ isJustRevealed = false }) => {
               </button>
             )}
 
-            {/* Minimalist Profile Avatar (Initial only - No profile name text) */}
-            {user?.isVerified ? (
+            {/* Minimalist Profile Avatar */}
+            {user?.isVerified && (
               <button
                 type="button"
                 onClick={() => setIsSignOutConfirmOpen(true)}
@@ -74,14 +73,6 @@ export const Header: React.FC<HeaderProps> = ({ isJustRevealed = false }) => {
                 title="Signed in • Tap to sign out"
               >
                 {user.name ? user.name.charAt(0).toUpperCase() : <User className="w-4 h-4 text-stone-300" />}
-              </button>
-            ) : (
-              <button
-                onClick={() => startAuthFlow()}
-                className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-stone-900 hover:bg-stone-800 text-white text-xs font-semibold transition-all shadow-xs cursor-pointer"
-              >
-                <User className="w-3.5 h-3.5" />
-                <span>Sign In</span>
               </button>
             )}
           </div>
