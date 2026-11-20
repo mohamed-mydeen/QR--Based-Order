@@ -4,7 +4,6 @@ import {
   ShoppingBag,
   Receipt,
   Repeat,
-  CheckCircle2,
   Clock,
   Sparkles,
   Utensils
@@ -93,22 +92,19 @@ export const OrderHistoryPage: React.FC = () => {
                   key={order.id}
                   className="bg-white rounded-2xl sm:rounded-3xl border border-stone-200/90 hover:border-stone-300 p-4 sm:p-6 shadow-2xs transition-all duration-200 space-y-4"
                 >
-                  {/* Card Header */}
-                  <div className="flex items-start justify-between gap-3 border-b border-stone-100 pb-3">
+                  {/* Swiggy-Style Clean Card Header */}
+                  <div className="flex items-start justify-between gap-3 border-b border-stone-150 pb-3.5">
                     <div>
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <h3 className="font-serif font-bold text-base sm:text-lg text-stone-900 leading-tight">
-                          {RESTAURANT_INFO.name}
-                        </h3>
-                        <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 text-[10px] font-bold uppercase tracking-wider border border-emerald-200 flex items-center gap-1">
-                          <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-                          Order Confirmed
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2 text-xs text-stone-500 mt-1 font-medium">
-                        <span className="font-mono text-stone-700 font-semibold">#{order.id}</span>
+                      <h3 className="font-bold text-base sm:text-lg text-stone-900 tracking-tight leading-tight">
+                        {RESTAURANT_INFO.name}
+                      </h3>
+                      <p className="text-xs text-stone-500 font-medium mt-0.5">
+                        {RESTAURANT_INFO.tagline}
+                      </p>
+                      <div className="flex items-center gap-2 text-xs text-stone-500 mt-1.5 font-medium">
+                        <span className="font-mono text-stone-800 font-semibold">#{order.id}</span>
                         <span>•</span>
-                        <span className="flex items-center gap-1 text-stone-400">
+                        <span className="flex items-center gap-1 text-stone-500">
                           <Clock className="w-3 h-3 text-stone-400" />
                           Placed at {order.placedAt}
                         </span>
@@ -116,7 +112,7 @@ export const OrderHistoryPage: React.FC = () => {
                     </div>
 
                     <div className="text-right flex-shrink-0">
-                      <span className="text-[10px] text-stone-400 uppercase tracking-wider block font-semibold">
+                      <span className="text-[10px] text-stone-400 font-semibold uppercase tracking-wider block">
                         Total Paid
                       </span>
                       <span className="font-mono font-black text-base sm:text-lg text-stone-950">
@@ -148,22 +144,15 @@ export const OrderHistoryPage: React.FC = () => {
 
                           <div className="min-w-0 flex-1">
                             <span className="font-medium text-stone-800 leading-snug">
-                              <strong className="text-stone-950 font-mono font-bold mr-1">
+                              <strong className="text-stone-950 font-mono font-bold mr-1.5">
                                 {item.quantity}×
                               </strong>
                               {item.menuItem.name}
                             </span>
                             {item.selectedModifiers && item.selectedModifiers.length > 0 && (
-                              <div className="flex flex-wrap gap-1 mt-0.5">
-                                {item.selectedModifiers.map((m) => (
-                                  <span
-                                    key={m.optionId}
-                                    className="bg-stone-50 border border-stone-200/70 text-[10px] text-stone-600 px-1.5 py-0.2 rounded"
-                                  >
-                                    {m.optionName}
-                                  </span>
-                                ))}
-                              </div>
+                              <p className="text-[11px] text-stone-500 font-normal leading-tight mt-0.5">
+                                {item.selectedModifiers.map((m) => m.optionName).join(' • ')}
+                              </p>
                             )}
                           </div>
                         </div>
@@ -189,7 +178,8 @@ export const OrderHistoryPage: React.FC = () => {
                   {/* Payment Info & Card Actions */}
                   <div className="pt-3 border-t border-stone-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div className="text-xs text-stone-500 flex items-center gap-2">
-                      <span className="px-2 py-0.5 rounded-md bg-stone-100 text-stone-700 font-medium text-[11px]">
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-stone-100/90 text-stone-600 font-medium text-[11px]">
+                        <span className={`w-1.5 h-1.5 rounded-full ${order.paymentMethod === 'upi' ? 'bg-emerald-500' : 'bg-amber-500'}`} />
                         Payment: {order.paymentMethod === 'upi' ? 'UPI (Completed)' : 'Pay After Dining'}
                       </span>
                     </div>
@@ -198,16 +188,16 @@ export const OrderHistoryPage: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => handleOpenReceipt(order)}
-                        className="flex-1 sm:flex-none px-3.5 py-2 rounded-xl border border-stone-200 hover:bg-stone-50 text-stone-800 font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                        className="flex-1 sm:flex-none px-4 py-2 rounded-xl border border-stone-300 hover:border-stone-400 bg-white hover:bg-stone-50 text-stone-800 font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-2xs active:scale-95 cursor-pointer"
                       >
-                        <Receipt className="w-3.5 h-3.5 text-stone-600" />
+                        <Receipt className="w-3.5 h-3.5 text-stone-700" />
                         <span>View Receipt</span>
                       </button>
 
                       <button
                         type="button"
                         onClick={() => reorderItems(order.items)}
-                        className="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-xs transition-all active:scale-95 cursor-pointer"
+                        className="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 text-amber-300 font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm transition-all active:scale-95 cursor-pointer border border-stone-800"
                       >
                         <Repeat className="w-3.5 h-3.5 text-amber-300" />
                         <span>Reorder</span>
