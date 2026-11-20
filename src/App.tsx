@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { AppProvider, useApp } from './context/AppContext';
 import { Header } from './components/Header';
 import { FoodCard } from './components/FoodCard';
@@ -204,13 +204,77 @@ const MainMenuContent: React.FC<MainMenuContentProps> = ({ isJustRevealed = fals
 };
 
 const AppContent: React.FC = () => {
-  const { user, activeView } = useApp();
+  const {
+    user,
+    activeView,
+    isCartOpen,
+    isCheckoutOpen,
+    isTrackerOpen,
+    isOrderHistoryOpen,
+    activeCustomizingItem
+  } = useApp();
   const [isTransitioning, setIsTransitioning] = useState(false);
+
+  // 1. Strictly Disable Copy, Cut, Paste, and Context Menu globally
+  useEffect(() => {
+    const disableAction = (e: Event) => {
+      e.preventDefault();
+      return false;
+    };
+
+    document.addEventListener('copy', disableAction);
+    document.addEventListener('cut', disableAction);
+    document.addEventListener('paste', disableAction);
+    document.addEventListener('contextmenu', disableAction);
+
+    return () => {
+      document.removeEventListener('copy', disableAction);
+      document.removeEventListener('cut', disableAction);
+      document.removeEventListener('paste', disableAction);
+      document.removeEventListener('contextmenu', disableAction);
+    };
+  }, []);
+
+  // 2. Native-Grade Body Scroll Lock when View Order, Checkout, Modals, or Login is open
+  useEffect(() => {
+    const isModalActive =
+      isCartOpen ||
+      isCheckoutOpen ||
+      isTrackerOpen ||
+      isOrderHistoryOpen ||
+      !!activeCustomizingItem ||
+      !user?.isVerified;
+
+    if (isModalActive) {
+      const scrollY = window.scrollY;
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
+      document.body.style.overflow = 'hidden';
+      document.body.style.overscrollBehavior = 'none';
+
+      return () => {
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        document.body.style.overflow = '';
+        document.body.style.overscrollBehavior = '';
+        window.scrollTo(0, scrollY);
+      };
+    }
+  }, [
+    isCartOpen,
+    isCheckoutOpen,
+    isTrackerOpen,
+    isOrderHistoryOpen,
+    activeCustomizingItem,
+    user?.isVerified
+  ]);
 
   // Mandatory Login Gate: Unauthenticated users are allowed ONLY after login
   if (!user?.isVerified) {
     return (
-      <div className="min-h-screen bg-[#111216]">
+      <div className="fixed inset-0 h-full h-[100dvh] w-full bg-[#111216] overflow-hidden overscroll-none touch-none">
         <AuthModal
           onSuccessTransition={() => {
             setIsTransitioning(true);

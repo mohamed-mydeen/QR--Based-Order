@@ -108,9 +108,12 @@ export const CheckoutModal: React.FC = () => {
           handleCloseRequest();
         }
       }}
-      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-stone-950/65 backdrop-blur-xs animate-fade-in"
+      onTouchMove={(e) => {
+        if (e.target === e.currentTarget) e.preventDefault();
+      }}
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-stone-950/65 backdrop-blur-xs overscroll-none animate-fade-in select-none"
     >
-      <div className="bg-white rounded-t-3xl sm:rounded-3xl max-w-md w-full flex flex-col shadow-2xl border border-stone-200/80 animate-slide-up overflow-hidden">
+      <div className="bg-white rounded-t-3xl sm:rounded-3xl max-w-md w-full flex flex-col shadow-2xl border border-stone-200/80 animate-slide-up overflow-hidden max-h-[90vh]">
         {/* Mobile Drag Indicator */}
         <div className="w-10 h-1 bg-stone-300 rounded-full mx-auto mt-2 sm:hidden flex-shrink-0" />
 
@@ -132,7 +135,7 @@ export const CheckoutModal: React.FC = () => {
         </div>
 
         {/* Compact Body Content */}
-        <div className="p-4 sm:p-5 space-y-3.5">
+        <div className="p-4 sm:p-5 space-y-3.5 overflow-y-auto overscroll-contain">
           {/* Payment Options List (Swiggy style) */}
           <div className="space-y-2">
             {/* Option 1: UPI & Online Apps */}

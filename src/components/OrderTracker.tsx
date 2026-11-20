@@ -35,7 +35,10 @@ export const OrderTracker: React.FC = () => {
           setIsTrackerOpen(false);
         }
       }}
-      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-stone-950/65 backdrop-blur-xs animate-fade-in"
+      onTouchMove={(e) => {
+        if (e.target === e.currentTarget) e.preventDefault();
+      }}
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-stone-950/65 backdrop-blur-xs overscroll-none animate-fade-in select-none"
     >
       <div className="bg-white rounded-t-3xl sm:rounded-3xl max-w-lg w-full max-h-[92vh] sm:max-h-[88vh] flex flex-col shadow-2xl border border-stone-200/80 animate-slide-up overflow-hidden">
         {/* Mobile Drag Indicator */}
@@ -83,7 +86,7 @@ export const OrderTracker: React.FC = () => {
         </div>
 
         {/* Scrollable Order Summary & Receipt Content */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4">
+        <div className="flex-1 overflow-y-auto overscroll-contain p-4 sm:p-5 space-y-4">
           {/* Order Info Bar */}
           <div className="bg-stone-50 rounded-2xl p-3 sm:p-3.5 border border-stone-200/80 flex items-center justify-between text-xs">
             <div className="flex items-center gap-2 text-stone-700">

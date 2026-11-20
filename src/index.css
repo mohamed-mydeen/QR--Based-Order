@@ -6,10 +6,22 @@
   * {
     -webkit-tap-highlight-color: transparent;
   }
-  body {
+  html, body {
     font-family: 'Plus Jakarta Sans', sans-serif;
     color: #1c1917;
     background-color: #fbfaf8;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    overscroll-behavior-y: none;
+  }
+  input, textarea {
+    -webkit-user-select: auto;
+    -moz-user-select: auto;
+    -ms-user-select: auto;
+    user-select: auto;
   }
 }
 

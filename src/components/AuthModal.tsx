@@ -226,34 +226,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
     }
   };
 
-  const handleOtpPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
-    if (verificationState !== 'idle') return;
-
-    e.preventDefault();
-    cancelAutoClearTimer();
-    const pasteData = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6);
-    if (!pasteData) return;
-
-    const newDigits = ['', '', '', '', '', ''];
-    for (let i = 0; i < pasteData.length; i++) {
-      newDigits[i] = pasteData[i] || '';
-    }
-    setOtpDigits(newDigits);
-    setIsIncorrectOtp(false);
-    setOtpError('');
-    setIsShaking(false);
-
-    const lastFilledIndex = Math.min(pasteData.length, 5);
-    digitInputRefs.current[lastFilledIndex]?.focus();
-    setFocusedIndex(lastFilledIndex);
-
-    if (pasteData.length === 6) {
-      setTimeout(() => {
-        executeVerification(pasteData);
-      }, 120);
-    }
-  };
-
   // Verification Execution with IN-BOX Animations & Smooth Exit Transition
   const executeVerification = async (codeToVerify: string) => {
     if (verificationState !== 'idle') return;
@@ -349,17 +321,17 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
 
   return (
     <div
-      className={`min-h-screen w-full bg-[#111216] flex items-center justify-center p-0 md:p-6 lg:p-8 font-sans antialiased text-[#1C1E21] transition-opacity duration-700 ${
-        shouldExit ? 'opacity-0' : 'opacity-100'
+      className={`fixed inset-0 z-50 h-full h-[100dvh] w-full bg-[#111216] flex items-center justify-center p-0 md:p-6 lg:p-8 font-sans antialiased text-[#1C1E21] overflow-hidden overscroll-none touch-none select-none transition-opacity duration-700 ${
+        shouldExit ? 'opacity-0 pointer-events-none' : 'opacity-100'
       }`}
     >
       {/* =========================================================================
          SHARED RESPONSIVE SHELL
-         Mobile: Streamlined full viewport with compact hero & comfortable form
+         Mobile: Locked full viewport with compact hero & no scroll
          Tablet & Desktop: Unified 2-Column Split Card (Hero Left, Form Right)
          ========================================================================= */}
       <div
-        className={`w-full max-w-md md:max-w-4xl bg-[#111216] md:bg-[#18191E] min-h-screen md:min-h-[580px] md:rounded-[36px] md:shadow-2xl md:border md:border-stone-800 flex flex-col md:grid md:grid-cols-2 overflow-hidden relative transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+        className={`w-full max-w-md md:max-w-4xl bg-[#111216] md:bg-[#18191E] h-full max-h-[100dvh] md:max-h-[600px] md:h-auto md:rounded-[36px] md:shadow-2xl md:border md:border-stone-800 flex flex-col md:grid md:grid-cols-2 overflow-hidden relative select-none transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
           shouldExit
             ? 'scale-95 opacity-0 translate-y-3 pointer-events-none'
             : 'scale-100 opacity-100 translate-y-0'
@@ -368,7 +340,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
         {/* =========================================================================
            1. SHARED HERO SECTION (Food-Themed Visual with Golden Warmth & Brand Identity)
            ========================================================================= */}
-        <div className="relative bg-[#111216] flex flex-col items-center justify-center py-6 sm:py-8 md:py-12 px-4 sm:px-6 text-center overflow-hidden h-40 sm:h-48 md:min-h-full flex-shrink-0">
+        <div className="relative bg-[#111216] flex flex-col items-center justify-center py-4 sm:py-6 md:py-12 px-4 sm:px-6 text-center overflow-hidden h-32 sm:h-38 md:min-h-full flex-shrink-0">
           {/* Ultra-Clear Food Background with Ambient Lighting */}
           <div className="absolute inset-0 z-0">
             <img
@@ -383,17 +355,17 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
           </div>
 
           {/* Restaurant Brand Pill */}
-          <div className="relative z-10 mb-2.5 sm:mb-3 inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-black/40 backdrop-blur-md border border-amber-500/30 text-amber-300 text-[11px] sm:text-xs font-bold tracking-widest uppercase shadow-lg">
+          <div className="relative z-10 mb-2 sm:mb-2.5 inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-black/40 backdrop-blur-md border border-amber-500/30 text-amber-300 text-[11px] sm:text-xs font-bold tracking-widest uppercase shadow-lg">
             <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
             <span>{RESTAURANT_INFO.name}</span>
           </div>
 
           {/* Welcoming Headline & Subtitle */}
-          <div className="relative z-10 space-y-1 sm:space-y-1.5 max-w-xs drop-shadow-md transition-all duration-300">
-            <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white tracking-tight drop-shadow-md font-sans">
+          <div className="relative z-10 space-y-0.5 sm:space-y-1 max-w-xs drop-shadow-md transition-all duration-300">
+            <h1 className="text-lg sm:text-xl md:text-3xl font-extrabold text-white tracking-tight drop-shadow-md font-sans leading-tight">
               {otpStep === 'phone' ? 'Welcome to Selarasa!' : 'Verify Mobile Number'}
             </h1>
-            <p className="text-xs sm:text-sm text-amber-200/90 font-medium leading-relaxed drop-shadow">
+            <p className="text-[11px] sm:text-xs md:text-sm text-amber-200/90 font-medium leading-tight drop-shadow">
               {otpStep === 'phone'
                 ? 'Sign in to browse menu and order dishes.'
                 : 'Enter the 6-digit code to complete verification.'}
@@ -402,9 +374,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
         </div>
 
         {/* =========================================================================
-           2. SHARED FORM PANEL (Responsive Off-White Panel with Clean Track)
+           2. SHARED FORM PANEL (No Scroll, Pure Static Native Mobile Layout)
            ========================================================================= */}
-        <div className="flex-1 bg-[#F5F6F9] rounded-t-[28px] sm:rounded-t-[36px] md:rounded-none md:rounded-r-[36px] p-5 sm:p-7 md:p-9 flex flex-col justify-between shadow-2xl relative overflow-hidden">
+        <div className="flex-1 bg-[#F5F6F9] rounded-t-[28px] sm:rounded-t-[36px] md:rounded-none md:rounded-r-[36px] p-4 sm:p-6 md:p-8 flex flex-col justify-between overflow-hidden shadow-2xl relative select-none">
           <div>
             {/* Unified Step Header & Breadcrumb */}
             <div className="mb-4 sm:mb-5 flex items-center justify-between pb-3 border-b border-stone-200/70 select-none">
@@ -499,8 +471,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
                                 setValidationErrors((prev) => ({ ...prev, name: undefined }));
                               }
                             }}
+                            onPaste={(e) => e.preventDefault()}
+                            onCopy={(e) => e.preventDefault()}
+                            onCut={(e) => e.preventDefault()}
                             placeholder="Enter your full name"
-                            className="w-full bg-transparent text-xs sm:text-sm text-stone-900 placeholder-stone-400 focus:outline-none font-medium"
+                            className="w-full bg-transparent text-xs sm:text-sm text-stone-900 placeholder-stone-400 focus:outline-none font-medium select-none"
                           />
                         </div>
                         {validationErrors.name && (
@@ -538,8 +513,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
                                 setValidationErrors((prev) => ({ ...prev, phone: undefined }));
                               }
                             }}
+                            onPaste={(e) => e.preventDefault()}
+                            onCopy={(e) => e.preventDefault()}
+                            onCut={(e) => e.preventDefault()}
                             placeholder="98765 43210"
-                            className="w-full bg-transparent text-xs sm:text-sm font-mono font-bold text-stone-900 placeholder-stone-400 tracking-wide focus:outline-none"
+                            className="w-full bg-transparent text-xs sm:text-sm font-mono font-bold text-stone-900 placeholder-stone-400 tracking-wide focus:outline-none select-none"
                           />
                         </div>
                         {validationErrors.phone && (
@@ -683,8 +661,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
                                   onBlur={() => setFocusedIndex(null)}
                                   onChange={(e) => handleOtpDigitChange(idx, e.target.value)}
                                   onKeyDown={(e) => handleOtpKeyDown(idx, e)}
-                                  onPaste={handleOtpPaste}
-                                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed z-10 text-center"
+                                  onPaste={(e) => e.preventDefault()}
+                                  onCopy={(e) => e.preventDefault()}
+                                  onCut={(e) => e.preventDefault()}
+                                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed z-10 text-center select-none"
                                 />
 
                                 {/* In-Box Content: Loading Spinner or Clearly Visible Digit */}
