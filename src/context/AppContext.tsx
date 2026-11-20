@@ -111,6 +111,9 @@ interface AppContextType {
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
+// 10 Days Session Expiry (in milliseconds: 10 * 24 * 60 * 60 * 1000)
+const TEN_DAYS_MS = 10 * 24 * 60 * 60 * 1000;
+
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // 1. Table Detection from URL (e.g. ?table=T-08 or ?t=12) or LocalStorage
   const [tableNumber, setTableNumberState] = useState<string>(() => {
@@ -134,13 +137,31 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     localStorage.setItem('selarasa_table', table);
   };
 
-  // 2. User Authentication & OTP Flow
+  // 2. User Authentication & OTP Flow with 10-Day Auto Expiration
   const [user, setUser] = useState<UserProfile | null>(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('selarasa_user');
       if (saved) {
         try {
-          return JSON.parse(saved);
+          const parsed: UserProfile = JSON.parse(saved);
+          const now = Date.now();
+          // Check if session has exceeded 10 days
+          if (parsed.expiresAt && now > parsed.expiresAt) {
+            localStorage.removeItem('selarasa_user');
+            return null;
+          }
+          // Fallback migration for existing sessions without explicit expiresAt
+          if (!parsed.expiresAt) {
+            const loginTime = parsed.loggedInAt || now;
+            if (now - loginTime > TEN_DAYS_MS) {
+              localStorage.removeItem('selarasa_user');
+              return null;
+            }
+            parsed.loggedInAt = loginTime;
+            parsed.expiresAt = loginTime + TEN_DAYS_MS;
+            localStorage.setItem('selarasa_user', JSON.stringify(parsed));
+          }
+          return parsed;
         } catch {
           return null;
         }
@@ -268,11 +289,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       };
     }
 
-    // Success
+    // Success: Assign 10-day validity window
+    const now = Date.now();
     const verifiedProfile: UserProfile = {
       name: pendingAuth.name || 'Guest Diner',
       phone: pendingAuth.phone || '9876543210',
-      isVerified: true
+      isVerified: true,
+      loggedInAt: now,
+      expiresAt: now + TEN_DAYS_MS
     };
 
     setUser(verifiedProfile);
@@ -319,6 +343,43 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setIsAuthOpen(true);
     showToast('Signed out successfully');
   };
+
+  // Automatic 10-day session expiry monitor
+  useEffect(() => {
+    if (!user || !user.expiresAt) return;
+
+    const checkSessionExpiry = () => {
+      if (Date.now() > user.expiresAt!) {
+        logoutUser();
+        showToast('Your session has expired after 10 days. Please sign in again.');
+      }
+    };
+
+    // 1. Check immediately on mount or active change
+    checkSessionExpiry();
+
+    // 2. Check whenever user re-opens or switches back to this browser tab
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') {
+        checkSessionExpiry();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+
+    // 3. Set a timer for exact expiry during an open session
+    const timeRemaining = user.expiresAt - Date.now();
+    let expiryTimer: ReturnType<typeof setTimeout> | null = null;
+    if (timeRemaining > 0 && timeRemaining <= 2147483647) {
+      expiryTimer = setTimeout(checkSessionExpiry, timeRemaining);
+    } else if (timeRemaining <= 0) {
+      checkSessionExpiry();
+    }
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibility);
+      if (expiryTimer) clearTimeout(expiryTimer);
+    };
+  }, [user]);
 
   // 3. Menu Navigation & Filter
   const [selectedCategory, setSelectedCategory] = useState<string>('all');

@@ -63,6 +63,8 @@ export interface UserProfile {
   name: string;
   phone: string;
   isVerified: boolean;
+  loggedInAt?: number;
+  expiresAt?: number;
 }
 
 export type PaymentMethod = 'upi' | 'cash';
