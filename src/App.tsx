@@ -272,13 +272,18 @@ const AppContent: React.FC = () => {
   }
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-[#FAF8F5]">
-      {/* Route Views: Separate Full Page for Order History vs Main Menu */}
-      {activeView === 'orders' ? (
-        <OrderHistoryPage />
-      ) : (
-        <MainMenuContent />
-      )}
+    <div className="relative min-h-screen overflow-x-hidden bg-[#FAF8F5] animate-page-enter">
+      {/* Route Views: Separate Full Page for Order History vs Main Menu with Smooth Native Handoff */}
+      <div
+        key={activeView}
+        className={activeView === 'orders' ? 'animate-page-slide-in' : 'animate-page-slide-back'}
+      >
+        {activeView === 'orders' ? (
+          <OrderHistoryPage />
+        ) : (
+          <MainMenuContent />
+        )}
+      </div>
     </div>
   );
 };

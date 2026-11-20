@@ -62,7 +62,7 @@ export const OrderHistoryPage: React.FC = () => {
         <main className="max-w-3xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-5">
           {orderHistory.length === 0 ? (
             /* Clean Empty State */
-            <div className="bg-white rounded-3xl border border-stone-200/90 p-8 sm:p-12 text-center shadow-sm space-y-4 max-w-lg mx-auto mt-6">
+            <div className="bg-white rounded-3xl border border-stone-200/90 p-8 sm:p-12 text-center shadow-sm space-y-4 max-w-lg mx-auto mt-6 animate-fade-in">
               <div className="w-16 h-16 rounded-3xl bg-stone-100 border border-stone-200 text-stone-400 flex items-center justify-center mx-auto shadow-inner">
                 <ShoppingBag className="w-8 h-8 text-stone-400" />
               </div>
@@ -85,12 +85,13 @@ export const OrderHistoryPage: React.FC = () => {
               </button>
             </div>
           ) : (
-            /* Swiggy-Style Past Orders Cards */
+            /* Swiggy-Style Past Orders Cards with Staggered Fluid Cascade */
             <div className="space-y-4">
-              {orderHistory.map((order) => (
+              {orderHistory.map((order, idx) => (
                 <div
                   key={order.id}
-                  className="bg-white rounded-2xl sm:rounded-3xl border border-stone-200/90 hover:border-stone-300 p-4 sm:p-6 shadow-2xs transition-all duration-200 space-y-4"
+                  className="bg-white rounded-2xl sm:rounded-3xl border border-stone-200/90 hover:border-stone-300 p-4 sm:p-6 shadow-2xs transition-all duration-200 space-y-4 animate-card-cascade"
+                  style={{ animationDelay: `${idx * 45}ms` }}
                 >
                   {/* Swiggy-Style Clean Card Header */}
                   <div className="flex items-start justify-between gap-3 border-b border-stone-150 pb-3.5">
