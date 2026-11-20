@@ -132,11 +132,9 @@ export const FoodCard: React.FC<FoodCardProps> = ({ item }) => {
       </div>
 
       {/* Pricing & Add to Cart Controls */}
-      <div className="pt-2 sm:pt-3 mt-1.5 sm:mt-2 flex items-center justify-between border-t border-stone-100 gap-2">
-        <div>
-          <div className="font-mono font-bold text-sm sm:text-base text-stone-900">
-            {RESTAURANT_INFO.currency}{item.price}
-          </div>
+      <div className="pt-2 sm:pt-3 mt-1.5 sm:mt-2 flex items-center justify-between border-t border-stone-100 gap-1 sm:gap-2">
+        <div className="font-mono font-bold text-xs sm:text-sm md:text-base text-stone-900">
+          {RESTAURANT_INFO.currency}{item.price}
         </div>
 
         {/* Action Button: All items use unified [+ Add] and Stepper when added */}
@@ -148,7 +146,7 @@ export const FoodCard: React.FC<FoodCardProps> = ({ item }) => {
               handleAddClick();
             }}
             disabled={!item.isAvailable}
-            className={`px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1 transition-all duration-200 active:scale-95 shadow-2xs cursor-pointer select-none ${
+            className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl font-bold text-[11px] sm:text-xs flex items-center gap-1 transition-all duration-200 active:scale-95 shadow-2xs cursor-pointer select-none ${
               showAddSuccess
                 ? 'bg-emerald-600 text-white scale-105'
                 : 'bg-stone-900 hover:bg-stone-800 text-white'
@@ -167,28 +165,28 @@ export const FoodCard: React.FC<FoodCardProps> = ({ item }) => {
             )}
           </button>
         ) : (
-          <div className="flex items-center gap-1 bg-stone-900 text-white rounded-xl p-0.5 shadow-2xs animate-pop-in select-none">
+          <div className="flex items-center gap-0.5 sm:gap-1 bg-stone-900 text-white rounded-lg sm:rounded-xl p-0.5 shadow-2xs animate-pop-in select-none">
             <button
               type="button"
               onClick={handleDecrement}
-              className="w-6 h-6 rounded-lg hover:bg-stone-800 flex items-center justify-center transition-transform active:scale-75 cursor-pointer"
+              className="w-5 h-5 sm:w-6 sm:h-6 rounded-md sm:rounded-lg hover:bg-stone-800 flex items-center justify-center transition-transform active:scale-75 cursor-pointer"
               title="Decrease quantity"
             >
-              <Minus className="w-3 h-3" />
+              <Minus className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
             </button>
             <span
               key={totalQuantityInCart}
-              className="w-5 text-center text-xs font-mono font-bold animate-number-pop"
+              className="w-4 sm:w-5 text-center text-[11px] sm:text-xs font-mono font-bold animate-number-pop"
             >
               {totalQuantityInCart}
             </span>
             <button
               type="button"
               onClick={handleIncrement}
-              className="w-6 h-6 rounded-lg hover:bg-stone-800 flex items-center justify-center transition-transform active:scale-75 cursor-pointer"
+              className="w-5 h-5 sm:w-6 sm:h-6 rounded-md sm:rounded-lg hover:bg-stone-800 flex items-center justify-center transition-transform active:scale-75 cursor-pointer"
               title="Increase quantity"
             >
-              <Plus className="w-3 h-3" />
+              <Plus className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
             </button>
           </div>
         )}

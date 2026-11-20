@@ -3,6 +3,7 @@ import { Search, User, LogOut, X, Clock } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { RESTAURANT_INFO } from '../data/mockData';
 import { ConfirmationSheet } from './ConfirmationSheet';
+import { CategoryNav } from './CategoryNav';
 
 interface HeaderProps {
   isJustRevealed?: boolean;
@@ -115,13 +116,13 @@ export const Header: React.FC<HeaderProps> = ({ isJustRevealed = false }) => {
           </div>
 
           {/* Veg / Non-Veg Quick Dietary Segmented Control with Animated Transitions & Matching UI Icons */}
-          <div className="flex items-center gap-1 bg-stone-100 p-1 rounded-xl self-start sm:self-auto border border-stone-200/70 select-none shadow-2xs">
+          <div className="flex items-center gap-1 bg-stone-100 p-1 rounded-xl w-full sm:w-auto justify-between sm:justify-start border border-stone-200/70 select-none shadow-2xs">
             <button
               type="button"
               onClick={() => setDietaryFilter('all')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-95 cursor-pointer ${
+              className={`flex-1 sm:flex-initial text-center px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-95 cursor-pointer ${
                 dietaryFilter === 'all'
-                  ? 'bg-stone-900 text-white shadow-xs scale-[1.03]'
+                  ? 'bg-stone-900 text-white shadow-xs'
                   : 'text-stone-600 hover:text-stone-900 hover:bg-stone-200/50'
               }`}
             >
@@ -130,13 +131,13 @@ export const Header: React.FC<HeaderProps> = ({ isJustRevealed = false }) => {
             <button
               type="button"
               onClick={() => setDietaryFilter('veg')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-95 cursor-pointer ${
+              className={`flex-1 sm:flex-initial text-center px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-95 cursor-pointer ${
                 dietaryFilter === 'veg'
-                  ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/20 scale-[1.03]'
+                  ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/20'
                   : 'text-stone-600 hover:text-emerald-700 hover:bg-emerald-50/60'
               }`}
             >
-              <div className="w-3.5 h-3.5 border-[1.5px] border-emerald-500 rounded-xs flex items-center justify-center p-0.5 bg-white">
+              <div className="w-3.5 h-3.5 border-[1.5px] border-emerald-500 rounded-xs flex items-center justify-center p-0.5 bg-white flex-shrink-0">
                 <div className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
               </div>
               <span>Veg Only</span>
@@ -144,13 +145,13 @@ export const Header: React.FC<HeaderProps> = ({ isJustRevealed = false }) => {
             <button
               type="button"
               onClick={() => setDietaryFilter('non-veg')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-95 cursor-pointer ${
+              className={`flex-1 sm:flex-initial text-center px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-95 cursor-pointer ${
                 dietaryFilter === 'non-veg'
-                  ? 'bg-red-700 text-white shadow-md shadow-red-700/20 scale-[1.03]'
+                  ? 'bg-red-700 text-white shadow-md shadow-red-700/20'
                   : 'text-stone-600 hover:text-red-800 hover:bg-red-50/60'
               }`}
             >
-              <div className="w-3.5 h-3.5 border-[1.5px] border-red-700 rounded-xs flex items-center justify-center p-0.5 bg-white">
+              <div className="w-3.5 h-3.5 border-[1.5px] border-red-700 rounded-xs flex items-center justify-center p-0.5 bg-white flex-shrink-0">
                 <div className="w-0 h-0 border-l-[2.5px] border-l-transparent border-r-[2.5px] border-r-transparent border-b-[5px] border-b-red-700" />
               </div>
               <span>Non-Veg</span>
@@ -158,6 +159,9 @@ export const Header: React.FC<HeaderProps> = ({ isJustRevealed = false }) => {
           </div>
         </div>
       </div>
+
+      {/* Row 3: Category Navigation Pills integrated cleanly into the Sticky Header */}
+      <CategoryNav />
 
       {/* iOS-Style Sign Out Confirmation Dialog (Centered Alert matching App Color) */}
       <ConfirmationSheet

@@ -9,20 +9,17 @@ import {
   CheckCircle2,
   Sparkles,
   AlertCircle,
-  Check,
-  X
+  Check
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { RESTAURANT_INFO } from '../data/mockData';
-import { ConfirmationSheet } from './ConfirmationSheet';
 
 interface AuthModalProps {
   isFadingOut?: boolean;
   onSuccessTransition?: () => void;
-  onClose?: () => void;
 }
 
-export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuccessTransition, onClose }) => {
+export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuccessTransition }) => {
   const {
     otpStep,
     pendingOtpPhone,
@@ -51,7 +48,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
   const [isShaking, setIsShaking] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
   const [verificationState, setVerificationState] = useState<'idle' | 'verifying' | 'success'>('idle');
-  const [isChangePhoneConfirmOpen, setIsChangePhoneConfirmOpen] = useState(false);
 
   const digitInputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const autoClearTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -359,11 +355,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
     >
       {/* =========================================================================
          SHARED RESPONSIVE SHELL
-         Mobile: Full-screen with Top Hero & Rounded-t Bottom Sheet
+         Mobile: Streamlined full viewport with compact hero & comfortable form
          Tablet & Desktop: Unified 2-Column Split Card (Hero Left, Form Right)
          ========================================================================= */}
       <div
-        className={`w-full max-w-md md:max-w-4xl bg-[#111216] md:bg-[#18191E] min-h-screen md:min-h-[640px] md:rounded-[40px] md:shadow-2xl md:border md:border-stone-800 flex flex-col md:grid md:grid-cols-2 overflow-hidden relative transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+        className={`w-full max-w-md md:max-w-4xl bg-[#111216] md:bg-[#18191E] min-h-screen md:min-h-[580px] md:rounded-[36px] md:shadow-2xl md:border md:border-stone-800 flex flex-col md:grid md:grid-cols-2 overflow-hidden relative transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
           shouldExit
             ? 'scale-95 opacity-0 translate-y-3 pointer-events-none'
             : 'scale-100 opacity-100 translate-y-0'
@@ -372,7 +368,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
         {/* =========================================================================
            1. SHARED HERO SECTION (Food-Themed Visual with Golden Warmth & Brand Identity)
            ========================================================================= */}
-        <div className="relative bg-[#111216] flex flex-col items-center justify-center pt-10 pb-8 px-6 text-center overflow-hidden min-h-[280px] sm:min-h-[320px] md:min-h-full">
+        <div className="relative bg-[#111216] flex flex-col items-center justify-center py-6 sm:py-8 md:py-12 px-4 sm:px-6 text-center overflow-hidden h-40 sm:h-48 md:min-h-full flex-shrink-0">
           {/* Ultra-Clear Food Background with Ambient Lighting */}
           <div className="absolute inset-0 z-0">
             <img
@@ -387,31 +383,31 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
           </div>
 
           {/* Restaurant Brand Pill */}
-          <div className="relative z-10 mb-4 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-amber-500/30 text-amber-300 text-xs font-bold tracking-widest uppercase shadow-lg">
+          <div className="relative z-10 mb-2.5 sm:mb-3 inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-black/40 backdrop-blur-md border border-amber-500/30 text-amber-300 text-[11px] sm:text-xs font-bold tracking-widest uppercase shadow-lg">
             <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
             <span>{RESTAURANT_INFO.name}</span>
           </div>
 
           {/* Welcoming Headline & Subtitle */}
-          <div className="relative z-10 space-y-2 max-w-xs drop-shadow-md transition-all duration-300">
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight drop-shadow-md font-sans">
+          <div className="relative z-10 space-y-1 sm:space-y-1.5 max-w-xs drop-shadow-md transition-all duration-300">
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white tracking-tight drop-shadow-md font-sans">
               {otpStep === 'phone' ? 'Welcome to Selarasa!' : 'Verify Mobile Number'}
             </h1>
             <p className="text-xs sm:text-sm text-amber-200/90 font-medium leading-relaxed drop-shadow">
               {otpStep === 'phone'
-                ? 'Your delicious experience starts here.'
-                : 'Just one quick step to secure your ordering session.'}
+                ? 'Sign in to browse menu and order dishes.'
+                : 'Enter the 6-digit code to complete verification.'}
             </p>
           </div>
         </div>
 
         {/* =========================================================================
-           2. SHARED FORM PANEL (Consistent Soft Off-White Panel with Smooth Sliding Track)
+           2. SHARED FORM PANEL (Responsive Off-White Panel with Clean Track)
            ========================================================================= */}
-        <div className="flex-1 bg-[#F5F6F9] rounded-t-[36px] sm:rounded-t-[40px] md:rounded-none md:rounded-r-[40px] p-6 sm:p-8 md:p-10 flex flex-col justify-between shadow-2xl relative overflow-hidden">
+        <div className="flex-1 bg-[#F5F6F9] rounded-t-[28px] sm:rounded-t-[36px] md:rounded-none md:rounded-r-[36px] p-5 sm:p-7 md:p-9 flex flex-col justify-between shadow-2xl relative overflow-hidden">
           <div>
             {/* Unified Step Header & Breadcrumb */}
-            <div className="mb-5 flex items-center justify-between pb-3 border-b border-stone-200/70 select-none">
+            <div className="mb-4 sm:mb-5 flex items-center justify-between pb-3 border-b border-stone-200/70 select-none">
               <div className="flex items-center gap-2 sm:gap-2.5">
                 <span
                   className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold transition-all duration-300 ${
@@ -444,19 +440,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="text-[11px] font-bold tracking-wider uppercase text-stone-400 transition-colors">
+                <span className="text-[10px] sm:text-[11px] font-bold tracking-wider uppercase text-stone-400 transition-colors">
                   {otpStep === 'phone' ? 'Step 1: Details' : 'Step 2: Verification'}
                 </span>
-                {onClose && (
-                  <button
-                    type="button"
-                    onClick={onClose}
-                    className="w-7 h-7 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-600 flex items-center justify-center transition-colors cursor-pointer"
-                    title="Close and explore menu"
-                  >
-                    <X className="w-3.5 h-3.5" />
-                  </button>
-                )}
               </div>
             </div>
 
@@ -480,29 +466,29 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
                   }`}
                 >
                   <div>
-                    <div className="mb-5">
-                      <h2 className="text-xl sm:text-2xl font-bold text-stone-900 tracking-tight">
+                    <div className="mb-4 sm:mb-5">
+                      <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-stone-900 tracking-tight">
                         Let's Get Started
                       </h2>
-                      <p className="text-xs sm:text-sm text-stone-500 mt-1">
+                      <p className="text-xs sm:text-sm text-stone-500 mt-0.5">
                         Enter your details to view menu and order dishes.
                       </p>
                     </div>
 
-                    <form onSubmit={handleContinue} className="space-y-4" noValidate>
+                    <form onSubmit={handleContinue} className="space-y-3.5 sm:space-y-4" noValidate>
                       {/* Input 1: Your Name */}
                       <div>
-                        <label className="block text-xs font-semibold text-stone-600 mb-1.5">
+                        <label className="block text-xs font-semibold text-stone-600 mb-1">
                           Your Name
                         </label>
                         <div
-                          className={`relative rounded-2xl bg-[#EEF2F6] border transition-all flex items-center px-4 py-3.5 ${
+                          className={`relative rounded-xl sm:rounded-2xl bg-[#EEF2F6] border transition-all flex items-center px-3.5 py-3 sm:py-3.5 ${
                             validationErrors.name
                               ? 'border-red-400 ring-2 ring-red-400/20'
                               : 'border-transparent focus-within:border-stone-900 focus-within:bg-white focus-within:ring-2 focus-within:ring-stone-900/15'
                           }`}
                         >
-                          <User className="w-4 h-4 text-stone-400 flex-shrink-0 mr-3" />
+                          <User className="w-4 h-4 text-stone-400 flex-shrink-0 mr-2.5" />
                           <input
                             type="text"
                             required
@@ -514,11 +500,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
                               }
                             }}
                             placeholder="Enter your full name"
-                            className="w-full bg-transparent text-sm text-stone-900 placeholder-stone-400 focus:outline-none font-medium"
+                            className="w-full bg-transparent text-xs sm:text-sm text-stone-900 placeholder-stone-400 focus:outline-none font-medium"
                           />
                         </div>
                         {validationErrors.name && (
-                          <p className="text-xs text-red-600 font-medium mt-1.5 pl-1 flex items-center gap-1">
+                          <p className="text-xs text-red-600 font-medium mt-1 pl-1 flex items-center gap-1">
                             <span>•</span> {validationErrors.name}
                           </p>
                         )}
@@ -526,18 +512,18 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
 
                       {/* Input 2: Mobile Number (+91) */}
                       <div>
-                        <label className="block text-xs font-semibold text-stone-600 mb-1.5">
+                        <label className="block text-xs font-semibold text-stone-600 mb-1">
                           Mobile Number
                         </label>
                         <div
-                          className={`relative rounded-2xl bg-[#EEF2F6] border transition-all flex items-center px-4 py-3.5 ${
+                          className={`relative rounded-xl sm:rounded-2xl bg-[#EEF2F6] border transition-all flex items-center px-3.5 py-3 sm:py-3.5 ${
                             validationErrors.phone
                               ? 'border-red-400 ring-2 ring-red-400/20'
                               : 'border-transparent focus-within:border-stone-900 focus-within:bg-white focus-within:ring-2 focus-within:ring-stone-900/15'
                           }`}
                         >
-                          <Phone className="w-4 h-4 text-stone-400 flex-shrink-0 mr-2.5" />
-                          <span className="text-xs font-bold text-stone-700 mr-2 border-r border-stone-300 pr-2.5 select-none flex items-center gap-1">
+                          <Phone className="w-4 h-4 text-stone-400 flex-shrink-0 mr-2" />
+                          <span className="text-xs font-bold text-stone-700 mr-2 border-r border-stone-300 pr-2 select-none flex items-center gap-1">
                             <span>🇮🇳</span> +91
                           </span>
                           <input
@@ -553,22 +539,22 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
                               }
                             }}
                             placeholder="98765 43210"
-                            className="w-full bg-transparent text-sm font-mono font-bold text-stone-900 placeholder-stone-400 tracking-wide focus:outline-none"
+                            className="w-full bg-transparent text-xs sm:text-sm font-mono font-bold text-stone-900 placeholder-stone-400 tracking-wide focus:outline-none"
                           />
                         </div>
                         {validationErrors.phone && (
-                          <p className="text-xs text-red-600 font-medium mt-1.5 pl-1 flex items-center gap-1">
+                          <p className="text-xs text-red-600 font-medium mt-1 pl-1 flex items-center gap-1">
                             <span>•</span> {validationErrors.phone}
                           </p>
                         )}
                       </div>
 
                       {/* Primary Black & Gold Button */}
-                      <div className="pt-2 space-y-2">
+                      <div className="pt-2">
                         <button
                           type="submit"
                           disabled={isSendingCode}
-                          className="w-full py-4 px-6 rounded-2xl bg-stone-900 hover:bg-stone-800 text-white font-bold text-base shadow-md flex items-center justify-center gap-2 active:scale-[0.99] transition-all cursor-pointer relative overflow-hidden group border border-stone-800"
+                          className="w-full py-3.5 sm:py-4 px-6 rounded-xl sm:rounded-2xl bg-stone-900 hover:bg-stone-800 text-white font-bold text-sm sm:text-base shadow-md flex items-center justify-center gap-2 active:scale-[0.99] transition-all cursor-pointer relative overflow-hidden group border border-stone-800"
                         >
                           {isSendingCode ? (
                             <div className="flex items-center gap-2 animate-fade-in text-stone-200">
@@ -582,16 +568,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
                             </div>
                           )}
                         </button>
-
-                        {onClose && (
-                          <button
-                            type="button"
-                            onClick={onClose}
-                            className="w-full py-2.5 text-center text-xs font-bold text-stone-500 hover:text-stone-900 transition-colors cursor-pointer"
-                          >
-                            Explore Menu as Guest →
-                          </button>
-                        )}
                       </div>
                     </form>
                   </div>
@@ -611,19 +587,19 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
                     {/* Change Number Option */}
                     <button
                       type="button"
-                      onClick={() => setIsChangePhoneConfirmOpen(true)}
-                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-stone-500 hover:text-stone-900 transition-colors mb-3 group cursor-pointer"
+                      onClick={() => changePhoneNumber()}
+                      className="inline-flex items-center gap-1 text-xs font-semibold text-stone-500 hover:text-stone-900 transition-colors mb-2.5 group cursor-pointer"
                     >
                       <ArrowLeft className="w-3.5 h-3.5 text-stone-700 group-hover:-translate-x-1 transition-transform" />
                       <span>Change Number</span>
                     </button>
 
                     {/* Step 2 Heading & Masked Phone Badge */}
-                    <div className="mb-4">
-                      <h2 className="text-xl sm:text-2xl font-bold text-stone-900 tracking-tight">
+                    <div className="mb-3 sm:mb-4">
+                      <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-stone-900 tracking-tight">
                         Verify Your Number
                       </h2>
-                      <div className="inline-flex items-center gap-2 mt-1.5 px-3 py-1 bg-[#EEF2F6] border border-stone-200/80 rounded-xl text-xs text-stone-800 font-medium">
+                      <div className="inline-flex items-center gap-2 mt-1 px-3 py-1 bg-[#EEF2F6] border border-stone-200/80 rounded-xl text-xs text-stone-800 font-medium">
                         <span className="w-2 h-2 rounded-full bg-emerald-500" />
                         <span className="text-stone-500">Sent to:</span>
                         <strong className="font-mono text-stone-900 font-bold tracking-wide">
@@ -633,7 +609,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
                     </div>
 
                     {/* Development Mode Notice Banner */}
-                    <div className="rounded-2xl border border-stone-200 bg-stone-100/90 p-3 text-xs text-stone-800 space-y-1 mb-4 select-none">
+                    <div className="rounded-xl sm:rounded-2xl border border-stone-200 bg-stone-100/90 p-2.5 sm:p-3 text-xs text-stone-800 space-y-1 mb-3.5 select-none">
                       <div className="flex items-center justify-between">
                         <span className="font-bold text-[11px] uppercase tracking-wider text-stone-800 flex items-center gap-1.5">
                           <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
@@ -653,11 +629,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
                       </button>
                     </div>
 
-                    <form onSubmit={handleVerifyOtp} className="space-y-4" noValidate>
+                    <form onSubmit={handleVerifyOtp} className="space-y-3.5 sm:space-y-4" noValidate>
                       {/* Six-Digit OTP Input Grid with In-Box Animations */}
                       <div>
                         <div
-                          className={`grid grid-cols-6 gap-2 sm:gap-2.5 w-full transition-transform ${
+                          className={`grid grid-cols-6 gap-1.5 sm:gap-2.5 w-full transition-transform ${
                             isShaking ? 'animate-shake' : ''
                           }`}
                         >
@@ -670,7 +646,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
                             return (
                               <div
                                 key={idx}
-                                className={`relative w-full aspect-[4/5] sm:h-14 rounded-2xl flex items-center justify-center transition-all duration-300 select-none ${
+                                className={`relative w-full aspect-[4/5] sm:h-14 rounded-xl sm:rounded-2xl flex items-center justify-center transition-all duration-300 select-none ${
                                   isSuccess
                                     ? 'border-2 border-emerald-500 bg-emerald-50/90 text-emerald-950 shadow-[0_0_0_3px_rgba(16,185,129,0.22)] animate-box-success'
                                     : isIncorrectOtp
@@ -721,14 +697,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
                                   />
                                 ) : digit ? (
                                   <span
-                                    className={`text-lg sm:text-xl font-mono font-bold transition-colors ${
+                                    className={`text-base sm:text-xl font-mono font-bold transition-colors ${
                                       isSuccess ? 'text-emerald-950 font-extrabold' : isIncorrectOtp ? 'text-red-600' : 'text-stone-900'
                                     }`}
                                   >
                                     {digit}
                                   </span>
                                 ) : isFocused ? (
-                                  <span className="w-0.5 h-5 bg-stone-900 rounded-full animate-pulse" />
+                                  <span className="w-0.5 h-4 sm:h-5 bg-stone-900 rounded-full animate-pulse" />
                                 ) : null}
                               </div>
                             );
@@ -737,7 +713,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
 
                         {/* Error Message Feedback */}
                         {otpError && (
-                          <div className="flex items-center justify-center gap-1.5 text-xs font-semibold text-red-600 bg-red-50/80 border border-red-200/80 px-3.5 py-2 rounded-xl mt-3 animate-fade-in text-center">
+                          <div className="flex items-center justify-center gap-1.5 text-xs font-semibold text-red-600 bg-red-50/80 border border-red-200/80 px-3 py-1.5 rounded-xl mt-2.5 animate-fade-in text-center">
                             <AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0" />
                             <span>{otpError}</span>
                           </div>
@@ -745,7 +721,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
 
                         {/* Resend Confirmation Feedback */}
                         {resendFeedback && (
-                          <div className="flex items-center justify-center gap-1.5 text-xs font-semibold text-stone-800 bg-stone-100 border border-stone-200 px-3.5 py-1.5 rounded-xl mt-2 animate-fade-in text-center">
+                          <div className="flex items-center justify-center gap-1.5 text-xs font-semibold text-stone-800 bg-stone-100 border border-stone-200 px-3 py-1.5 rounded-xl mt-2 animate-fade-in text-center">
                             <Sparkles className="w-3.5 h-3.5 text-amber-500 flex-shrink-0" />
                             <span>{resendFeedback}</span>
                           </div>
@@ -757,7 +733,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
                         <button
                           type="submit"
                           disabled={verificationState !== 'idle'}
-                          className={`w-full py-4 px-6 rounded-2xl font-bold text-base shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer border ${
+                          className={`w-full py-3.5 sm:py-4 px-6 rounded-xl sm:rounded-2xl font-bold text-sm sm:text-base shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer border ${
                             verificationState === 'success'
                               ? 'bg-emerald-600 border-emerald-600 text-white shadow-emerald-500/25'
                               : verificationState === 'verifying'
@@ -783,7 +759,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
                       <div className="flex items-center justify-between text-xs text-stone-500 pt-1 select-none">
                         <button
                           type="button"
-                          onClick={() => setIsChangePhoneConfirmOpen(true)}
+                          onClick={() => changePhoneNumber()}
                           className="hover:underline text-stone-600 cursor-pointer"
                         >
                           Change number
@@ -813,31 +789,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
           </div>
 
           {/* Minimal Privacy Guarantee Footer */}
-          <div className="pt-4 text-center">
-            <p className="text-[11px] text-stone-400 flex items-center justify-center gap-1.5">
+          <div className="pt-3 text-center">
+            <p className="text-[10px] sm:text-[11px] text-stone-400 flex items-center justify-center gap-1.5">
               <ShieldCheck className="w-3.5 h-3.5 text-stone-400" />
               <span>Used strictly for your live order & digital receipt</span>
             </p>
           </div>
         </div>
       </div>
-
-      {/* iOS-Style Confirmation Dialog: Change Mobile Number */}
-      <ConfirmationSheet
-        isOpen={isChangePhoneConfirmOpen}
-        onClose={() => setIsChangePhoneConfirmOpen(false)}
-        onConfirm={() => {
-          changePhoneNumber();
-          setIsChangePhoneConfirmOpen(false);
-        }}
-        title="Change mobile number?"
-        description={`This will discard the verification code sent to ${getMaskedPhone(pendingOtpPhone)} and return to phone entry.`}
-        confirmLabel="Change Number"
-        cancelLabel="Keep Number"
-        variant="warning"
-        isCenterDialog={true}
-        icon={<Phone className="w-5 h-5 text-amber-400" />}
-      />
     </div>
   );
 };

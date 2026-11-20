@@ -46,11 +46,11 @@ export const CategoryNav: React.FC = () => {
   };
 
   return (
-    <div className="sticky top-[118px] sm:top-[132px] z-20 bg-white/95 backdrop-blur-md py-2.5 border-b border-stone-200/70 transition-colors duration-300 ease-out shadow-2xs">
+    <div className="border-t border-stone-200/60 py-2 sm:py-2.5 bg-white/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div
           ref={scrollContainerRef}
-          className="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth py-1 px-0.5"
+          className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar scroll-smooth py-0.5 px-0.5"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           {CATEGORIES.map((cat) => {
@@ -59,9 +59,9 @@ export const CategoryNav: React.FC = () => {
               <button
                 key={cat.id}
                 onClick={(e) => handleCategorySelect(cat.id, e)}
-                className={`group relative whitespace-nowrap px-4 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center gap-2 active:scale-95 cursor-pointer select-none ${
+                className={`group relative whitespace-nowrap px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center gap-1.5 sm:gap-2 active:scale-95 cursor-pointer select-none ${
                   isActive
-                    ? 'bg-stone-900 text-amber-300 shadow-md scale-[1.03] ring-2 ring-stone-900/15 border border-stone-800'
+                    ? 'bg-stone-900 text-amber-300 shadow-md scale-[1.02] ring-2 ring-stone-900/15 border border-stone-800'
                     : 'bg-stone-100/80 hover:bg-stone-100 text-stone-700 hover:text-stone-900 border border-stone-200/60 hover:border-stone-300/80'
                 }`}
               >

@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { AppProvider, useApp } from './context/AppContext';
 import { Header } from './components/Header';
-import { CategoryNav } from './components/CategoryNav';
 import { FoodCard } from './components/FoodCard';
 import { FoodCustomizationModal } from './components/FoodCustomizationModal';
 import { BottomCartBar } from './components/BottomCartBar';
@@ -11,7 +10,6 @@ import { OrderTracker } from './components/OrderTracker';
 import { OrderHistoryModal } from './components/OrderHistoryModal';
 import { OrderHistoryPage } from './components/OrderHistoryPage';
 import { AuthModal } from './components/AuthModal';
-import { OnboardingScreen } from './components/OnboardingScreen';
 import { DesktopSidebarCart } from './components/DesktopSidebarCart';
 import { MENU_ITEMS, RESTAURANT_INFO } from './data/mockData';
 import { Search, CheckCircle } from 'lucide-react';
@@ -119,11 +117,6 @@ const MainMenuContent: React.FC<MainMenuContentProps> = ({ isJustRevealed = fals
         </div>
       </div>
 
-      {/* Categories Navigation Sticky Bar */}
-      <div className={isJustRevealed ? 'animate-stagger-1' : ''}>
-        <CategoryNav />
-      </div>
-
       {/* Main Content Layout (Responsive: Grid on left + Desktop Sidebar Cart on right) */}
       <main className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 flex-1 w-full ${
         isJustRevealed ? 'animate-stagger-2' : ''
@@ -211,25 +204,25 @@ const MainMenuContent: React.FC<MainMenuContentProps> = ({ isJustRevealed = fals
 };
 
 const AppContent: React.FC = () => {
-  const { user, isAuthOpen, setIsAuthOpen, activeView } = useApp();
-  const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState<boolean>(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('selarasa_onboarding_completed') === 'true';
-    }
-    return false;
-  });
-
+  const { user, activeView } = useApp();
   const [isTransitioning, setIsTransitioning] = useState(false);
 
-  // 1. Show Onboarding for first-time visitors before login
-  if (!hasCompletedOnboarding) {
-    return <OnboardingScreen onComplete={() => setHasCompletedOnboarding(true)} />;
+  // Mandatory Login Gate: Unauthenticated users are allowed ONLY after login
+  if (!user?.isVerified) {
+    return (
+      <div className="min-h-screen bg-[#111216]">
+        <AuthModal
+          onSuccessTransition={() => {
+            setIsTransitioning(true);
+            setTimeout(() => {
+              setIsTransitioning(false);
+            }, 800);
+          }}
+        />
+      </div>
+    );
   }
 
-  // 2. Both unauthenticated (with overlay) and authenticated states render content
-  // as the primed foundation in DOM. This eliminates any blank screen flash, DOM reconstruction lag,
-  // or layout shifts. When OTP verification succeeds, the AuthModal overlay scales down and fades away,
-  // revealing the expanding restaurant home page underneath.
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-[#FAF8F5]">
       {/* Route Views: Separate Full Page for Order History vs Main Menu */}
@@ -238,27 +231,6 @@ const AppContent: React.FC = () => {
       ) : (
         <div className={isTransitioning ? 'animate-home-expand' : ''}>
           <MainMenuContent isJustRevealed={isTransitioning} />
-        </div>
-      )}
-
-      {/* Auth Modal Screen / Seamless Transition Overlay */}
-      {((!user?.isVerified && isAuthOpen) || isTransitioning) && (
-        <div
-          className={`fixed inset-0 z-50 overflow-y-auto transition-opacity duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-            isTransitioning ? 'opacity-0 pointer-events-none' : 'opacity-100'
-          }`}
-        >
-          <AuthModal
-            isFadingOut={isTransitioning}
-            onClose={() => setIsAuthOpen(false)}
-            onSuccessTransition={() => {
-              setIsTransitioning(true);
-              setIsAuthOpen(false);
-              setTimeout(() => {
-                setIsTransitioning(false);
-              }, 1200);
-            }}
-          />
         </div>
       )}
     </div>
