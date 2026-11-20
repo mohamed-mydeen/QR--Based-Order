@@ -142,20 +142,8 @@ const MainMenuContent: React.FC<MainMenuContentProps> = ({ isJustRevealed = fals
                 </h2>
                 <p className="text-xs text-stone-500">
                   Showing {filteredItems.length} {filteredItems.length === 1 ? 'dish' : 'dishes'}
-                  {dietaryFilter !== 'all' && ` (${dietaryFilter.toUpperCase()})`}
                 </p>
               </div>
-
-              {dietaryFilter !== 'all' && (
-                <span className={`text-xs px-2.5 py-1 rounded-full font-semibold border transition-all duration-300 flex items-center gap-1.5 animate-pop-in ${
-                  dietaryFilter === 'veg'
-                    ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
-                    : 'bg-red-50 text-red-800 border-red-200'
-                }`}>
-                  <span className={`w-2 h-2 rounded-full ${dietaryFilter === 'veg' ? 'bg-emerald-600' : 'bg-red-600'}`} />
-                  Filtered: {dietaryFilter === 'veg' ? 'Pure Vegetarian' : 'Non-Vegetarian'}
-                </span>
-              )}
             </div>
 
             {/* Food Grid: Compact 2-column mobile layout, expands gracefully on tablet & desktop */}
