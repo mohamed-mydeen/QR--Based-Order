@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { AppProvider, useApp } from './context/AppContext';
 import { Header } from './components/Header';
 import { FoodCard } from './components/FoodCard';
@@ -14,11 +14,7 @@ import { DesktopSidebarCart } from './components/DesktopSidebarCart';
 import { MENU_ITEMS, RESTAURANT_INFO } from './data/mockData';
 import { Search, CheckCircle } from 'lucide-react';
 
-interface MainMenuContentProps {
-  isJustRevealed?: boolean;
-}
-
-const MainMenuContent: React.FC<MainMenuContentProps> = ({ isJustRevealed = false }) => {
+const MainMenuContent: React.FC = () => {
   const {
     selectedCategory,
     searchQuery,
@@ -75,13 +71,11 @@ const MainMenuContent: React.FC<MainMenuContentProps> = ({ isJustRevealed = fals
         </div>
       )}
 
-      {/* Top Header with entrance animation */}
-      <Header isJustRevealed={isJustRevealed} />
+      {/* Top Header */}
+      <Header />
 
       {/* Compact Table Banner with Appetizing Food Visual (Simple, Professional, Small Size) */}
-      <div className={`bg-gradient-to-b from-[#FAF8F5] to-white border-b border-stone-200/60 py-2 sm:py-3 transition-all ${
-        isJustRevealed ? 'animate-banner-reveal' : ''
-      }`}>
+      <div className="bg-gradient-to-b from-[#FAF8F5] to-white border-b border-stone-200/60 py-2 sm:py-3 transition-all">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-stone-900 text-white rounded-2xl p-3 sm:p-4 shadow-sm relative overflow-hidden border border-stone-800 flex items-center justify-between gap-3">
             <div className="space-y-1 min-w-0 flex-1">
@@ -118,9 +112,7 @@ const MainMenuContent: React.FC<MainMenuContentProps> = ({ isJustRevealed = fals
       </div>
 
       {/* Main Content Layout (Responsive: Grid on left + Desktop Sidebar Cart on right) */}
-      <main className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 flex-1 w-full ${
-        isJustRevealed ? 'animate-stagger-2' : ''
-      }`}>
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 flex-1 w-full">
         <div className="flex items-start gap-8">
           {/* Menu Items Section */}
           <div className="flex-1 min-w-0">
@@ -213,7 +205,6 @@ const AppContent: React.FC = () => {
     isOrderHistoryOpen,
     activeCustomizingItem
   } = useApp();
-  const [isTransitioning, setIsTransitioning] = useState(false);
 
   // 1. Strictly Disable Copy, Cut, Paste, and Context Menu globally
   useEffect(() => {
@@ -275,14 +266,7 @@ const AppContent: React.FC = () => {
   if (!user?.isVerified) {
     return (
       <div className="fixed inset-0 h-full h-[100dvh] w-full bg-[#111216] overflow-hidden overscroll-none touch-none">
-        <AuthModal
-          onSuccessTransition={() => {
-            setIsTransitioning(true);
-            setTimeout(() => {
-              setIsTransitioning(false);
-            }, 800);
-          }}
-        />
+        <AuthModal />
       </div>
     );
   }
@@ -293,9 +277,7 @@ const AppContent: React.FC = () => {
       {activeView === 'orders' ? (
         <OrderHistoryPage />
       ) : (
-        <div className={isTransitioning ? 'animate-home-expand' : ''}>
-          <MainMenuContent isJustRevealed={isTransitioning} />
-        </div>
+        <MainMenuContent />
       )}
     </div>
   );

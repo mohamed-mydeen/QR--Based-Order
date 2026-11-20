@@ -245,7 +245,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
     setVerificationState('verifying');
 
     try {
-      await new Promise((r) => setTimeout(r, 600));
+      await new Promise((r) => setTimeout(r, 450));
 
       // Validate code against dev/backend OTP
       if (codeToVerify !== devOtp) {
@@ -253,26 +253,29 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
         return;
       }
 
-      const res = await verifyOtp(codeToVerify);
-      if (!res.success) {
-        handleIncorrectOtp(res.message || 'Incorrect OTP. Please try again.');
-        return;
-      }
-
       // 2. Enter IN-BOX success state (green wave across 6 boxes with digits visible)
       setVerificationState('success');
 
-      // Hold until the staggered green wave finishes across all 6 boxes (approx 550ms)
-      await new Promise((r) => setTimeout(r, 550));
+      // Hold until the staggered green wave finishes across all 6 boxes (approx 450ms)
+      await new Promise((r) => setTimeout(r, 450));
 
-      // 3. Trigger smooth visual exit transition into restaurant home page
+      // 3. Trigger smooth visual exit transition
       setIsExiting(true);
       if (onSuccessTransition) {
         onSuccessTransition();
       }
 
-      // Hold exit transition for 650ms so user experiences smooth expansion to home
-      await new Promise((r) => setTimeout(r, 650));
+      // Allow smooth fade out (300ms) before committing verification state
+      await new Promise((r) => setTimeout(r, 300));
+
+      // 4. Commit verification in context — seamlessly switches to Home page once with NO double refresh
+      const res = await verifyOtp(codeToVerify);
+      if (!res.success) {
+        setIsExiting(false);
+        setVerificationState('idle');
+        handleIncorrectOtp(res.message || 'Incorrect OTP. Please try again.');
+        return;
+      }
     } catch {
       // For network errors or server errors, show an appropriate error message without automatically clearing the entered OTP
       setIsExiting(false);
