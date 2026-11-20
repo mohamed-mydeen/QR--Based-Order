@@ -255,7 +255,7 @@ export const CheckoutModal: React.FC = () => {
             type="button"
             onClick={handleConfirmOrder}
             disabled={isSubmitting}
-            className="py-3 px-5 sm:px-6 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-bold text-xs sm:text-sm shadow-md flex items-center justify-center gap-2 transition-all active:scale-[0.99] disabled:opacity-75 cursor-pointer"
+            className="py-3 px-5 sm:px-6 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-bold text-xs sm:text-sm shadow-md flex items-center justify-center gap-2 transition-all active:scale-[0.97] disabled:opacity-75 cursor-pointer"
           >
             {isSubmitting ? (
               <div className="flex items-center gap-2">

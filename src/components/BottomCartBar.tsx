@@ -30,7 +30,7 @@ export const BottomCartBar: React.FC = () => {
         <div className="flex items-center gap-3">
           <div
             key={cartSummary.count}
-            className="relative w-10 h-10 rounded-xl bg-stone-800 border border-stone-700/80 flex items-center justify-center font-bold text-amber-300 shadow-xs animate-cart-bounce"
+            className="relative w-10 h-10 rounded-xl bg-stone-800 border border-stone-700/80 flex items-center justify-center font-bold text-amber-300 shadow-xs animate-cart-pulse"
           >
             <ShoppingBag className="w-5 h-5" />
             <span
@@ -46,7 +46,9 @@ export const BottomCartBar: React.FC = () => {
               {cartSummary.count} {cartSummary.count === 1 ? 'dish' : 'dishes'} in your order
             </div>
             <div className="text-base font-extrabold text-white font-mono tracking-tight flex items-center gap-1.5">
-              <span>{RESTAURANT_INFO.currency}{cartSummary.total}</span>
+              <span key={cartSummary.total} className="animate-number-pop">
+                {RESTAURANT_INFO.currency}{cartSummary.total}
+              </span>
               <span className="text-[10px] text-stone-400 font-sans font-normal">• Inclusive</span>
             </div>
           </div>

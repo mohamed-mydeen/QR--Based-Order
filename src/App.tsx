@@ -154,7 +154,7 @@ const MainMenuContent: React.FC = () => {
                   <div
                     key={item.id}
                     className="animate-card-cascade"
-                    style={{ animationDelay: `${Math.min(index * 35, 280)}ms` }}
+                    style={{ animationDelay: `${Math.min(index * 25, 200)}ms` }}
                   >
                     <FoodCard item={item} />
                   </div>

@@ -81,7 +81,7 @@ export const DesktopSidebarCart: React.FC = () => {
               cart.map((item) => (
                 <div
                   key={item.cartItemId}
-                  className="p-3.5 rounded-2xl border border-stone-200/90 bg-white hover:border-stone-300 transition-all shadow-2xs space-y-2.5"
+                  className="p-3.5 rounded-2xl border border-stone-200/90 bg-white hover:border-stone-300 transition-all shadow-2xs space-y-2.5 animate-item-in"
                 >
                   <div className="flex items-start gap-2.5">
                     <img
@@ -137,23 +137,29 @@ export const DesktopSidebarCart: React.FC = () => {
                             updateQuantity(item.cartItemId, -1);
                           }
                         }}
-                        className="w-5 h-5 rounded bg-white hover:bg-stone-200 text-stone-800 flex items-center justify-center text-xs transition-colors shadow-2xs cursor-pointer"
+                        className="w-5 h-5 rounded bg-white hover:bg-stone-200 text-stone-800 flex items-center justify-center text-xs transition-transform active:scale-75 shadow-2xs cursor-pointer"
                       >
                         <Minus className="w-2.5 h-2.5" />
                       </button>
-                      <span className="w-5 text-center font-bold font-mono text-xs text-stone-950">
+                      <span
+                        key={item.quantity}
+                        className="w-5 text-center font-bold font-mono text-xs text-stone-950 animate-number-pop"
+                      >
                         {item.quantity}
                       </span>
                       <button
                         type="button"
                         onClick={() => updateQuantity(item.cartItemId, 1)}
-                        className="w-5 h-5 rounded bg-white hover:bg-stone-200 text-stone-800 flex items-center justify-center text-xs transition-colors shadow-2xs cursor-pointer"
+                        className="w-5 h-5 rounded bg-white hover:bg-stone-200 text-stone-800 flex items-center justify-center text-xs transition-transform active:scale-75 shadow-2xs cursor-pointer"
                       >
                         <Plus className="w-2.5 h-2.5" />
                       </button>
                     </div>
 
-                    <span className="font-extrabold font-mono text-sm text-stone-950">
+                    <span
+                      key={item.totalPrice}
+                      className="font-extrabold font-mono text-sm text-stone-950 animate-number-pop"
+                    >
                       {RESTAURANT_INFO.currency}{item.totalPrice}
                     </span>
                   </div>

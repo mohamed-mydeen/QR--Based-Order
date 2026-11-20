@@ -186,7 +186,7 @@ export const ConfirmationSheet: React.FC<ConfirmationSheetProps> = ({
           isCenterDialog
             ? 'max-w-sm bg-[#FAF8F5] rounded-3xl shadow-2xl border border-stone-200/90 p-5 sm:p-6 space-y-4 animate-pop-in select-none'
             : 'md:max-w-md bg-[#FAF8F5] rounded-t-[32px] sm:rounded-t-[36px] md:rounded-[32px] shadow-2xl border-t md:border border-stone-200/90 p-5 sm:p-6 space-y-4 animate-slide-up select-none'
-        } ${isClosing ? 'opacity-0' : 'opacity-100'}`}
+        } ${isClosing ? 'translate-y-6 opacity-0 duration-200 ease-in' : 'translate-y-0 opacity-100'}`}
       >
         {/* iOS Drag Handle (Only visible on bottom sheet mode on mobile) */}
         {!isCenterDialog && (

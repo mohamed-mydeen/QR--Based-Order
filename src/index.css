@@ -264,47 +264,63 @@
 @keyframes cardCascade {
   0% {
     opacity: 0;
-    transform: translateY(14px) scale(0.98);
+    transform: translateY(8px);
   }
   100% {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: none;
   }
 }
 
 .animate-card-cascade {
-  animation: cardCascade 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: cardCascade 0.24s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 @keyframes badgePop {
-  0% { transform: scale(1); }
-  35% { transform: scale(1.35); }
-  70% { transform: scale(0.92); }
+  0% { transform: scale(0.85); }
+  50% { transform: scale(1.15); }
   100% { transform: scale(1); }
 }
 
 .animate-badge-pop {
-  animation: badgePop 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: badgePop 0.18s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@keyframes cartBounce {
+@keyframes cartPulse {
   0% { transform: scale(1); }
-  25% { transform: scale(0.85) rotate(-6deg); }
-  60% { transform: scale(1.15) rotate(4deg); }
-  100% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
 }
 
+.animate-cart-pulse,
 .animate-cart-bounce {
-  animation: cartBounce 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: cartPulse 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes numberPop {
-  0% { transform: translateY(-4px) scale(0.8); opacity: 0.5; }
-  100% { transform: translateY(0) scale(1); opacity: 1; }
+  0% { transform: translateY(-3px) scale(0.9); opacity: 0.6; }
+  100% { transform: none; opacity: 1; }
 }
 
 .animate-number-pop {
-  animation: numberPop 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: numberPop 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes itemSlideFade {
+  0% { opacity: 0; transform: translateY(6px); }
+  100% { opacity: 1; transform: none; }
+}
+
+.animate-item-in {
+  animation: itemSlideFade 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.btn-press {
+  transition: transform 0.14s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.14s ease;
+}
+
+.btn-press:active {
+  transform: scale(0.96);
 }
 
 @keyframes drawerSlideIn {

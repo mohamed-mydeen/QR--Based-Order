@@ -137,59 +137,61 @@ export const FoodCard: React.FC<FoodCardProps> = ({ item }) => {
           {RESTAURANT_INFO.currency}{item.price}
         </div>
 
-        {/* Action Button: All items use unified [+ Add] and Stepper when added */}
-        {totalQuantityInCart === 0 ? (
-          <button
-            type="button"
-            onClick={(e) => {
+        {/* Action Button: Swiggy/Zomato-style Morphing Stepper */}
+        <div
+          onClick={(e) => {
+            if (totalQuantityInCart === 0 && item.isAvailable) {
               e.stopPropagation();
               handleAddClick();
-            }}
-            disabled={!item.isAvailable}
-            className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl font-bold text-[11px] sm:text-xs flex items-center gap-1 transition-all duration-200 active:scale-95 shadow-2xs cursor-pointer select-none ${
-              showAddSuccess
-                ? 'bg-emerald-600 text-white scale-105'
-                : 'bg-stone-900 hover:bg-stone-800 text-white'
-            }`}
-          >
-            {showAddSuccess ? (
-              <span className="flex items-center gap-1 animate-pop-in">
-                <Check className="w-3.5 h-3.5 stroke-[3]" />
-                <span>Added</span>
+            }
+          }}
+          className={`relative h-7 sm:h-8 rounded-lg sm:rounded-xl overflow-hidden font-bold text-[11px] sm:text-xs flex items-center justify-center transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] select-none shadow-2xs ${
+            totalQuantityInCart === 0
+              ? 'w-16 sm:w-18 bg-stone-900 hover:bg-stone-800 text-white cursor-pointer active:scale-95'
+              : 'w-20 sm:w-24 bg-stone-900 text-white'
+          } ${showAddSuccess ? 'bg-emerald-600 ring-2 ring-emerald-500/20' : ''}`}
+        >
+          {totalQuantityInCart === 0 ? (
+            <div className="flex items-center justify-center gap-1 w-full h-full animate-fade-in">
+              {showAddSuccess ? (
+                <span className="flex items-center gap-1 text-white">
+                  <Check className="w-3.5 h-3.5 stroke-[3] animate-pop-in" />
+                  <span>Added</span>
+                </span>
+              ) : (
+                <>
+                  <Plus className="w-3.5 h-3.5 transition-transform duration-150 group-hover:scale-110" />
+                  <span>Add</span>
+                </>
+              )}
+            </div>
+          ) : (
+            <div className="flex items-center justify-between w-full h-full px-1 animate-fade-in">
+              <button
+                type="button"
+                onClick={handleDecrement}
+                className="w-5 h-5 sm:w-6 sm:h-6 rounded-md hover:bg-stone-800 flex items-center justify-center transition-transform active:scale-75 cursor-pointer text-stone-300 hover:text-white"
+                title="Decrease quantity"
+              >
+                <Minus className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
+              </button>
+              <span
+                key={totalQuantityInCart}
+                className="w-5 text-center font-mono font-bold text-[11px] sm:text-xs animate-number-pop text-white"
+              >
+                {totalQuantityInCart}
               </span>
-            ) : (
-              <>
-                <Plus className="w-3.5 h-3.5 transition-transform group-hover:scale-125" />
-                <span>Add</span>
-              </>
-            )}
-          </button>
-        ) : (
-          <div className="flex items-center gap-0.5 sm:gap-1 bg-stone-900 text-white rounded-lg sm:rounded-xl p-0.5 shadow-2xs animate-pop-in select-none">
-            <button
-              type="button"
-              onClick={handleDecrement}
-              className="w-5 h-5 sm:w-6 sm:h-6 rounded-md sm:rounded-lg hover:bg-stone-800 flex items-center justify-center transition-transform active:scale-75 cursor-pointer"
-              title="Decrease quantity"
-            >
-              <Minus className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-            </button>
-            <span
-              key={totalQuantityInCart}
-              className="w-4 sm:w-5 text-center text-[11px] sm:text-xs font-mono font-bold animate-number-pop"
-            >
-              {totalQuantityInCart}
-            </span>
-            <button
-              type="button"
-              onClick={handleIncrement}
-              className="w-5 h-5 sm:w-6 sm:h-6 rounded-md sm:rounded-lg hover:bg-stone-800 flex items-center justify-center transition-transform active:scale-75 cursor-pointer"
-              title="Increase quantity"
-            >
-              <Plus className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-            </button>
-          </div>
-        )}
+              <button
+                type="button"
+                onClick={handleIncrement}
+                className="w-5 h-5 sm:w-6 sm:h-6 rounded-md hover:bg-stone-800 flex items-center justify-center transition-transform active:scale-75 cursor-pointer text-stone-300 hover:text-white"
+                title="Increase quantity"
+              >
+                <Plus className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

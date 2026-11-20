@@ -374,18 +374,21 @@ export const FoodCustomizationModal: React.FC = () => {
             <button
               type="button"
               onClick={() => setQuantity(q => Math.max(1, q - 1))}
-              className="w-8 h-8 rounded-lg bg-white hover:bg-stone-200 text-stone-700 flex items-center justify-center transition-colors active:scale-95 shadow-2xs cursor-pointer"
+              className="w-8 h-8 rounded-lg bg-white hover:bg-stone-200 text-stone-700 flex items-center justify-center transition-transform active:scale-75 shadow-2xs cursor-pointer"
               title="Decrease quantity"
             >
               <Minus className="w-3.5 h-3.5" />
             </button>
-            <span className="w-7 text-center font-bold font-mono text-sm text-stone-900">
+            <span
+              key={quantity}
+              className="w-7 text-center font-bold font-mono text-sm text-stone-900 animate-number-pop"
+            >
               {quantity}
             </span>
             <button
               type="button"
               onClick={() => setQuantity(q => q + 1)}
-              className="w-8 h-8 rounded-lg bg-white hover:bg-stone-200 text-stone-700 flex items-center justify-center transition-colors active:scale-95 shadow-2xs cursor-pointer"
+              className="w-8 h-8 rounded-lg bg-white hover:bg-stone-200 text-stone-700 flex items-center justify-center transition-transform active:scale-75 shadow-2xs cursor-pointer"
               title="Increase quantity"
             >
               <Plus className="w-3.5 h-3.5" />
@@ -397,14 +400,17 @@ export const FoodCustomizationModal: React.FC = () => {
             type="button"
             onClick={handleAddToCart}
             disabled={!isFormValid}
-            className={`flex-1 py-3.5 px-4 rounded-xl font-bold text-sm flex items-center justify-between transition-all active:scale-[0.99] shadow-md select-none ${
+            className={`flex-1 py-3.5 px-4 rounded-xl font-bold text-sm flex items-center justify-between transition-all active:scale-[0.98] shadow-md select-none ${
               isFormValid
                 ? 'bg-stone-900 hover:bg-stone-800 text-white cursor-pointer'
                 : 'bg-stone-200 text-stone-400 cursor-not-allowed'
             }`}
           >
             <span>{isFormValid ? 'Add Item to Order' : 'Select Required Options'}</span>
-            <span className={`font-mono text-base font-extrabold ${isFormValid ? 'text-amber-300' : 'text-stone-400'}`}>
+            <span
+              key={totalPrice}
+              className={`font-mono text-base font-extrabold animate-number-pop ${isFormValid ? 'text-amber-300' : 'text-stone-400'}`}
+            >
               {RESTAURANT_INFO.currency}{totalPrice}
             </span>
           </button>

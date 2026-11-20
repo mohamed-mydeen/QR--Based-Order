@@ -112,7 +112,7 @@ export const CartDrawer: React.FC = () => {
               cart.map((item) => (
                 <div
                   key={item.cartItemId}
-                  className="p-4 rounded-2xl sm:rounded-3xl border border-stone-200/90 bg-white hover:border-stone-300 transition-all shadow-sm space-y-3"
+                  className="p-4 rounded-2xl sm:rounded-3xl border border-stone-200/90 bg-white hover:border-stone-300 transition-all shadow-sm space-y-3 animate-item-in"
                 >
                   {/* Top: Thumbnail, Title, Price, Delete */}
                   <div className="flex items-start gap-3">
@@ -182,18 +182,21 @@ export const CartDrawer: React.FC = () => {
                             updateQuantity(item.cartItemId, -1);
                           }
                         }}
-                        className="w-7 h-7 rounded-lg bg-white hover:bg-stone-200 text-stone-800 flex items-center justify-center transition-colors active:scale-95 shadow-2xs cursor-pointer"
+                        className="w-7 h-7 rounded-lg bg-white hover:bg-stone-200 text-stone-800 flex items-center justify-center transition-transform active:scale-75 shadow-2xs cursor-pointer"
                         title={item.quantity === 1 ? 'Remove item' : 'Decrease quantity'}
                       >
                         <Minus className="w-3.5 h-3.5" />
                       </button>
-                      <span className="w-7 text-center font-mono font-extrabold text-sm text-stone-950">
+                      <span
+                        key={item.quantity}
+                        className="w-7 text-center font-mono font-extrabold text-sm text-stone-950 animate-number-pop"
+                      >
                         {item.quantity}
                       </span>
                       <button
                         type="button"
                         onClick={() => updateQuantity(item.cartItemId, 1)}
-                        className="w-7 h-7 rounded-lg bg-white hover:bg-stone-200 text-stone-800 flex items-center justify-center transition-colors active:scale-95 shadow-2xs cursor-pointer"
+                        className="w-7 h-7 rounded-lg bg-white hover:bg-stone-200 text-stone-800 flex items-center justify-center transition-transform active:scale-75 shadow-2xs cursor-pointer"
                         title="Increase quantity"
                       >
                         <Plus className="w-3.5 h-3.5" />
@@ -202,7 +205,10 @@ export const CartDrawer: React.FC = () => {
 
                     <div className="text-right">
                       <span className="text-[10px] text-stone-400 block font-medium uppercase tracking-wider">Item Total</span>
-                      <span className="font-mono font-extrabold text-base sm:text-lg text-stone-950">
+                      <span
+                        key={item.totalPrice}
+                        className="font-mono font-extrabold text-base sm:text-lg text-stone-950 animate-number-pop"
+                      >
                         {RESTAURANT_INFO.currency}{item.totalPrice}
                       </span>
                     </div>

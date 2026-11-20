@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   X,
   Receipt,
-  Clock,
   ArrowRight,
   CreditCard,
   Banknote,
@@ -90,7 +89,7 @@ export const OrderTracker: React.FC = () => {
           {/* Order Info Bar */}
           <div className="bg-stone-50 rounded-2xl p-3 sm:p-3.5 border border-stone-200/80 flex items-center justify-between text-xs">
             <div className="flex items-center gap-2 text-stone-700">
-              <Clock className="w-4 h-4 text-stone-500" />
+              <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
               <span>Status: <strong className="text-stone-900">Preparing Fresh</strong></span>
             </div>
             <div className="flex items-center gap-1.5 text-stone-700">
