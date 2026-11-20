@@ -80,54 +80,45 @@ const MainMenuContent: React.FC<MainMenuContentProps> = ({ isJustRevealed = fals
       {/* Top Header with entrance animation */}
       <Header isJustRevealed={isJustRevealed} />
 
-      {/* Welcome Table Banner with Personalized Customer Greeting */}
-      <div className={`bg-gradient-to-b from-[#FAF8F5] to-white border-b border-stone-200/60 py-4 sm:py-6 transition-all ${
+      {/* Compact Table Banner with Appetizing Food Visual (Simple, Professional, Small Size) */}
+      <div className={`bg-gradient-to-b from-[#FAF8F5] to-white border-b border-stone-200/60 py-2 sm:py-3 transition-all ${
         isJustRevealed ? 'animate-banner-reveal' : ''
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#1C1917] text-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-soft relative overflow-hidden">
-            {/* Subtle background decoration */}
-            <div className="absolute -right-10 -bottom-10 w-44 h-44 rounded-full bg-orange-600/10 blur-2xl pointer-events-none" />
-
-            <div className="relative z-10 space-y-1">
+          <div className="bg-stone-900 text-white rounded-2xl p-3 sm:p-4 shadow-sm relative overflow-hidden border border-stone-800 flex items-center justify-between gap-3">
+            <div className="space-y-1 min-w-0 flex-1">
               <div className="flex items-center gap-2">
-                <span className="px-2 py-0.5 rounded-full bg-orange-600 text-[10px] font-bold uppercase tracking-wider text-white">
-                  Table-Side QR Active
-                </span>
                 <button
                   type="button"
                   onClick={() => setIsTableModalOpen(true)}
-                  className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-stone-800/80 hover:bg-stone-800 text-amber-400 text-xs font-mono font-bold border border-stone-700/60 transition-all cursor-pointer"
+                  className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-stone-800 hover:bg-stone-700 text-amber-300 text-xs font-mono font-bold border border-stone-700/70 transition-colors cursor-pointer select-none"
                   title="View or change table"
                 >
                   <span>{tableNumber}</span>
                   <ChevronDown className="w-3 h-3 text-stone-400" />
                 </button>
                 {displayName && (
-                  <span className="text-stone-300 text-xs hidden sm:inline">• Dining as <strong className="text-white">{displayName}</strong></span>
+                  <span className="text-[11px] text-stone-300 truncate">
+                    Welcome, <strong className="text-white font-semibold">{displayName.split(' ')[0]}</strong>
+                  </span>
                 )}
               </div>
-              <h2 className="font-serif font-bold text-lg sm:text-2xl tracking-tight text-white">
-                {displayName ? `Welcome, ${displayName.split(' ')[0]}!` : 'Welcome!'} Freshly Handcrafted to {tableNumber}
+
+              <h2 className="font-serif font-bold text-sm sm:text-base tracking-tight text-white leading-tight">
+                Handcrafted Flavors • Delivered Table-Side
               </h2>
-              <p className="text-xs text-stone-300 max-w-xl font-light leading-relaxed">
-                Choose dishes, customize spices & portion sizes, and order instantly. No waiting for physical menus or payment machines.
+              <p className="text-[11px] sm:text-xs text-stone-400 font-light truncate">
+                Order chef specials & drinks directly to your table
               </p>
             </div>
 
-            <div className="relative z-10 flex items-center gap-3 self-stretch sm:self-auto justify-between sm:justify-start border-t sm:border-t-0 border-stone-800 pt-3 sm:pt-0">
-              <div className="text-left sm:text-right">
-                <span className="text-[10px] text-stone-400 block font-medium">Kitchen Status</span>
-                <span className="text-xs font-bold text-emerald-400 flex items-center gap-1 sm:justify-end">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  Live & Cooking
-                </span>
-              </div>
-              <div className="h-7 w-px bg-stone-800 hidden sm:block" />
-              <div className="text-right">
-                <span className="text-[10px] text-stone-400 block font-medium">Table Service</span>
-                <span className="text-xs font-bold text-stone-200">Express 15m</span>
-              </div>
+            {/* Food Image */}
+            <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-xl sm:rounded-2xl overflow-hidden border border-stone-700/80 shadow-md flex-shrink-0">
+              <img
+                src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=300&q=80"
+                alt="Featured Food"
+                className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-300"
+              />
             </div>
           </div>
         </div>
