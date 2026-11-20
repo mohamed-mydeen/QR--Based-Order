@@ -39,39 +39,6 @@ export const MENU_ITEMS: MenuItem[] = [
     prepTimeMinutes: 12,
     rating: 4.9,
     reviewCount: 142,
-    modifierGroups: [
-      {
-        id: 'portion',
-        name: 'Portion Size',
-        required: true,
-        maxSelections: 1,
-        options: [
-          { id: 'p-4', name: '4 Pieces (Standard)', price: 0, isDefault: true },
-          { id: 'p-6', name: '6 Pieces (Sharing)', price: 140 }
-        ]
-      },
-      {
-        id: 'dip',
-        name: 'Handcrafted Dip',
-        required: true,
-        maxSelections: 1,
-        options: [
-          { id: 'dip-chili', name: 'Smoked Chili Crisp Oil', price: 0, isDefault: true },
-          { id: 'dip-scallion', name: 'Ginger Scallion Relish', price: 0 },
-          { id: 'dip-ponzu', name: 'Truffle Ponzu Soy', price: 30 }
-        ]
-      },
-      {
-        id: 'addons',
-        name: 'Chef Add-ons',
-        required: false,
-        maxSelections: 2,
-        options: [
-          { id: 'add-crispy-garlic', name: 'Crispy Golden Garlic Flakes', price: 40 },
-          { id: 'add-chili-paste', name: 'Extra Chili Crisp Oil (50ml)', price: 50 }
-        ]
-      }
-    ]
   },
   {
     id: 'dish-2',
@@ -86,39 +53,6 @@ export const MENU_ITEMS: MenuItem[] = [
     prepTimeMinutes: 15,
     rating: 4.8,
     reviewCount: 215,
-    modifierGroups: [
-      {
-        id: 'satay-portion',
-        name: 'Skewers Count',
-        required: true,
-        maxSelections: 1,
-        options: [
-          { id: 'sk-4', name: '4 Skewers', price: 0, isDefault: true },
-          { id: 'sk-6', name: '6 Skewers (Recommended)', price: 180 }
-        ]
-      },
-      {
-        id: 'spice',
-        name: 'Spice Level',
-        required: true,
-        maxSelections: 1,
-        options: [
-          { id: 'sp-mild', name: 'Mild & Sweet', price: 0 },
-          { id: 'sp-med', name: 'Medium Spice (Authentic)', price: 0, isDefault: true },
-          { id: 'sp-fire', name: 'Sambal Extra Spicy 🔥', price: 0 }
-        ]
-      },
-      {
-        id: 'sides',
-        name: 'Accompaniment',
-        required: false,
-        maxSelections: 2,
-        options: [
-          { id: 'side-crackers', name: 'Crispy Prawn Crackers (Krupuk)', price: 60 },
-          { id: 'side-ricecakes', name: 'Steamed Rice Cakes (Lontong)', price: 70 }
-        ]
-      }
-    ]
   },
   {
     id: 'dish-3',
@@ -133,18 +67,6 @@ export const MENU_ITEMS: MenuItem[] = [
     prepTimeMinutes: 10,
     rating: 4.6,
     reviewCount: 88,
-    modifierGroups: [
-      {
-        id: 'sweetness',
-        name: 'Glaze Preference',
-        required: true,
-        maxSelections: 1,
-        options: [
-          { id: 'g-classic', name: 'Honey Chili (Sweet & Savory)', price: 0, isDefault: true },
-          { id: 'g-peppery', name: 'Dry Sichuan Peppercorn (Spicy)', price: 0 }
-        ]
-      }
-    ]
   },
   {
     id: 'dish-4',
@@ -160,40 +82,6 @@ export const MENU_ITEMS: MenuItem[] = [
     prepTimeMinutes: 18,
     rating: 4.9,
     reviewCount: 310,
-    modifierGroups: [
-      {
-        id: 'egg-prep',
-        name: 'Fried Egg Doneness',
-        required: true,
-        maxSelections: 1,
-        options: [
-          { id: 'egg-runny', name: 'Sunny Side Up (Runny Yolk)', price: 0, isDefault: true },
-          { id: 'egg-hard', name: 'Well Done Egg', price: 0 },
-          { id: 'egg-none', name: 'No Egg', price: 0 }
-        ]
-      },
-      {
-        id: 'rice-spice',
-        name: 'Spice Level',
-        required: true,
-        maxSelections: 1,
-        options: [
-          { id: 'sp-mild', name: 'Mild', price: 0 },
-          { id: 'sp-med', name: 'Medium (Chef Original)', price: 0, isDefault: true },
-          { id: 'sp-hot', name: 'Indonesian Spicy 🔥', price: 0 }
-        ]
-      },
-      {
-        id: 'rice-extras',
-        name: 'Extras',
-        required: false,
-        maxSelections: 2,
-        options: [
-          { id: 'ex-satay', name: 'Extra Chicken Satay (2 pcs)', price: 120 },
-          { id: 'ex-prawns', name: 'Butter Garlic Prawns (3 pcs)', price: 160 }
-        ]
-      }
-    ]
   },
   {
     id: 'dish-5',
@@ -208,30 +96,6 @@ export const MENU_ITEMS: MenuItem[] = [
     prepTimeMinutes: 16,
     rating: 4.8,
     reviewCount: 167,
-    modifierGroups: [
-      {
-        id: 'protein-base',
-        name: 'Choose Core Protein',
-        required: true,
-        maxSelections: 1,
-        options: [
-          { id: 'prot-paneer', name: 'Malai Cottage Cheese (Paneer)', price: 0, isDefault: true },
-          { id: 'prot-tofu', name: 'Organic Silken Tofu (Vegan)', price: 20 },
-          { id: 'prot-exotic', name: 'Exotic Asian Farm Greens', price: 0 }
-        ]
-      },
-      {
-        id: 'bread-rice',
-        name: 'Choice of Carbs',
-        required: true,
-        maxSelections: 1,
-        options: [
-          { id: 'carb-jasmine', name: 'Steamed Fragrant Jasmine Rice', price: 0, isDefault: true },
-          { id: 'carb-parotta', name: 'Flaky Malaysian Roti Canai (2 pcs)', price: 40 },
-          { id: 'carb-coconut-rice', name: 'Coconut Milk Sticky Rice', price: 50 }
-        ]
-      }
-    ]
   },
   {
     id: 'dish-6',
@@ -247,18 +111,6 @@ export const MENU_ITEMS: MenuItem[] = [
     prepTimeMinutes: 20,
     rating: 4.9,
     reviewCount: 198,
-    modifierGroups: [
-      {
-        id: 'rendang-carbs',
-        name: 'Carbohydrate Pairing',
-        required: true,
-        maxSelections: 1,
-        options: [
-          { id: 'rc-pandan', name: 'Pandan Blue Pea Flower Rice', price: 0, isDefault: true },
-          { id: 'rc-roti', name: 'Flaky Roti Canai (2 pcs)', price: 40 }
-        ]
-      }
-    ]
   },
   {
     id: 'dish-7',
@@ -273,28 +125,6 @@ export const MENU_ITEMS: MenuItem[] = [
     prepTimeMinutes: 12,
     rating: 4.7,
     reviewCount: 124,
-    modifierGroups: [
-      {
-        id: 'noodle-spice',
-        name: 'Sichuan Heat',
-        required: true,
-        maxSelections: 1,
-        options: [
-          { id: 'sp-med', name: 'Classic Tingling Numbing (Medium)', price: 0, isDefault: true },
-          { id: 'sp-high', name: 'Chef Red Oil Extra Heat 🔥', price: 0 }
-        ]
-      },
-      {
-        id: 'noodle-protein',
-        name: 'Protein',
-        required: false,
-        maxSelections: 1,
-        options: [
-          { id: 'prot-minced-mushrooms', name: 'Shiitake Mushroom Mince (Included)', price: 0, isDefault: true },
-          { id: 'prot-tofu-cubes', name: 'Pan-Seared Five Spice Tofu', price: 60 }
-        ]
-      }
-    ]
   },
   {
     id: 'dish-8',
@@ -309,29 +139,6 @@ export const MENU_ITEMS: MenuItem[] = [
     prepTimeMinutes: 5,
     rating: 4.8,
     reviewCount: 95,
-    modifierGroups: [
-      {
-        id: 'drink-sugar',
-        name: 'Sweetness',
-        required: true,
-        maxSelections: 1,
-        options: [
-          { id: 'sug-100', name: 'Regular (Optimal)', price: 0, isDefault: true },
-          { id: 'sug-50', name: 'Less Sweet (50%)', price: 0 },
-          { id: 'sug-0', name: 'Zero Sugar Added', price: 0 }
-        ]
-      },
-      {
-        id: 'drink-ice',
-        name: 'Ice Level',
-        required: true,
-        maxSelections: 1,
-        options: [
-          { id: 'ice-reg', name: 'Standard Chilled Ice', price: 0, isDefault: true },
-          { id: 'ice-less', name: 'Less Ice', price: 0 }
-        ]
-      }
-    ]
   },
   {
     id: 'dish-9',
@@ -346,28 +153,6 @@ export const MENU_ITEMS: MenuItem[] = [
     prepTimeMinutes: 5,
     rating: 4.9,
     reviewCount: 280,
-    modifierGroups: [
-      {
-        id: 'boba-sugar',
-        name: 'Sweetness',
-        required: true,
-        maxSelections: 1,
-        options: [
-          { id: 'bs-reg', name: 'Classic Sweet', price: 0, isDefault: true },
-          { id: 'bs-low', name: 'Low Sweet (30%)', price: 0 }
-        ]
-      },
-      {
-        id: 'boba-toppings',
-        name: 'Toppings',
-        required: false,
-        maxSelections: 2,
-        options: [
-          { id: 'top-cheese', name: 'Himalayan Salted Cheese Foam Cap', price: 50 },
-          { id: 'top-extra-boba', name: 'Double Brown Sugar Tapioca', price: 40 }
-        ]
-      }
-    ]
   },
   {
     id: 'dish-10',
@@ -383,18 +168,6 @@ export const MENU_ITEMS: MenuItem[] = [
     prepTimeMinutes: 10,
     rating: 5.0,
     reviewCount: 340,
-    modifierGroups: [
-      {
-        id: 'dessert-portion',
-        name: 'Serving Size',
-        required: true,
-        maxSelections: 1,
-        options: [
-          { id: 'srv-single', name: 'Individual Plate', price: 0, isDefault: true },
-          { id: 'srv-duo', name: 'Double Sharing Plate', price: 180 }
-        ]
-      }
-    ]
   },
   {
     id: 'dish-11',
