@@ -239,21 +239,21 @@ export const CartDrawer: React.FC = () => {
                 </div>
               </div>
 
-              {/* Checkout Action Button */}
+              {/* Checkout Action Button matching consistent Charcoal & Gold Amber theme */}
               <button
                 type="button"
                 onClick={handleProceedCheckout}
-                className="w-full py-4 px-5 rounded-2xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-sm sm:text-base shadow-lg shadow-orange-600/20 flex items-center justify-between transition-all active:scale-[0.99] cursor-pointer"
+                className="w-full py-4 px-5 rounded-2xl bg-stone-900 hover:bg-stone-800 text-white font-bold text-sm sm:text-base shadow-lg shadow-stone-950/20 flex items-center justify-between transition-all active:scale-[0.99] cursor-pointer border border-stone-800"
               >
                 <div className="flex items-center gap-2">
                   <span>Proceed to Checkout</span>
-                  <span className="text-xs bg-orange-700/60 px-2.5 py-0.5 rounded-full font-bold">
+                  <span className="text-xs bg-stone-800 text-amber-300 border border-stone-700/80 px-2.5 py-0.5 rounded-full font-bold">
                     {tableNumber}
                   </span>
                 </div>
-                <div className="flex items-center gap-1.5 font-mono font-extrabold">
+                <div className="flex items-center gap-1.5 font-mono font-extrabold text-amber-300">
                   <span>{RESTAURANT_INFO.currency}{cartSummary.total}</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-4 h-4 text-amber-300" />
                 </div>
               </button>
             </div>

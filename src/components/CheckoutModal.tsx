@@ -264,8 +264,11 @@ export const CheckoutModal: React.FC = () => {
                 <span>Sending to Kitchen...</span>
               </div>
             ) : (
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-2">
                 <span>Place Order Now</span>
+                <span className="text-amber-300 font-mono font-extrabold text-sm border-l border-stone-700 pl-2">
+                  {RESTAURANT_INFO.currency}{cartSummary.total}
+                </span>
                 <ArrowRight className="w-4 h-4 text-amber-300" />
               </div>
             )}

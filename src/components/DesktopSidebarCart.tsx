@@ -190,12 +190,12 @@ export const DesktopSidebarCart: React.FC = () => {
               <button
                 type="button"
                 onClick={handleProceedCheckout}
-                className="w-full py-3.5 px-4 rounded-2xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs shadow-md shadow-orange-600/20 flex items-center justify-between transition-all active:scale-[0.99] cursor-pointer"
+                className="w-full py-3.5 px-4 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-bold text-xs shadow-md flex items-center justify-between transition-all active:scale-[0.99] cursor-pointer border border-stone-800"
               >
                 <span>Proceed to Checkout</span>
-                <div className="flex items-center gap-1 font-mono font-bold">
+                <div className="flex items-center gap-1 font-mono font-bold text-amber-300">
                   <span>{RESTAURANT_INFO.currency}{cartSummary.total}</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
+                  <ArrowRight className="w-3.5 h-3.5 text-amber-300" />
                 </div>
               </button>
             </div>

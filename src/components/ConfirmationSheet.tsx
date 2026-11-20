@@ -115,7 +115,7 @@ export const ConfirmationSheet: React.FC<ConfirmationSheetProps> = ({
       case 'warning':
         return 'bg-amber-500 hover:bg-amber-600 text-stone-950 shadow-md shadow-amber-500/20';
       case 'primary':
-        return 'bg-orange-600 hover:bg-orange-700 text-white shadow-md shadow-orange-600/20';
+        return 'bg-stone-900 hover:bg-stone-800 text-amber-300 shadow-md shadow-stone-900/20';
       case 'neutral':
       default:
         return 'bg-stone-900 hover:bg-stone-800 text-white shadow-md shadow-stone-900/15';
@@ -129,7 +129,7 @@ export const ConfirmationSheet: React.FC<ConfirmationSheetProps> = ({
       case 'warning':
         return 'bg-amber-50 text-amber-700 border border-amber-200/60';
       case 'primary':
-        return 'bg-orange-50 text-orange-600 border border-orange-200/60';
+        return 'bg-stone-100 text-stone-900 border border-stone-200';
       case 'neutral':
       default:
         return 'bg-stone-100 text-stone-800 border border-stone-200';

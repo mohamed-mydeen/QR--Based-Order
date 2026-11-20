@@ -90,7 +90,7 @@ export const OrderTracker: React.FC = () => {
               </p>
             </div>
 
-            <div className="w-12 h-12 rounded-2xl bg-orange-600 text-white flex items-center justify-center shadow-inner">
+            <div className="w-12 h-12 rounded-2xl bg-stone-900 text-amber-300 flex items-center justify-center shadow-inner border border-stone-800">
               <Flame className="w-6 h-6 animate-pulse" />
             </div>
           </div>
@@ -114,7 +114,7 @@ export const OrderTracker: React.FC = () => {
                         isCompleted
                           ? 'bg-emerald-600 text-white ring-4 ring-white'
                           : isCurrent
-                          ? 'bg-orange-600 text-white ring-4 ring-orange-100 animate-pulse'
+                          ? 'bg-stone-900 text-amber-300 ring-4 ring-amber-100/60 animate-pulse'
                           : 'bg-stone-200 text-stone-400 ring-4 ring-white'
                       }`}
                     >
@@ -131,7 +131,7 @@ export const OrderTracker: React.FC = () => {
                         <h4
                           className={`text-xs sm:text-sm font-bold ${
                             isCurrent
-                              ? 'text-orange-600'
+                              ? 'text-stone-900'
                               : isCompleted
                               ? 'text-stone-900'
                               : 'text-stone-400'

@@ -153,7 +153,7 @@ const MainMenuContent: React.FC<MainMenuContentProps> = ({ isJustRevealed = fals
               </div>
 
               {dietaryFilter !== 'all' && (
-                <span className="text-xs text-orange-700 bg-orange-50 px-2.5 py-1 rounded-full font-semibold border border-orange-200">
+                <span className="text-xs text-stone-800 bg-stone-100 px-2.5 py-1 rounded-full font-semibold border border-stone-200">
                   Filtered: {dietaryFilter}
                 </span>
               )}

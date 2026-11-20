@@ -43,7 +43,7 @@ export const TableModal: React.FC = () => {
 
         {/* QR & Table Identification Header */}
         <div className="text-center mb-6">
-          <div className="w-14 h-14 rounded-2xl bg-orange-50 border border-orange-200 text-orange-600 flex items-center justify-center mx-auto mb-3 shadow-inner">
+          <div className="w-14 h-14 rounded-2xl bg-stone-900 border border-stone-800 text-amber-300 flex items-center justify-center mx-auto mb-3 shadow-sm">
             <QrCode className="w-7 h-7" />
           </div>
           <h2 className="text-xl font-serif font-bold text-stone-900">
@@ -52,9 +52,9 @@ export const TableModal: React.FC = () => {
           <p className="text-xs text-stone-500 mt-1 max-w-xs mx-auto">
             You scanned a QR code or are dining in. Orders placed will be delivered straight to this table.
           </p>
-          <div className="mt-3 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-100/70 border border-orange-300 text-orange-900 text-xs font-semibold">
-            <UtensilsCrossed className="w-3.5 h-3.5 text-orange-600" />
-            Current Location: <span className="font-bold underline">{tableNumber}</span>
+          <div className="mt-3 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-stone-100 border border-stone-200 text-stone-900 text-xs font-semibold">
+            <UtensilsCrossed className="w-3.5 h-3.5 text-stone-700" />
+            Current Location: <span className="font-bold underline text-amber-600">{tableNumber}</span>
           </div>
         </div>
 
@@ -77,7 +77,7 @@ export const TableModal: React.FC = () => {
                   }`}
                 >
                   <span className="truncate w-full">{t}</span>
-                  {isSelected && <Check className="w-3 h-3 text-orange-400" />}
+                  {isSelected && <Check className="w-3 h-3 text-amber-300" />}
                 </button>
               );
             })}
@@ -95,11 +95,11 @@ export const TableModal: React.FC = () => {
               value={customTable}
               onChange={(e) => setCustomTable(e.target.value)}
               placeholder="e.g. 14, B-03, Rooftop-2"
-              className="flex-1 px-3.5 py-2 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500"
+              className="flex-1 px-3.5 py-2 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-stone-900/10 focus:border-stone-900"
             />
             <button
               type="submit"
-              className="px-4 py-2 rounded-xl bg-orange-600 hover:bg-orange-700 text-white text-xs font-semibold shadow-xs transition-colors"
+              className="px-4 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 text-white text-xs font-bold shadow-xs transition-colors"
             >
               Update
             </button>
@@ -107,7 +107,7 @@ export const TableModal: React.FC = () => {
         </form>
 
         <p className="text-[11px] text-stone-400 text-center mt-4 flex items-center justify-center gap-1">
-          <Sparkles className="w-3 h-3 text-orange-400" />
+          <Sparkles className="w-3 h-3 text-amber-400" />
           Table number is automatically embedded on each scanned QR stand.
         </p>
       </div>
