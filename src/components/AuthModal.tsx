@@ -45,6 +45,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
   const [otpDigits, setOtpDigits] = useState<string[]>(['', '', '', '', '', '']);
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   const [otpError, setOtpError] = useState<string>('');
+  const [isIncorrectOtp, setIsIncorrectOtp] = useState(false);
   const [resendFeedback, setResendFeedback] = useState<string>('');
   const [isResending, setIsResending] = useState(false);
   const [isShaking, setIsShaking] = useState(false);
@@ -53,6 +54,20 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
   const [isChangePhoneConfirmOpen, setIsChangePhoneConfirmOpen] = useState(false);
 
   const digitInputRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const autoClearTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const cancelAutoClearTimer = () => {
+    if (autoClearTimerRef.current) {
+      clearTimeout(autoClearTimerRef.current);
+      autoClearTimerRef.current = null;
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      cancelAutoClearTimer();
+    };
+  }, []);
 
   // Sync state if context updates (e.g. from localStorage restoration)
   useEffect(() => {
@@ -63,8 +78,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
   // When moving to OTP step, reset digits and auto-focus the first box after smooth slide completes
   useEffect(() => {
     if (otpStep === 'otp') {
+      cancelAutoClearTimer();
       setOtpDigits(['', '', '', '', '', '']);
       setOtpError('');
+      setIsIncorrectOtp(false);
       setResendFeedback('');
       setVerificationState('idle');
       setIsShaking(false);
@@ -122,16 +139,44 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
     }, 320);
   };
 
+  // Incorrect OTP Handler (Turns 6 boxes red, shakes, displays error, and clears after exactly 2s)
+  const handleIncorrectOtp = (message = 'Incorrect OTP. Please try again.') => {
+    setVerificationState('idle');
+    setIsIncorrectOtp(true);
+    setOtpError(message);
+    setIsShaking(true);
+    setTimeout(() => setIsShaking(false), 500);
+
+    // Keep all six OTP digits visible in red for exactly 2 seconds
+    cancelAutoClearTimer();
+    autoClearTimerRef.current = setTimeout(() => {
+      // After 2 seconds, automatically clear all six OTP input boxes
+      setOtpDigits(['', '', '', '', '', '']);
+      // Remove the red error styling smoothly
+      setIsIncorrectOtp(false);
+      setOtpError('');
+      // Automatically focus the first OTP input box & open numeric keyboard
+      digitInputRefs.current[0]?.focus();
+      setFocusedIndex(0);
+      autoClearTimerRef.current = null;
+    }, 2000);
+  };
+
   // STEP 2: 6-Digit OTP Box Handlers
   const handleOtpDigitChange = (index: number, value: string) => {
     if (verificationState !== 'idle') return;
 
+    // Reset error state and cancel timer when customer starts entering / editing
+    cancelAutoClearTimer();
+    if (isIncorrectOtp || otpError) {
+      setIsIncorrectOtp(false);
+      setOtpError('');
+    }
+    setIsShaking(false);
+
     // Filter only numeric digits
     const cleaned = value.replace(/\D/g, '');
     const char = cleaned.slice(-1);
-
-    setOtpError('');
-    setIsShaking(false);
 
     const newDigits = [...otpDigits];
     newDigits[index] = char;
@@ -156,6 +201,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
     if (verificationState !== 'idle') return;
 
     if (e.key === 'Backspace') {
+      cancelAutoClearTimer();
+      if (isIncorrectOtp || otpError) {
+        setIsIncorrectOtp(false);
+        setOtpError('');
+      }
+
       // If current box is empty, move to previous box and clear it
       if (!otpDigits[index] && index > 0) {
         e.preventDefault();
@@ -183,14 +234,16 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
     if (verificationState !== 'idle') return;
 
     e.preventDefault();
+    cancelAutoClearTimer();
     const pasteData = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6);
     if (!pasteData) return;
 
-    const newDigits = [...otpDigits];
-    for (let i = 0; i < 6; i++) {
+    const newDigits = ['', '', '', '', '', ''];
+    for (let i = 0; i < pasteData.length; i++) {
       newDigits[i] = pasteData[i] || '';
     }
     setOtpDigits(newDigits);
+    setIsIncorrectOtp(false);
     setOtpError('');
     setIsShaking(false);
 
@@ -208,12 +261,15 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
   // Verification Execution with IN-BOX Animations & Smooth Exit Transition
   const executeVerification = async (codeToVerify: string) => {
     if (verificationState !== 'idle') return;
+    cancelAutoClearTimer();
     setOtpError('');
+    setIsIncorrectOtp(false);
     setIsShaking(false);
 
     if (codeToVerify.length < 6) {
       setOtpError('Please enter all 6 digits of your verification code.');
       setIsShaking(true);
+      setTimeout(() => setIsShaking(false), 500);
       return;
     }
 
@@ -225,10 +281,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
 
       // Validate code against dev/backend OTP
       if (codeToVerify !== devOtp) {
-        setVerificationState('idle');
-        setOtpError('Incorrect OTP. Please try again.');
-        setIsShaking(true);
-        setTimeout(() => setIsShaking(false), 500);
+        handleIncorrectOtp('Incorrect OTP. Please try again.');
+        return;
+      }
+
+      const res = await verifyOtp(codeToVerify);
+      if (!res.success) {
+        handleIncorrectOtp(res.message || 'Incorrect OTP. Please try again.');
         return;
       }
 
@@ -246,19 +305,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
 
       // Hold exit transition for 650ms so user experiences smooth expansion to home
       await new Promise((r) => setTimeout(r, 650));
-
-      const res = await verifyOtp(codeToVerify);
-      if (!res.success) {
-        setIsExiting(false);
-        setVerificationState('idle');
-        setOtpError(res.message || 'Incorrect OTP. Please try again.');
-        setIsShaking(true);
-      }
     } catch {
+      // For network errors or server errors, show an appropriate error message without automatically clearing the entered OTP
       setIsExiting(false);
       setVerificationState('idle');
       setOtpError('Network connection error. Please check your internet and tap Verify to retry.');
       setIsShaking(true);
+      setTimeout(() => setIsShaking(false), 500);
     }
   };
 
@@ -609,11 +662,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
                           }`}
                         >
                           {otpDigits.map((digit, idx) => {
-                            const isFocused = focusedIndex === idx && verificationState === 'idle';
+                            const isFocused = focusedIndex === idx && verificationState === 'idle' && !isIncorrectOtp;
                             const isFilled = digit.length > 0;
                             const isVerifying = verificationState === 'verifying';
                             const isSuccess = verificationState === 'success';
-                            const isError = Boolean(otpError);
 
                             return (
                               <div
@@ -621,8 +673,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
                                 className={`relative w-full aspect-[4/5] sm:h-14 rounded-2xl flex items-center justify-center transition-all duration-300 select-none ${
                                   isSuccess
                                     ? 'border-2 border-emerald-500 bg-emerald-50/90 text-emerald-950 shadow-[0_0_0_3px_rgba(16,185,129,0.22)] animate-box-success'
-                                    : isError
-                                    ? 'border-2 border-red-500 bg-red-50/50 text-red-700 shadow-[0_0_0_3px_rgba(239,68,68,0.15)]'
+                                    : isIncorrectOtp
+                                    ? 'border-2 border-red-400 bg-red-50/60 text-red-600 shadow-[0_0_0_3px_rgba(239,68,68,0.12)]'
                                     : isVerifying
                                     ? 'border-2 border-amber-400 bg-amber-50/30'
                                     : isFocused
@@ -644,7 +696,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
                                   maxLength={1}
                                   disabled={verificationState !== 'idle'}
                                   value={digit}
-                                  onFocus={() => setFocusedIndex(idx)}
+                                  onFocus={() => {
+                                    cancelAutoClearTimer();
+                                    if (isIncorrectOtp) {
+                                      setIsIncorrectOtp(false);
+                                      setOtpError('');
+                                    }
+                                    setFocusedIndex(idx);
+                                  }}
                                   onBlur={() => setFocusedIndex(null)}
                                   onChange={(e) => handleOtpDigitChange(idx, e.target.value)}
                                   onKeyDown={(e) => handleOtpKeyDown(idx, e)}
@@ -663,7 +722,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
                                 ) : digit ? (
                                   <span
                                     className={`text-lg sm:text-xl font-mono font-bold transition-colors ${
-                                      isSuccess ? 'text-emerald-950 font-extrabold' : isError ? 'text-red-700' : 'text-stone-900'
+                                      isSuccess ? 'text-emerald-950 font-extrabold' : isIncorrectOtp ? 'text-red-600' : 'text-stone-900'
                                     }`}
                                   >
                                     {digit}
