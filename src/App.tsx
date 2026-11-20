@@ -187,7 +187,7 @@ const MainMenuContent: React.FC = () => {
             <span>{RESTAURANT_INFO.address}</span>
           </div>
           <div>
-            Self-Order Platform • Powered by Antigravity
+            Self-Order Platform
           </div>
         </div>
       </footer>
