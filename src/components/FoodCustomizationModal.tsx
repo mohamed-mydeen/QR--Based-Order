@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { X, Plus, Minus, Check, MessageSquare, Sparkles } from 'lucide-react';
+import { X, Plus, Minus, Check, MessageSquare, Sparkles, Star } from 'lucide-react';
 import { SelectedModifier } from '../types';
 import { useApp } from '../context/AppContext';
 import { RESTAURANT_INFO } from '../data/mockData';
@@ -71,7 +71,6 @@ export const FoodCustomizationModal: React.FC = () => {
         } else {
           const max = group.maxSelections || 99;
           if (currentSelected.length >= max) {
-            // Replace first or ignore
             next = [...currentSelected.slice(1), optionId];
           } else {
             next = [...currentSelected, optionId];
@@ -131,72 +130,125 @@ export const FoodCustomizationModal: React.FC = () => {
   };
 
   const modalContent = (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-stone-900/60 backdrop-blur-xs animate-fade-in">
-      {/* Modal Container */}
-      <div className="bg-white rounded-t-3xl sm:rounded-3xl max-w-lg w-full max-h-[90vh] sm:max-h-[85vh] flex flex-col shadow-2xl border border-stone-200/80 animate-slide-up overflow-hidden">
-        {/* Sticky Header with image banner */}
-        <div className="relative h-44 sm:h-52 bg-stone-100 flex-shrink-0">
-          <img
-            src={item.image}
-            alt={item.name}
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-stone-900/80 via-stone-900/20 to-transparent" />
+    <div
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          closeCustomization();
+        }
+      }}
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-stone-950/65 backdrop-blur-xs animate-fade-in"
+    >
+      {/* Modal / Bottom Sheet Container (Swiggy / Zomato style) */}
+      <div className="bg-white rounded-t-3xl sm:rounded-3xl max-w-lg w-full max-h-[92vh] sm:max-h-[85vh] flex flex-col shadow-2xl border border-stone-200/80 animate-slide-up overflow-hidden">
+        {/* Mobile Drag Indicator Pill */}
+        <div className="w-10 h-1 bg-stone-300 rounded-full mx-auto mt-2 sm:hidden flex-shrink-0" />
 
-          {/* Close Button */}
-          <button
-            onClick={closeCustomization}
-            className="absolute top-3 right-3 w-8 h-8 rounded-full bg-stone-900/60 hover:bg-stone-900 text-white flex items-center justify-center backdrop-blur-xs transition-colors z-20"
-          >
-            <X className="w-4 h-4" />
-          </button>
+        {/* Clean Header: Dish details on left, compact thumbnail and close button on right */}
+        <div className="p-4 sm:p-5 border-b border-stone-100 flex items-start justify-between gap-3.5 bg-white flex-shrink-0">
+          <div className="flex-1 min-w-0 pr-1">
+            {/* Dietary & Badges */}
+            <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+              {/* Veg / Non-Veg Indicator */}
+              <div className="p-0.5 rounded-sm flex items-center justify-center">
+                {item.dietary === 'veg' || item.dietary === 'vegan' ? (
+                  <div
+                    className="w-3.5 h-3.5 border-[1.5px] border-emerald-600 rounded-xs flex items-center justify-center"
+                    title="Vegetarian"
+                  >
+                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
+                  </div>
+                ) : item.dietary === 'egg' ? (
+                  <div
+                    className="w-3.5 h-3.5 border-[1.5px] border-amber-600 rounded-xs flex items-center justify-center"
+                    title="Contains Egg"
+                  >
+                    <div className="w-1.5 h-1.5 rounded-full bg-amber-600" />
+                  </div>
+                ) : (
+                  <div
+                    className="w-3.5 h-3.5 border-[1.5px] border-red-700 rounded-xs flex items-center justify-center"
+                    title="Non-Vegetarian"
+                  >
+                    <div className="w-0 h-0 border-l-[3px] border-l-transparent border-r-[3px] border-r-transparent border-b-[6px] border-b-red-700" />
+                  </div>
+                )}
+              </div>
 
-          {/* Dish Title Overlay */}
-          <div className="absolute bottom-3 left-4 right-4 text-white z-10">
-            <div className="flex items-center gap-2 mb-1">
-              {item.dietary === 'veg' ? (
-                <span className="px-2 py-0.5 rounded-md bg-emerald-600/90 text-[10px] font-bold text-white uppercase tracking-wider backdrop-blur-xs">
-                  Pure Veg
-                </span>
-              ) : (
-                <span className="px-2 py-0.5 rounded-md bg-red-700/90 text-[10px] font-bold text-white uppercase tracking-wider backdrop-blur-xs">
-                  Non-Veg
+              {item.isChefSpecial && (
+                <span className="px-2 py-0.5 rounded-full bg-stone-900 text-amber-300 text-[10px] font-bold tracking-wide flex items-center gap-1 shadow-2xs">
+                  <Sparkles className="w-2.5 h-2.5 text-amber-300" /> Chef's Special
                 </span>
               )}
-              {item.isChefSpecial && (
-                <span className="px-2 py-0.5 rounded-md bg-amber-500/90 text-[10px] font-bold text-stone-900 uppercase tracking-wider backdrop-blur-xs flex items-center gap-1">
-                  <Sparkles className="w-2.5 h-2.5" /> Chef Signature
+
+              {item.rating && (
+                <span className="flex items-center gap-1 text-[11px] font-semibold text-stone-700 bg-stone-100 px-1.5 py-0.5 rounded-md">
+                  <Star className="w-3 h-3 text-amber-500 fill-amber-500" />
+                  {item.rating}
                 </span>
               )}
             </div>
-            <h2 className="text-lg sm:text-xl font-bold font-serif leading-tight">
+
+            {/* Dish Name */}
+            <h2 className="text-base sm:text-lg font-serif font-bold text-stone-900 leading-snug">
               {item.name}
             </h2>
-            <p className="text-xs text-stone-200 line-clamp-2 mt-0.5 font-light">
-              {item.description}
-            </p>
+
+            {/* Base Price */}
+            <div className="text-sm sm:text-base font-bold font-mono text-stone-900 mt-0.5">
+              {RESTAURANT_INFO.currency}{item.price}
+            </div>
+
+            {/* Description */}
+            {item.description && (
+              <p className="text-xs text-stone-500 line-clamp-2 mt-1 leading-relaxed">
+                {item.description}
+              </p>
+            )}
+          </div>
+
+          {/* Right Image Thumbnail & Close Action */}
+          <div className="flex flex-col items-end gap-2 flex-shrink-0">
+            <button
+              type="button"
+              onClick={closeCustomization}
+              className="w-7 h-7 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-500 hover:text-stone-900 flex items-center justify-center transition-colors cursor-pointer"
+              aria-label="Close"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            {item.image && (
+              <div className="relative w-20 h-20 sm:w-22 sm:h-22 rounded-2xl overflow-hidden border border-stone-200/80 shadow-2xs bg-stone-100">
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
           </div>
         </div>
 
-        {/* Scrollable Customization Groups (Reference 2 UX principles) */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
+        {/* Scrollable Customization Content */}
+        <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-6">
           {groups.map(group => {
             const isSingleChoice = (group.maxSelections || 1) === 1;
             const currentSelected = selectedOptions[group.id] || [];
 
             return (
               <div key={group.id} className="border-b border-stone-100 pb-5 last:border-b-0">
-                <div className="flex items-center justify-between mb-2.5">
+                {/* Group Heading */}
+                <div className="flex items-center justify-between mb-2">
                   <div>
-                    <h3 className="font-bold text-sm text-stone-900">
+                    <h3 className="font-bold text-sm text-stone-900 tracking-tight">
                       {group.name}
                     </h3>
-                    <p className="text-[11px] text-stone-500">
-                      {isSingleChoice ? 'Choose 1 option' : `Select up to ${group.maxSelections || 'multiple'}`}
+                    <p className="text-xs text-stone-400 mt-0.5">
+                      {isSingleChoice ? 'Choose 1 option' : `Select up to ${group.maxSelections || 'multiple'} options`}
                     </p>
                   </div>
                   {group.required ? (
-                    <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-orange-100 text-orange-800 border border-orange-200">
+                    <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-stone-900 text-amber-300 shadow-2xs">
                       Required
                     </span>
                   ) : (
@@ -206,8 +258,8 @@ export const FoodCustomizationModal: React.FC = () => {
                   )}
                 </div>
 
-                {/* Options List */}
-                <div className="space-y-2">
+                {/* Swiggy/Zomato style clean list items (No bulky box cards) */}
+                <div className="divide-y divide-stone-100/80">
                   {group.options.map(option => {
                     const isSelected = currentSelected.includes(option.id);
 
@@ -216,29 +268,54 @@ export const FoodCustomizationModal: React.FC = () => {
                         type="button"
                         key={option.id}
                         onClick={() => handleOptionToggle(group, option.id)}
-                        className={`w-full p-3 rounded-xl border text-left flex items-center justify-between transition-all ${
+                        className={`w-full py-3 px-2 rounded-xl flex items-center justify-between text-left transition-colors cursor-pointer select-none group ${
                           isSelected
-                            ? 'bg-orange-50/60 border-orange-500/80 text-stone-900 shadow-2xs'
-                            : 'bg-stone-50/60 hover:bg-stone-100/80 border-stone-200/80 text-stone-700'
+                            ? 'bg-stone-50/80'
+                            : 'hover:bg-stone-50/50'
                         }`}
                       >
                         <div className="flex items-center gap-3">
-                          {/* Radio / Checkbox Indicator */}
-                          <div
-                            className={`w-4 h-4 rounded-${isSingleChoice ? 'full' : 'md'} border flex items-center justify-center transition-all ${
-                              isSelected
-                                ? 'bg-orange-600 border-orange-600 text-white'
-                                : 'border-stone-400 bg-white'
+                          {/* Radio / Checkbox Indicator matching app stone/amber theme */}
+                          {isSingleChoice ? (
+                            <div
+                              className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-all ${
+                                isSelected
+                                  ? 'border-stone-900 bg-white'
+                                  : 'border-stone-300 group-hover:border-stone-400 bg-white'
+                              }`}
+                            >
+                              {isSelected && <div className="w-2 h-2 rounded-full bg-stone-900" />}
+                            </div>
+                          ) : (
+                            <div
+                              className={`w-4 h-4 rounded border-2 flex items-center justify-center transition-all ${
+                                isSelected
+                                  ? 'border-stone-900 bg-stone-900 text-amber-300'
+                                  : 'border-stone-300 group-hover:border-stone-400 bg-white'
+                              }`}
+                            >
+                              {isSelected && <Check className="w-2.5 h-2.5 stroke-[3]" />}
+                            </div>
+                          )}
+
+                          <span
+                            className={`text-xs sm:text-sm transition-colors ${
+                              isSelected ? 'text-stone-950 font-semibold' : 'text-stone-700 font-normal'
                             }`}
                           >
-                            {isSelected && <Check className="w-2.5 h-2.5 stroke-[3]" />}
-                          </div>
-                          <span className="text-xs sm:text-sm font-medium">
                             {option.name}
                           </span>
                         </div>
 
-                        <span className="text-xs font-semibold text-stone-800">
+                        <span
+                          className={`text-xs ${
+                            option.price > 0
+                              ? isSelected
+                                ? 'font-mono font-bold text-stone-900'
+                                : 'font-mono font-medium text-stone-600'
+                              : 'text-stone-400 font-sans'
+                          }`}
+                        >
                           {option.price > 0 ? `+${RESTAURANT_INFO.currency}${option.price}` : 'Free'}
                         </span>
                       </button>
@@ -251,13 +328,13 @@ export const FoodCustomizationModal: React.FC = () => {
 
           {/* Quick Cooking Notes & Special Instructions */}
           <div className="pt-1">
-            <div className="flex items-center gap-1.5 mb-2 text-stone-900 font-bold text-sm">
-              <MessageSquare className="w-4 h-4 text-orange-600" />
+            <div className="flex items-center gap-1.5 mb-2.5 text-stone-900 font-bold text-xs sm:text-sm">
+              <MessageSquare className="w-4 h-4 text-stone-700" />
               <span>Special Cooking Notes</span>
             </div>
 
             {/* Quick Tag Pills */}
-            <div className="flex flex-wrap gap-1.5 mb-2.5">
+            <div className="flex flex-wrap gap-1.5 mb-3">
               {quickTags.map(tag => {
                 const isActive = specialInstructions.includes(tag);
                 return (
@@ -265,9 +342,9 @@ export const FoodCustomizationModal: React.FC = () => {
                     type="button"
                     key={tag}
                     onClick={() => toggleQuickTag(tag)}
-                    className={`px-2.5 py-1 rounded-full text-[11px] font-medium transition-all ${
+                    className={`px-2.5 py-1 rounded-full text-[11px] font-medium transition-all cursor-pointer ${
                       isActive
-                        ? 'bg-stone-900 text-white'
+                        ? 'bg-stone-900 text-amber-300 shadow-2xs'
                         : 'bg-stone-100 hover:bg-stone-200 text-stone-600'
                     }`}
                   >
@@ -282,44 +359,49 @@ export const FoodCustomizationModal: React.FC = () => {
               value={specialInstructions}
               onChange={(e) => setSpecialInstructions(e.target.value)}
               placeholder="e.g. Allergies, less salt, extra crispy, sauce separately..."
-              className="w-full p-3 rounded-xl border border-stone-200 text-xs text-stone-800 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 resize-none bg-stone-50"
+              className="w-full p-3 rounded-xl border border-stone-200 text-xs text-stone-800 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-stone-900/10 focus:border-stone-900 resize-none bg-stone-50/70"
             />
           </div>
         </div>
 
-        {/* Sticky Dynamic Pricing & Add to Cart Footer */}
-        <div className="p-4 sm:p-5 bg-white border-t border-stone-200 flex items-center justify-between gap-3 flex-shrink-0">
+        {/* Sticky Dynamic Pricing & Add to Cart Footer (Swiggy / Zomato style) */}
+        <div className="p-4 sm:p-5 bg-white border-t border-stone-200/80 flex items-center justify-between gap-3 flex-shrink-0 shadow-lg">
           {/* Quantity Stepper */}
-          <div className="flex items-center gap-1 bg-stone-100 rounded-xl p-1 border border-stone-200">
+          <div className="flex items-center gap-1 bg-stone-100 rounded-xl p-1 border border-stone-200/80">
             <button
+              type="button"
               onClick={() => setQuantity(q => Math.max(1, q - 1))}
-              className="w-8 h-8 rounded-lg bg-white hover:bg-stone-200 text-stone-700 flex items-center justify-center transition-colors active:scale-95 shadow-2xs"
+              className="w-8 h-8 rounded-lg bg-white hover:bg-stone-200 text-stone-700 flex items-center justify-center transition-colors active:scale-95 shadow-2xs cursor-pointer"
+              title="Decrease quantity"
             >
               <Minus className="w-3.5 h-3.5" />
             </button>
-            <span className="w-7 text-center font-bold font-mono text-sm">
+            <span className="w-7 text-center font-bold font-mono text-sm text-stone-900">
               {quantity}
             </span>
             <button
+              type="button"
               onClick={() => setQuantity(q => q + 1)}
-              className="w-8 h-8 rounded-lg bg-white hover:bg-stone-200 text-stone-700 flex items-center justify-center transition-colors active:scale-95 shadow-2xs"
+              className="w-8 h-8 rounded-lg bg-white hover:bg-stone-200 text-stone-700 flex items-center justify-center transition-colors active:scale-95 shadow-2xs cursor-pointer"
+              title="Increase quantity"
             >
               <Plus className="w-3.5 h-3.5" />
             </button>
           </div>
 
-          {/* Dynamic Add to Cart CTA */}
+          {/* Dynamic Add to Cart CTA Button */}
           <button
+            type="button"
             onClick={handleAddToCart}
             disabled={!isFormValid}
-            className={`flex-1 py-3 px-4 rounded-xl font-bold text-sm flex items-center justify-between transition-all active:scale-[0.99] shadow-sm ${
+            className={`flex-1 py-3.5 px-4 rounded-xl font-bold text-sm flex items-center justify-between transition-all active:scale-[0.99] shadow-md select-none ${
               isFormValid
-                ? 'bg-orange-600 hover:bg-orange-700 text-white'
+                ? 'bg-stone-900 hover:bg-stone-800 text-white cursor-pointer'
                 : 'bg-stone-200 text-stone-400 cursor-not-allowed'
             }`}
           >
-            <span>{isFormValid ? 'Add to Cart' : 'Select Required'}</span>
-            <span className="font-mono text-base font-extrabold">
+            <span>{isFormValid ? 'Add Item to Order' : 'Select Required Options'}</span>
+            <span className={`font-mono text-base font-extrabold ${isFormValid ? 'text-amber-300' : 'text-stone-400'}`}>
               {RESTAURANT_INFO.currency}{totalPrice}
             </span>
           </button>
