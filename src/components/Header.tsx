@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, User, LogOut } from 'lucide-react';
+import { Search, User, LogOut, X } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { RESTAURANT_INFO } from '../data/mockData';
 import { ConfirmationSheet } from './ConfirmationSheet';
@@ -93,25 +93,29 @@ export const Header: React.FC<HeaderProps> = ({ isJustRevealed = false }) => {
 
         {/* Search Bar & Dietary Filter Row */}
         <div className="pb-3 pt-1 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5">
-          {/* Food Search Input with Smooth Focus Micro-Interaction */}
+          {/* Food Search Input with Smooth Focus Micro-Interaction & Perfectly Centered Icons */}
           <div className="relative flex-1 group">
-            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400 group-focus-within:text-amber-600 transition-colors" />
+            <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+              <Search className="w-4 h-4 text-stone-400 group-focus-within:text-amber-600 transition-colors" />
+            </div>
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search dishes, drinks, chef specials..."
-              className="w-full pl-9 pr-8 py-2 rounded-xl bg-stone-100/70 hover:bg-stone-100 focus:bg-white border border-stone-200/80 text-xs sm:text-sm text-stone-800 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-amber-500/25 focus:border-amber-500 transition-all duration-200 shadow-2xs focus:shadow-md focus:scale-[1.003]"
+              className="w-full pl-9 pr-9 py-2 rounded-xl bg-stone-100/70 hover:bg-stone-100 focus:bg-white border border-stone-200/80 text-xs sm:text-sm text-stone-800 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-amber-500/25 focus:border-amber-500 transition-all duration-200 shadow-2xs focus:shadow-xs"
             />
             {searchQuery && (
-              <button
-                type="button"
-                onClick={() => setSearchQuery('')}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-700 text-xs w-5 h-5 rounded-full hover:bg-stone-200/70 flex items-center justify-center transition-all animate-pop-in active:scale-75 cursor-pointer"
-                title="Clear search"
-              >
-                ✕
-              </button>
+              <div className="absolute inset-y-0 right-0 pr-2.5 flex items-center">
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery('')}
+                  className="w-5 h-5 rounded-full bg-stone-200/90 hover:bg-stone-300 active:scale-90 text-stone-600 hover:text-stone-900 flex items-center justify-center transition-all cursor-pointer"
+                  title="Clear search"
+                >
+                  <X className="w-3 h-3 stroke-[2.5]" />
+                </button>
+              </div>
             )}
           </div>
 
