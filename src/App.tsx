@@ -7,12 +7,11 @@ import { FoodCustomizationModal } from './components/FoodCustomizationModal';
 import { BottomCartBar } from './components/BottomCartBar';
 import { CartDrawer } from './components/CartDrawer';
 import { CheckoutModal } from './components/CheckoutModal';
-import { TableModal } from './components/TableModal';
 import { AuthModal } from './components/AuthModal';
 import { OnboardingScreen } from './components/OnboardingScreen';
 import { DesktopSidebarCart } from './components/DesktopSidebarCart';
 import { MENU_ITEMS, RESTAURANT_INFO } from './data/mockData';
-import { Search, CheckCircle, ChevronDown } from 'lucide-react';
+import { Search, CheckCircle } from 'lucide-react';
 
 interface MainMenuContentProps {
   isJustRevealed?: boolean;
@@ -23,11 +22,9 @@ const MainMenuContent: React.FC<MainMenuContentProps> = ({ isJustRevealed = fals
     selectedCategory,
     searchQuery,
     dietaryFilter,
-    tableNumber,
     toastMessage,
     user,
-    pendingUserName,
-    setIsTableModalOpen
+    pendingUserName
   } = useApp();
   const displayName = user?.name || pendingUserName;
 
@@ -88,27 +85,22 @@ const MainMenuContent: React.FC<MainMenuContentProps> = ({ isJustRevealed = fals
           <div className="bg-stone-900 text-white rounded-2xl p-3 sm:p-4 shadow-sm relative overflow-hidden border border-stone-800 flex items-center justify-between gap-3">
             <div className="space-y-1 min-w-0 flex-1">
               <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => setIsTableModalOpen(true)}
-                  className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-stone-800 hover:bg-stone-700 text-amber-300 text-xs font-mono font-bold border border-stone-700/70 transition-colors cursor-pointer select-none"
-                  title="View or change table"
-                >
-                  <span>{tableNumber}</span>
-                  <ChevronDown className="w-3 h-3 text-stone-400" />
-                </button>
-                {displayName && (
+                {displayName ? (
                   <span className="text-[11px] text-stone-300 truncate">
                     Welcome, <strong className="text-white font-semibold">{displayName.split(' ')[0]}</strong>
+                  </span>
+                ) : (
+                  <span className="text-[11px] text-amber-300/90 font-medium">
+                    Artisanal Asian Eatery
                   </span>
                 )}
               </div>
 
               <h2 className="font-serif font-bold text-sm sm:text-base tracking-tight text-white leading-tight">
-                Handcrafted Flavors • Delivered Table-Side
+                Handcrafted Flavors • Freshly Prepared
               </h2>
               <p className="text-[11px] sm:text-xs text-stone-400 font-light truncate">
-                Order chef specials & drinks directly to your table
+                Order chef specials & artisan drinks directly
               </p>
             </div>
 
@@ -202,7 +194,6 @@ const MainMenuContent: React.FC<MainMenuContentProps> = ({ isJustRevealed = fals
       <FoodCustomizationModal />
       <CartDrawer />
       <CheckoutModal />
-      <TableModal />
 
       {/* Minimal Footer */}
       <footer className="mt-12 border-t border-stone-200/80 bg-white py-6 text-center text-xs text-stone-400">

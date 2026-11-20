@@ -395,12 +395,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isFadingOut = false, onSuc
           {/* Welcoming Headline & Subtitle */}
           <div className="relative z-10 space-y-2 max-w-xs drop-shadow-md transition-all duration-300">
             <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight drop-shadow-md font-sans">
-              {otpStep === 'phone' ? 'Welcome to Your Table!' : 'Verify Mobile Number'}
+              {otpStep === 'phone' ? 'Welcome to Selarasa!' : 'Verify Mobile Number'}
             </h1>
             <p className="text-xs sm:text-sm text-amber-200/90 font-medium leading-relaxed drop-shadow">
               {otpStep === 'phone'
                 ? 'Your delicious experience starts here.'
-                : 'Just one quick step to secure your table ordering session.'}
+                : 'Just one quick step to secure your ordering session.'}
             </p>
           </div>
         </div>

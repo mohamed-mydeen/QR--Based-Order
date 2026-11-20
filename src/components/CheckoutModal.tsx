@@ -67,7 +67,6 @@ export const CheckoutModal: React.FC = () => {
     isCheckoutOpen,
     setIsCheckoutOpen,
     cartSummary,
-    tableNumber,
     user,
     startAuthFlow,
     placeOrder,
@@ -121,9 +120,6 @@ export const CheckoutModal: React.FC = () => {
             <h2 className="text-base sm:text-lg font-serif font-bold text-stone-900 leading-tight">
               Select Payment Method
             </h2>
-            <span className="px-2 py-0.5 rounded-full bg-stone-900 text-amber-300 font-mono font-bold text-xs shadow-2xs">
-              {tableNumber}
-            </span>
           </div>
           <button
             type="button"
@@ -285,7 +281,7 @@ export const CheckoutModal: React.FC = () => {
           setIsCheckoutOpen(false);
         }}
         title="Leave checkout?"
-        description="Your table order is still safely preserved in your cart, but your dining notes will not be saved."
+        description="Your order is still safely preserved in your cart, but your dining notes will not be saved."
         confirmLabel="Leave Checkout"
         cancelLabel="Keep Reviewing"
         variant="warning"

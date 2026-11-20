@@ -35,7 +35,7 @@ export const BottomCartBar: React.FC = () => {
 
           <div className="text-left">
             <div className="text-xs text-stone-300 font-medium">
-              {cartSummary.count} {cartSummary.count === 1 ? 'dish' : 'dishes'} in table order
+              {cartSummary.count} {cartSummary.count === 1 ? 'dish' : 'dishes'} in your order
             </div>
             <div className="text-base font-extrabold text-white font-mono tracking-tight flex items-center gap-1.5">
               <span>{RESTAURANT_INFO.currency}{cartSummary.total}</span>

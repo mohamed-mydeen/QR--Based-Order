@@ -3,7 +3,6 @@ import {
   CartItem,
   MenuItem,
   Order,
-  OrderStatus,
   PaymentMethod,
   SelectedModifier,
   UserProfile
@@ -473,45 +472,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const [isTrackerOpen, setIsTrackerOpen] = useState(false);
   const [waiterCalled, setWaiterCalled] = useState(false);
-
-  // Live order status simulation for realistic dining UX
-  useEffect(() => {
-    if (!activeOrder || activeOrder.status === 'served') return;
-
-    const timer = setTimeout(() => {
-      setActiveOrder(current => {
-        if (!current) return null;
-        let nextStatus: OrderStatus = current.status;
-        if (current.status === 'placed') nextStatus = 'confirmed';
-        else if (current.status === 'confirmed') nextStatus = 'cooking';
-        else if (current.status === 'cooking') nextStatus = 'ready';
-        else if (current.status === 'ready') nextStatus = 'served';
-
-        if (nextStatus === current.status) return current;
-
-        const updatedSteps = current.statusHistory.map(step => {
-          if (step.status === nextStatus) {
-            return { ...step, isCurrent: true, isCompleted: false, time: 'Just now' };
-          }
-          if (step.isCurrent) {
-            return { ...step, isCurrent: false, isCompleted: true };
-          }
-          return step;
-        });
-
-        const updatedOrder: Order = {
-          ...current,
-          status: nextStatus,
-          statusHistory: updatedSteps
-        };
-        localStorage.setItem('selarasa_active_order', JSON.stringify(updatedOrder));
-        showToast(`Order status updated: ${nextStatus.toUpperCase()}`);
-        return updatedOrder;
-      });
-    }, 18000);
-
-    return () => clearTimeout(timer);
-  }, [activeOrder?.status]);
 
   const placeOrder = async (paymentMethod: PaymentMethod, notes?: string): Promise<Order> => {
     const orderId = `SEL-${Math.floor(1000 + Math.random() * 9000)}`;

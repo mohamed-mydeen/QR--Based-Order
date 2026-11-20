@@ -16,8 +16,7 @@ export const CartDrawer: React.FC = () => {
     cartSummary,
     setIsCheckoutOpen,
     startAuthFlow,
-    user,
-    tableNumber
+    user
   } = useApp();
 
   // Confirmation state for deleting an item
@@ -50,14 +49,9 @@ export const CartDrawer: React.FC = () => {
           {/* Drawer Header */}
           <div className="p-4 sm:p-5 border-b border-stone-200 bg-white flex items-center justify-between">
             <div>
-              <div className="flex items-center gap-2">
-                <h2 className="text-lg sm:text-xl font-bold font-serif text-stone-900">
-                  Table Order
-                </h2>
-                <span className="px-2.5 py-0.5 rounded-full bg-stone-900 text-amber-400 text-xs font-mono font-bold shadow-2xs">
-                  {tableNumber}
-                </span>
-              </div>
+              <h2 className="text-lg sm:text-xl font-bold font-serif text-stone-900">
+                Your Order
+              </h2>
               <p className="text-xs text-stone-500 font-medium mt-0.5">
                 {cartSummary.count} {cartSummary.count === 1 ? 'dish' : 'dishes'} ready for kitchen
               </p>
@@ -231,7 +225,7 @@ export const CartDrawer: React.FC = () => {
                     <span className="font-serif font-bold text-lg sm:text-xl text-stone-900 block leading-tight">
                       To Pay
                     </span>
-                    <span className="text-[11px] text-stone-400 font-medium">Final table bill</span>
+                    <span className="text-[11px] text-stone-400 font-medium">Inclusive of all taxes</span>
                   </div>
                   <span className="font-mono font-black text-2xl sm:text-3xl text-stone-950">
                     {RESTAURANT_INFO.currency}{cartSummary.total}
@@ -247,9 +241,6 @@ export const CartDrawer: React.FC = () => {
               >
                 <div className="flex items-center gap-2">
                   <span>Proceed to Checkout</span>
-                  <span className="text-xs bg-stone-800 text-amber-300 border border-stone-700/80 px-2.5 py-0.5 rounded-full font-bold">
-                    {tableNumber}
-                  </span>
                 </div>
                 <div className="flex items-center gap-1.5 font-mono font-extrabold text-amber-300">
                   <span>{RESTAURANT_INFO.currency}{cartSummary.total}</span>

@@ -14,8 +14,7 @@ export const DesktopSidebarCart: React.FC = () => {
     cartSummary,
     setIsCheckoutOpen,
     startAuthFlow,
-    user,
-    tableNumber
+    user
   } = useApp();
 
   // Confirmation state for deleting an item
@@ -45,10 +44,10 @@ export const DesktopSidebarCart: React.FC = () => {
               </div>
               <div>
                 <h3 className="font-serif font-bold text-sm text-stone-900">
-                  Current Table Order
+                  Your Order
                 </h3>
                 <p className="text-[11px] text-stone-500 font-medium">
-                  {tableNumber} • {cartSummary.count} {cartSummary.count === 1 ? 'dish' : 'dishes'}
+                  {cartSummary.count} {cartSummary.count === 1 ? 'dish' : 'dishes'}
                 </p>
               </div>
             </div>
